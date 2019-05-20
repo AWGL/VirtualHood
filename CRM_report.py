@@ -203,8 +203,6 @@ ws2['A56']='TP53 Ex2'
 ws2['B56']='c.-28-5_c.74+5'
 
 
-
-
 #add titles to variant calls tab
 
 ws3['E3']='NTC check1'
@@ -291,7 +289,6 @@ ws6['C32']='TP53 Ex3'
 ws6['C33']='TP53 Ex2'
 ws6['C34']='TP53 overall'
 
-
 ws6['D22']='% bases'
 ws6['E22']='Gaps in hotspots ROI'
 ws6['F34']='Comments'
@@ -302,10 +299,11 @@ variant_in_NTC=[]
 
 def get_NTC_depth(path, referral, worksheet, runid):
 
-    #use NTC depth of coverage file to create first table in depth tab of workbook 
+    ```
+    use NTC depth of coverage file to create first table in depth tab of workbook 
+    ```
 
     depth_of_coverage_NTC= pandas.read_csv(path+ "NTC-"+worksheet+"-"+referral+"/"+runid+"_NTC-"+worksheet+"-"+referral+"_DepthOfCoverage", sep="\t")
-
     depth_of_coverage_NTC=pandas.DataFrame(depth_of_coverage_NTC)
     depth_of_coverage_NTC[['locus_coordinates', 'locus_chromosome']]= depth_of_coverage_NTC['Locus'].str.split(':', expand=True)
 
@@ -326,8 +324,7 @@ def get_NTC_depth(path, referral, worksheet, runid):
         for coordinates in coordinates_list:
             if ((depth_of_coverage_NTC.iloc[row,4]==coordinates[0])and (depth_of_coverage_NTC.iloc[row,5]>=coordinates[1]) and (depth_of_coverage_NTC.iloc[row,5]<=coordinates[2])):
                 numbers[a].append(depth_of_coverage_NTC.iloc[row,3])
-            a=a+1
-        print(row)    
+            a=a+1    
         row=row+1
 
     
@@ -367,7 +364,9 @@ def get_NTC_depth(path, referral, worksheet, runid):
 
 def get_sample_depth(path, referral, sampleid, runid, Average_NTC):
    
-    #use sample depth of coverage file to create first table in depth tab of workbook      
+    ```
+    use sample depth of coverage file to create first table in depth tab of workbook      
+    ```
 
     depth_of_coverage_sample= pandas.read_csv(path+ sampleid+"/" +runid+"_"+sampleid+"_DepthOfCoverage", sep="\t")
     depth_of_coverage_sample=pandas.DataFrame(depth_of_coverage_sample)
@@ -386,8 +385,7 @@ def get_sample_depth(path, referral, sampleid, runid, Average_NTC):
         for coordinates in coordinates_list:
             if ((depth_of_coverage_sample.iloc[row,4]==coordinates[0])and (depth_of_coverage_sample.iloc[row,5]>=coordinates[1]) and (depth_of_coverage_sample.iloc[row,5]<=coordinates[2])):
                 numbers[a].append(depth_of_coverage_sample.iloc[row,3])
-            a=a+1
-        print(row)    
+            a=a+1    
         row=row+1
 
     
@@ -506,7 +504,10 @@ def get_sample_depth(path, referral, sampleid, runid, Average_NTC):
 
 
 def get_depth_2(depth_of_coverage_sample):
-    #use sample depth of coverage file to create hotspots section of second table in depth tab of workbook 
+    
+    ```
+    use sample depth of coverage file to create hotspots section of second table in depth tab of workbook 
+    ```
 
     num_rows=depth_of_coverage_sample.shape[0]
     row=0
@@ -526,9 +527,7 @@ def get_depth_2(depth_of_coverage_sample):
                 if (depth_of_coverage_sample.iloc[row,3] >=500):
                     count_2[a]=count_2[a]+1
 
-            a=a+1
-        
-        print(row)    
+            a=a+1 
         row=row+1
 
 
@@ -634,7 +633,10 @@ def get_depth_2(depth_of_coverage_sample):
 
 def get_variants(path, worksheet, referral, sampleid, runid):
 
-    # fill out the NTC variants tab
+    ```
+    fill out the NTC variants tab
+    ```    
+
     variant_report_NTC=pandas.read_csv(path+ "NTC-"+worksheet+"-"+referral+"/hotspot_variants/"+runid+"_NTC-"+worksheet+"-"+referral+"_"+ referral+"_VariantReport.txt", sep="\t")
     variant_report_NTC_2=pandas.DataFrame(variant_report_NTC)
     variant_report_NTC_3=variant_report_NTC_2[variant_report_NTC_2.PreferredTranscript!=False]
@@ -664,8 +666,7 @@ def get_variants(path, worksheet, referral, sampleid, runid):
                 present='YES'
             row2=row2+1
         variant_in_sample.append(present)
-        row=row+1
-        print(row)    
+        row=row+1    
     variant_report_NTC_4['Present in sample']=variant_in_sample
 
     variant_allele_calls=[]
@@ -726,7 +727,9 @@ def get_variants(path, worksheet, referral, sampleid, runid):
 
 def get_poly_artefacts(variant_report_4, variant_report_NTC_4):
 
-    # extract the relevant information from "CRM_Poly and Artefact list.xlsx" by matching the variant name with the ones in the variant report table 
+    ```
+    extract the relevant information from "CRM_Poly and Artefact list.xlsx" by matching the variant name with the ones in the variant report table 
+    ```
 
     poly_artefact_dict={}
     poly_and_Artefact_list=pandas.read_excel("CRM_poly_artefact_list.xlsx")
@@ -826,7 +829,9 @@ def get_poly_artefacts(variant_report_4, variant_report_NTC_4):
 
 def get_gaps(referral,path, sampleid, runid):
     
-    #open the relevant bed files and append these to the end of the screening gaps tab. If the bed files are empty, write 'no gaps'.
+    ```
+    open the relevant bed files and append these to the end of the screening gaps tab. If the bed files are empty, write 'no gaps'.
+    ```
 
     hotspot_variants=referral
     #open the relevant bed files (ready for screening gaps tab)
@@ -868,7 +873,10 @@ def get_gaps(referral,path, sampleid, runid):
 
 def add_excel_formulae():
 
-    #add excel formulae to the spreadsheets
+    ```
+    add excel formulae to the spreadsheets
+    ```
+
     ws6['A13']= "='Mutations and SNPS'!B3"
     ws6['B13']= "='Mutations and SNPS'!C3"
     ws6['C13']= "='Mutations and SNPS'!K3"
