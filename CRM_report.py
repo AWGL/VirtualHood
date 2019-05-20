@@ -316,7 +316,6 @@ def get_NTC_depth(path, referral, worksheet, runid):
     numbers=[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
 
     coordinates_list = [['1',115252202,115252204],['1',115252289, 115252291], ['1',115256528, 115256530],['1',115258743 , 115258748],['3', 178936082, 178936096], ['3', 178952084, 178952092], ['7', 140453132, 140453140], ['12', 25378560, 25378562], ['12', 25378647, 25378649], ['12', 25380275, 25380277],['12', 25398280,25398285], ['17',7572922, 7573013], ['17',7573922,7574038 ],['17',7576520, 7576662], ['17',7576848,7576931], ['17',7577014, 7577160], ['17',7577494, 7577613], ['17',7578172,7578294], ['17',7578366, 7578559], ['17',7579307, 7579595], ['17',7579695, 7579726], ['17',7579834, 7579945]]
-    print(num_rows)
     while (row<(num_rows-1)):
         depth_of_coverage_NTC.iloc[row,3]=int(depth_of_coverage_NTC.iloc[row,3])
         depth_of_coverage_NTC.iloc[row,5]=int(depth_of_coverage_NTC.iloc[row,5])
@@ -743,8 +742,6 @@ def get_poly_artefacts(variant_report_4, variant_report_NTC_4):
     while (row1<num_rows_variant_report):
         row2=0
         while(row2<num_rows_poly_artefact):
-            print(poly_and_Artefact_list_2.iloc[row2,2])
-            print(variant_report_4.iloc[row1,2])
             if (poly_and_Artefact_list_2.iloc[row2,2]==variant_report_4.iloc[row1,2]):
                 poly_artefact_dict[variant_report_4.iloc[row1,2]]= poly_and_Artefact_list_2.iloc[row2,2]
                 variant_report_4.iloc[row1,10]= poly_and_Artefact_list_2.iloc[row2,6]
