@@ -1,0 +1,2 @@
+SampleID	Variant	Filter	Frequency	Depth	Genotype	Quality	Classification	Preferred	dbSNP	Cosmic	HGMD	EXAC_African	EXAC_American	EXAC_EuropeanNonFinnish	EXAC_Finnish	EXAC_EastAsian	EXAC_SouthAsian	EXAC_Other	1KG_African	1KG_American	1KG_European	1KG_EastAsian	1KG_SouthAsian	Gene	Transcript	HGVSc	HGVSp	Consequence	INTRON	EXON	SIFT	PolyPhen
+tester	5:586730C>G	[]	67.23%	356	HET			True	COSM67463	CM86947	G:55.74%	G:54.25%	G:58.56%	G:59.75%	G:50.16%	G:59.86%	G:53.87%	G:58.47%	G:62.34%	G:65.43%	G:66.84%	G:65.14%	G:72.43%	HU8	NM_694769.5	c.54A>G	p.Ala675Pro	synonymous_variant	3|10

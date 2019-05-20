@@ -1,0 +1,3 @@
+gene    chromosome	start   end     log2    depth   weight  baf     ci_hi   ci_lo   n_bins  segment_weight  segment_probes
+KIY7    5	7846583 7947683 0.5836  7.8495  5.3967  0.386749        0.0046794	0.396749        3	45.7947 124
+PIH8    5	9678396 9858465 0.6846  9.6846  2.6947  0.694731        0.0000784	0.769479        4	86.3967 253

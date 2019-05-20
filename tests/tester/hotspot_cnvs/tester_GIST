@@ -1,0 +1,2 @@
+gene    chromosome	start   end     log2    depth   weight  baf     ci_hi   ci_lo   n_bins  segment_weight  segment_probes
+KIY7    5	7846583 7947683 0.5836  7.8495  5.3967  0.386749        0.0046794	0.396749        3	45.7947 124
