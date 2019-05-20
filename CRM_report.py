@@ -299,9 +299,9 @@ variant_in_NTC=[]
 
 def get_NTC_depth(path, referral, worksheet, runid):
 
-    ```
+    '''
     use NTC depth of coverage file to create first table in depth tab of workbook 
-    ```
+    '''
 
     depth_of_coverage_NTC= pandas.read_csv(path+ "NTC-"+worksheet+"-"+referral+"/"+runid+"_NTC-"+worksheet+"-"+referral+"_DepthOfCoverage", sep="\t")
     depth_of_coverage_NTC=pandas.DataFrame(depth_of_coverage_NTC)
@@ -364,9 +364,9 @@ def get_NTC_depth(path, referral, worksheet, runid):
 
 def get_sample_depth(path, referral, sampleid, runid, Average_NTC):
    
-    ```
+    '''
     use sample depth of coverage file to create first table in depth tab of workbook      
-    ```
+    '''
 
     depth_of_coverage_sample= pandas.read_csv(path+ sampleid+"/" +runid+"_"+sampleid+"_DepthOfCoverage", sep="\t")
     depth_of_coverage_sample=pandas.DataFrame(depth_of_coverage_sample)
@@ -505,9 +505,9 @@ def get_sample_depth(path, referral, sampleid, runid, Average_NTC):
 
 def get_depth_2(depth_of_coverage_sample):
     
-    ```
+    '''
     use sample depth of coverage file to create hotspots section of second table in depth tab of workbook 
-    ```
+    '''
 
     num_rows=depth_of_coverage_sample.shape[0]
     row=0
@@ -633,9 +633,9 @@ def get_depth_2(depth_of_coverage_sample):
 
 def get_variants(path, worksheet, referral, sampleid, runid):
 
-    ```
+    '''
     fill out the NTC variants tab
-    ```    
+    '''    
 
     variant_report_NTC=pandas.read_csv(path+ "NTC-"+worksheet+"-"+referral+"/hotspot_variants/"+runid+"_NTC-"+worksheet+"-"+referral+"_"+ referral+"_VariantReport.txt", sep="\t")
     variant_report_NTC_2=pandas.DataFrame(variant_report_NTC)
@@ -727,9 +727,9 @@ def get_variants(path, worksheet, referral, sampleid, runid):
 
 def get_poly_artefacts(variant_report_4, variant_report_NTC_4):
 
-    ```
+    '''
     extract the relevant information from "CRM_Poly and Artefact list.xlsx" by matching the variant name with the ones in the variant report table 
-    ```
+    '''
 
     poly_artefact_dict={}
     poly_and_Artefact_list=pandas.read_excel("CRM_poly_artefact_list.xlsx")
@@ -829,9 +829,9 @@ def get_poly_artefacts(variant_report_4, variant_report_NTC_4):
 
 def get_gaps(referral,path, sampleid, runid):
     
-    ```
+    '''
     open the relevant bed files and append these to the end of the screening gaps tab. If the bed files are empty, write 'no gaps'.
-    ```
+    '''
 
     hotspot_variants=referral
     #open the relevant bed files (ready for screening gaps tab)
@@ -873,9 +873,9 @@ def get_gaps(referral,path, sampleid, runid):
 
 def add_excel_formulae():
 
-    ```
+    '''
     add excel formulae to the spreadsheets
-    ```
+    '''
 
     ws6['A13']= "='Mutations and SNPS'!B3"
     ws6['B13']= "='Mutations and SNPS'!C3"
@@ -971,6 +971,31 @@ def add_excel_formulae():
 
     ws3['E4']= "='Depth'!P38"
     ws3['K4']=worksheet
+
+    ws6['E23']="='Screening Gaps'!D1"
+    ws6['E24']="='Screening Gaps'!D2"
+    ws6['E25']="='Screening Gaps'!D3"
+    ws6['E26']="='Screening Gaps'!D4"
+    ws6['E27']="='Screening Gaps'!D5"
+    ws6['E28']="='Screening Gaps'!D6"
+    ws6['E29']="='Screening Gaps'!D7"
+    ws6['E30']="='Screening Gaps'!D8"
+    ws6['E31']="='Screening Gaps'!D9"
+    ws6['E32']="='Screening Gaps'!D10"
+    ws6['E33']="='Screening Gaps'!D11"
+
+    ws6['F23']="='Screening Gaps'!D12"
+    ws6['F24']="='Screening Gaps'!D13"
+    ws6['F25']="='Screening Gaps'!D14"
+    ws6['F26']="='Screening Gaps'!D15"
+    ws6['F27']="='Screening Gaps'!D16"
+    ws6['F28']="='Screening Gaps'!D17"
+    ws6['F29']="='Screening Gaps'!D18"
+    ws6['F30']="='Screening Gaps'!D19"
+    ws6['F31']="='Screening Gaps'!D20"
+    ws6['F32']="='Screening Gaps'!D21"
+    ws6['F33']="='Screening Gaps'!D22"
+
 
 
     wb.save(path+'/'+sampleid+'_'+referral+'_CRM.xlsx')
