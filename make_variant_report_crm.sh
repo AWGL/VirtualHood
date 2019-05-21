@@ -5,6 +5,8 @@ seqId=<seqid>
 worksheet=<worksheet_number>
 path =<path>
 
+source /home/transfer/miniconda3/bin/activate VirtualHood
+
 for i in <path>/*/*.variables;
 
 do referral=$(grep "referral" $i | cut -d "=" -f2);
