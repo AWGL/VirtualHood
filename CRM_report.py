@@ -304,60 +304,75 @@ def get_NTC_depth(path, referral, worksheet, runid):
     '''
 
     depth_of_coverage_NTC= pandas.read_csv(path+ "NTC-"+worksheet+"-"+referral+"/"+runid+"_NTC-"+worksheet+"-"+referral+"_DepthOfCoverage", sep="\t")
-    depth_of_coverage_NTC=pandas.DataFrame(depth_of_coverage_NTC)
-    depth_of_coverage_NTC[['locus_coordinates', 'locus_chromosome']]= depth_of_coverage_NTC['Locus'].str.split(':', expand=True)
 
-    num_rows=depth_of_coverage_NTC.shape[0]
-    row=0
+    depth_of_coverage_NTC[['locus_chrom', 'locus_position']]= depth_of_coverage_NTC['Locus'].str.split(':', expand=True)
+    depth_of_coverage_NTC['locus_position'] = depth_of_coverage_NTC['locus_position'].astype(int)
 
-    Average_NTC=[]
+    average_NTC = []
 
-    #Store all the depths of coverage between each set of coordinates for the NTC in a numbers list
-    numbers=[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
+    coordinates_list = [['1',115252202,115252204],
+                    ['1',115252289, 115252291],
+                    ['1',115256528, 115256530],
+                    ['1',115258743 , 115258748],
+                    ['3', 178936082, 178936096],
+                    ['3', 178952084, 178952092],
+                    ['7', 140453132, 140453140],
+                    ['12', 25378560, 25378562],
+                    ['12', 25378647, 25378649],
+                    ['12', 25380275, 25380277],
+                    ['12', 25398280,25398285],
+                    ['17',7572922, 7573013],
+                    ['17',7573922,7574038 ],
+                    ['17',7576520, 7576662],
+                    ['17',7576848,7576931],
+                    ['17',7577014, 7577160],
+                    ['17',7577494, 7577613],
+                    ['17',7578172,7578294],
+                    ['17',7578366, 7578559],
+                    ['17',7579307, 7579595],
+                    ['17',7579695, 7579726],
+                    ['17',7579834, 7579945]]
 
-    coordinates_list = [['1',115252202,115252204],['1',115252289, 115252291], ['1',115256528, 115256530],['1',115258743 , 115258748],['3', 178936082, 178936096], ['3', 178952084, 178952092], ['7', 140453132, 140453140], ['12', 25378560, 25378562], ['12', 25378647, 25378649], ['12', 25380275, 25380277],['12', 25398280,25398285], ['17',7572922, 7573013], ['17',7573922,7574038 ],['17',7576520, 7576662], ['17',7576848,7576931], ['17',7577014, 7577160], ['17',7577494, 7577613], ['17',7578172,7578294], ['17',7578366, 7578559], ['17',7579307, 7579595], ['17',7579695, 7579726], ['17',7579834, 7579945]]
-    while (row<(num_rows-1)):
-        depth_of_coverage_NTC.iloc[row,3]=int(depth_of_coverage_NTC.iloc[row,3])
-        depth_of_coverage_NTC.iloc[row,5]=int(depth_of_coverage_NTC.iloc[row,5])
-        a=0
-        for coordinates in coordinates_list:
-            if ((depth_of_coverage_NTC.iloc[row,4]==coordinates[0])and (depth_of_coverage_NTC.iloc[row,5]>=coordinates[1]) and (depth_of_coverage_NTC.iloc[row,5]<=coordinates[2])):
-                numbers[a].append(depth_of_coverage_NTC.iloc[row,3])
-            a=a+1    
-        row=row+1
+    for coordinate in coordinates_list:
+    
+        coordinate_chrom = coordinate[0]
+        coordinate_start = coordinate[1]
+        coordinate_end = coordinate[2]
+    
+        #filter depth of coverage df
+        filtered_df = depth_of_coverage_NTC[(depth_of_coverage_NTC['locus_chrom'] == coordinate_chrom) &
+                                        (depth_of_coverage_NTC['locus_position'] >= coordinate_start) &
+                                        (depth_of_coverage_NTC['locus_position'] <= coordinate_end)]
+        
+        # and append average to list
+        average_NTC.append(filtered_df[filtered_df.columns[3]].mean())
 
     
-    #Calculate average depth for the NTC between each set of coordinates and add them to excel workbook
 
-    a=0
-    while a<22: 
-        Average_NTC.append(numpy.mean(numbers[a]))
-        a=a+1
+    ws2['F3']=average_NTC[0]
+    ws2['F4']=average_NTC[1]
+    ws2['F5']=average_NTC[2]
+    ws2['F6']=average_NTC[3]
+    ws2['F8']=average_NTC[4]
+    ws2['F9']=average_NTC[5]
+    ws2['F11']=average_NTC[6]
+    ws2['F13']=average_NTC[7]
+    ws2['F14']=average_NTC[8]
+    ws2['F15']=average_NTC[9]
+    ws2['F16']=average_NTC[10]
+    ws2['F18']=average_NTC[11]
+    ws2['F19']=average_NTC[12]
+    ws2['F20']=average_NTC[13]
+    ws2['F21']=average_NTC[14]
+    ws2['F22']=average_NTC[15]
+    ws2['F23']=average_NTC[16]
+    ws2['F24']=average_NTC[17]
+    ws2['F25']=average_NTC[18]
+    ws2['F26']=average_NTC[19]
+    ws2['F27']=average_NTC[20]
+    ws2['F28']=average_NTC[21]
 
-    ws2['F3']=Average_NTC[0]
-    ws2['F4']=Average_NTC[1]
-    ws2['F5']=Average_NTC[2]
-    ws2['F6']=Average_NTC[3]
-    ws2['F8']=Average_NTC[4]
-    ws2['F9']=Average_NTC[5]
-    ws2['F11']=Average_NTC[6]
-    ws2['F13']=Average_NTC[7]
-    ws2['F14']=Average_NTC[8]
-    ws2['F15']=Average_NTC[9]
-    ws2['F16']=Average_NTC[10]
-    ws2['F18']=Average_NTC[11]
-    ws2['F19']=Average_NTC[12]
-    ws2['F20']=Average_NTC[13]
-    ws2['F21']=Average_NTC[14]
-    ws2['F22']=Average_NTC[15]
-    ws2['F23']=Average_NTC[16]
-    ws2['F24']=Average_NTC[17]
-    ws2['F25']=Average_NTC[18]
-    ws2['F26']=Average_NTC[19]
-    ws2['F27']=Average_NTC[20]
-    ws2['F28']=Average_NTC[21]
-
-    return(Average_NTC)
+    return(average_NTC)
 
 
 
@@ -1027,17 +1042,17 @@ if __name__ == "__main__":
     if (referral_present==True):
 
         NTC_depth=get_NTC_depth(path, referral, worksheet, runid)
-       
+        print ('Finished processing NTC')
         sample_depth=get_sample_depth(path, referral, sampleid, runid,NTC_depth)
-        
+
         get_depth_2(sample_depth)
 
         variant_report, variant_report_NTC=get_variants(path, worksheet, referral, sampleid, runid)
-        
+
         get_poly_artefacts(variant_report, variant_report_NTC)
-        
+
         get_gaps(referral,path, sampleid, runid)
-        
+
         add_excel_formulae()
     else:
         print("referral not in referrals_list")
