@@ -2,7 +2,7 @@
 
 For the CRM pipeline
 
-#Installation 
+# Installation 
 
 Clone the VirtualHood repository using:
 
@@ -10,20 +10,20 @@ Clone the VirtualHood repository using:
 git clone https://github.com/AWGL/VirtualHood.git
 ```
 
-#Requirements:
+# Requirements:
 
 The required packages can be found in envs/VirtualHood
 
 Additional requirements include:
 
-*Runid
-*Sampleid
-*Worksheet number 
-*Referral must be in variables file in the the form "referral=<referral>"
-*poly and artefacts list in /home/transfer/pipelines/VirtualHood
+* Runid
+* Sampleid
+* Worksheet number 
+* Referral must be in variables file in the the form "referral=<referral>"
+* poly and artefacts list in /home/transfer/pipelines/VirtualHood
 
 
-#To run:
+# To run:
 
 
 ```
