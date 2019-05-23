@@ -4,8 +4,6 @@ from openpyxl.utils.dataframe import dataframe_to_rows
 import sys
 import os
 import numpy
-import xlrd
-
 
 #create the excel workbook
 
@@ -300,14 +298,17 @@ variant_in_NTC=[]
 def get_NTC_depth(path, referral, worksheet, runid):
 
     '''
-    use NTC depth of coverage file to create first table in depth tab of workbook 
+    Open the NTC depth of coverage file and calculate the average depth between each set of coordinates 
     '''
 
+    #Read the NTC depth of coverage file
+
     depth_of_coverage_NTC= pandas.read_csv(path+ "NTC-"+worksheet+"-"+referral+"/"+runid+"_NTC-"+worksheet+"-"+referral+"_DepthOfCoverage", sep="\t")
-
     depth_of_coverage_NTC[['locus_chrom', 'locus_position']]= depth_of_coverage_NTC['Locus'].str.split(':', expand=True)
-    depth_of_coverage_NTC['locus_position'] = depth_of_coverage_NTC['locus_position'].astype(int)
+    depth_of_coverage_NTC['locus_position'] = depth_of_coverage_NTC['locus_position'].astype(int)    
 
+
+    #Calculate the average depth in the NTC between each set of coordinates
     average_NTC = []
 
     coordinates_list = [['1',115252202,115252204],
@@ -332,6 +333,7 @@ def get_NTC_depth(path, referral, worksheet, runid):
                     ['17',7579307, 7579595],
                     ['17',7579695, 7579726],
                     ['17',7579834, 7579945]]
+
 
     for coordinate in coordinates_list:
     
@@ -379,41 +381,60 @@ def get_NTC_depth(path, referral, worksheet, runid):
 def get_sample_depth(path, referral, sampleid, runid, Average_NTC):
    
     '''
-    use sample depth of coverage file to create first table in depth tab of workbook      
+    Open the sample depth of coverage file and calculate the average, minimum and median depth between each set of coordinates   
     '''
+   
+    #Read in the sample depth of coverage file
 
     depth_of_coverage_sample= pandas.read_csv(path+ sampleid+"/" +runid+"_"+sampleid+"_DepthOfCoverage", sep="\t")
-    depth_of_coverage_sample=pandas.DataFrame(depth_of_coverage_sample)
-    depth_of_coverage_sample[['locus_coordinates', 'locus_chromosome']]= depth_of_coverage_sample['Locus'].str.split(':', expand=True)
-    num_rows=depth_of_coverage_sample.shape[0]
+    depth_of_coverage_sample[['locus_chromosome', 'locus_coordinates']]= depth_of_coverage_sample['Locus'].str.split(':', expand=True)
+    depth_of_coverage_sample['locus_coordinates'] = depth_of_coverage_sample['locus_coordinates'].astype(int)
 
-    #Store all the depths of coverage between each set of coordinates for the NTC in a numbers list
- 
-    row=0
-    numbers=[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
-    coordinates_list = [['1',115252202,115252204],['1',115252289, 115252291], ['1',115256528, 115256530],['1',115258743 , 115258748],['3', 178936082, 178936096], ['3', 178952084, 178952092], ['7', 140453132, 140453140], ['12', 25378560, 25378562], ['12', 25378647, 25378649], ['12', 25380275, 25380277], ['12', 25398280,25398285],['17',7572922, 7573013], ['17',7573922,7574038 ],['17',7576520,7576662], ['17',7576848,7576931], ['17',7577014, 7577160], ['17',7577494, 7577613], ['17',7578172,7578294], ['17',7578366, 7578559], ['17',7579307, 7579595], ['17',7579695, 7579726], ['17',7579834, 7579945]]
-    while (row<(num_rows-1)):
-        depth_of_coverage_sample.iloc[row,3]=int(depth_of_coverage_sample.iloc[row,3])
-        depth_of_coverage_sample.iloc[row,5]=int(depth_of_coverage_sample.iloc[row,5])
-        a=0
-        for coordinates in coordinates_list:
-            if ((depth_of_coverage_sample.iloc[row,4]==coordinates[0])and (depth_of_coverage_sample.iloc[row,5]>=coordinates[1]) and (depth_of_coverage_sample.iloc[row,5]<=coordinates[2])):
-                numbers[a].append(depth_of_coverage_sample.iloc[row,3])
-            a=a+1    
-        row=row+1
 
-    
-    #calculate the min, median and average depths between the coordinates
-    a=0
+    #calculate the average, median and minimum depth between each set of coordinates
+
     Average=[]
     min=[]
     median=[]
-    while a<22:
-        Average.append(numpy.mean(numbers[a]))
-        min.append(numpy.min(numbers[a]))
-        median.append(numpy.median(numbers[a]))
-        a=a+1
+ 
+    coordinates_list = [['1',115252202, 115252204],
+                       ['1',115252289, 115252291], 
+                       ['1',115256528, 115256530],
+                       ['1',115258743, 115258748],
+                       ['3',178936082, 178936096], 
+                       ['3',178952084, 178952092], 
+                       ['7',140453132, 140453140], 
+                       ['12',25378560, 25378562], 
+                       ['12',25378647, 25378649], 
+                       ['12',25380275, 25380277],
+                       ['12',25398280,25398285],
+                       ['17',7572922, 7573013], 
+                       ['17',7573922, 7574038],
+                       ['17',7576520, 7576662], 
+                       ['17',7576848, 7576931], 
+                       ['17',7577014, 7577160], 
+                       ['17',7577494, 7577613],
+                       ['17',7578172, 7578294], 
+                       ['17',7578366, 7578559], 
+                       ['17',7579307, 7579595], 
+                       ['17',7579695, 7579726],
+                       ['17',7579834, 7579945]]
 
+    for coordinate in coordinates_list:
+
+        coordinate_chrom = coordinate[0]
+        coordinate_start = coordinate[1]
+        coordinate_end = coordinate[2]
+
+        #filter depth of coverage df
+        filtered_df = depth_of_coverage_sample[(depth_of_coverage_sample['locus_chromosome'] == coordinate_chrom) &
+                                    (depth_of_coverage_sample['locus_coordinates'] >= coordinate_start) &
+                                    (depth_of_coverage_sample['locus_coordinates'] <= coordinate_end)]
+
+        # and append average, minimum and median to list
+        Average.append(filtered_df[filtered_df.columns[3]].mean())    
+        min.append(filtered_df[filtered_df.columns[3]].min())
+        median.append(filtered_df[filtered_df.columns[3]].median())
 
     #add the sample averages to the excel workbook
     ws2['C3']=Average[0]
@@ -517,33 +538,73 @@ def get_sample_depth(path, referral, sampleid, runid, Average_NTC):
 
 
 
-def get_depth_2(depth_of_coverage_sample):
+def calculate_coverage_500x(depth_of_coverage_sample):
     
     '''
-    use sample depth of coverage file to create hotspots section of second table in depth tab of workbook 
+    Determine the percentage of bases with given coordinates that have a coverage of 500x
     '''
 
-    num_rows=depth_of_coverage_sample.shape[0]
-    row=0
 
-    count =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-    count_2=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    coordinates_list = [['1',115252202,115252204],
+                       ['1',115252289, 115252291],
+                       ['1',115256528, 115256530],
+                       ['1',115258743 , 115258748],
+                       ['3', 178936082, 178936096],
+                       ['3', 178952084, 178952092], 
+                       ['7', 140453132, 140453140],
+                       ['12', 25378560, 25378562],
+                       ['12', 25378647, 25378649],
+                       ['12', 25380275, 25380277],
+                       ['12', 25398280,25398285], 
+                       ['17',7572922, 7573013],
+                       ['17',7573922,7574038 ],
+                       ['17',7576520,  7576662], 
+                       ['17',7576848,7576931],
+                       ['17',7577014, 7577160],
+                       ['17',7577494, 7577613],
+                       ['17',7578172,7578294],
+                       ['17',7578366, 7578559],
+                       ['17',7579307, 7579595],
+                       ['17',7579695, 7579726],
+                       ['17',7579834, 7579945]]
 
 
-    coordinates_list = [['1',115252202,115252204],['1',115252289, 115252291], ['1',115256528, 115256530],['1',115258743 , 115258748],['3', 178936082, 178936096], ['3', 178952084, 178952092], ['7', 140453132, 140453140], ['12', 25378560, 25378562], ['12', 25378647, 25378649], ['12', 25380275, 25380277],['12', 25398280,25398285], ['17',7572922, 7573013], ['17',7573922,7574038 ],['17',7576520,  7576662], ['17',7576848,7576931], ['17',7577014, 7577160], ['17',7577494, 7577613], ['17',7578172,7578294], ['17',7578366, 7578559], ['17',7579307, 7579595], ['17',7579695, 7579726], ['17',7579834, 7579945]]
-    while (row<num_rows):
-        depth_of_coverage_sample.iloc[row,3]=int(depth_of_coverage_sample.iloc[row,3])
-        depth_of_coverage_sample.iloc[row,5]=int(depth_of_coverage_sample.iloc[row,5])
-        a=0
-        for coordinates in coordinates_list:
-            if ((depth_of_coverage_sample.iloc[row,4]==coordinates[0])and (depth_of_coverage_sample.iloc[row,5]>=coordinates[1]) and (depth_of_coverage_sample.iloc[row,5]<=coordinates[2])):
-                count[a]=count[a]+1            
-                if (depth_of_coverage_sample.iloc[row,3] >=500):
-                    count_2[a]=count_2[a]+1
+    count=[]
+    count_2=[]
 
-            a=a+1 
-        row=row+1
+        
+    for coordinate in coordinates_list:
+        coordinate_chrom = coordinate[0]
+        coordinate_start = coordinate[1]
+        coordinate_end = coordinate[2]
 
+
+        #filter depth of coverage df to only include a certain region 
+        
+        filtered_df = depth_of_coverage_sample[(depth_of_coverage_sample['locus_chromosome'] == coordinate_chrom) &
+                                    (depth_of_coverage_sample['locus_coordinates'] >= coordinate_start) &
+                                    (depth_of_coverage_sample['locus_coordinates'] <= coordinate_end)]
+        
+
+        #count the number of bases within the region
+        
+        count.append(filtered_df.shape[0])
+
+        
+        #filter depth of coverage df to only include coordinates within a certain region that also have a depth above 500     
+        
+        filtered_df = depth_of_coverage_sample[(depth_of_coverage_sample['locus_chromosome'] == coordinate_chrom) &
+                                    (depth_of_coverage_sample['locus_coordinates'] >= coordinate_start) &
+                                    (depth_of_coverage_sample['locus_coordinates'] <= coordinate_end) & 
+                                    (depth_of_coverage_sample['Depth_for_'+sampleid]>=500)]
+        
+
+        #count the number of bases within the given regions where the depth is greater than or equal to 500
+       
+        count_2.append(filtered_df.shape[0])        
+
+
+    #Add the counts of the bases within the given regions to the excel workbook
 
     ws2['C31']=count_2[0]
     ws2['C32']=count_2[1]
@@ -568,6 +629,8 @@ def get_depth_2(depth_of_coverage_sample):
     ws2['C55']=count_2[20]
     ws2['C56']=count_2[21]
 
+    #Add the counts of the bases with a depth greater than or equal to 500 within the given regions to the excel workbook
+ 
     ws2['D31']=count[0]
     ws2['D32']=count[1]
     ws2['D33']=count[2]
@@ -590,6 +653,9 @@ def get_depth_2(depth_of_coverage_sample):
     ws2['D54']=count[19]
     ws2['D55']=count[20]
     ws2['D56']=count[21]
+
+
+    #Calculate percentage of bases that have a coverage of 500x and add to Depth tab
 
     ws2['E31']=(count_2[0]/count[0])
     ws2['E32']=(count_2[1]/count[1])
@@ -614,6 +680,9 @@ def get_depth_2(depth_of_coverage_sample):
     ws2['E55']=(count_2[20]/count[20])
     ws2['E56']=(count_2[21]/count[21])
 
+
+    #Calculate percentage of bases that	have a coverage	of 500x	and add	to Report tab
+   
     ws6['B23']=(count_2[0]/count[0])*100
     ws6['B24']=(count_2[1]/count[1])*100
     ws6['B25']=(count_2[2]/count[2])*100
@@ -638,6 +707,8 @@ def get_depth_2(depth_of_coverage_sample):
     ws6['D33']=(count_2[21]/count[21])*100
 
 
+    #Calculate the percentage of bases with coverage 500x for the given regions in TP53
+
     ws2['C57']="=SUM('Depth'!C46:'Depth'!C56)"
     ws2['D57']="=SUM('Depth'!D46:'Depth'!D56)"
     ws2['E57']="='Depth'!C57/'Depth'!D57"
@@ -648,28 +719,31 @@ def get_depth_2(depth_of_coverage_sample):
 def get_variants(path, worksheet, referral, sampleid, runid):
 
     '''
-    fill out the NTC variants tab
+    Fill the variant_calls and NTC variant tabs using the relevant files
+    Determine if the variants in the sample are also present in the NTC
+    If so, determine the level of NTC contamination of the variant in the sample
+    Create variant alleles calls column by multiplying allele frequency by depth 
     '''    
+   
+    #Read the NTC variant report
 
-    variant_report_NTC=pandas.read_csv(path+ "NTC-"+worksheet+"-"+referral+"/hotspot_variants/"+runid+"_NTC-"+worksheet+"-"+referral+"_"+ referral+"_VariantReport.txt", sep="\t")
-    variant_report_NTC_2=pandas.DataFrame(variant_report_NTC)
+    variant_report_NTC_2=pandas.read_csv(path+ "NTC-"+worksheet+"-"+referral+"/hotspot_variants/"+runid+"_NTC-"+worksheet+"-"+referral+"_"+ referral+"_VariantReport.txt", sep="\t")
     variant_report_NTC_3=variant_report_NTC_2[variant_report_NTC_2.PreferredTranscript!=False]
     variant_report_NTC_4= variant_report_NTC_3.iloc[:,[23,29,25,26,2,5,3,6,24,1]]
 
-    #open relevant variants file for sample and put it into in variant_calls tab
 
-    variant_report=pandas.read_csv(path+sampleid+"/hotspot_variants/"+runid+"_"+sampleid+"_"+referral+"_VariantReport.txt", sep="\t")
+    #open relevant variants file for sample
+
+    variant_report_2=pandas.read_csv(path+sampleid+"/hotspot_variants/"+runid+"_"+sampleid+"_"+referral+"_VariantReport.txt", sep="\t")
     ws6['A9']=runid+"_"+sampleid+"_"+referral+"_VariantReport.txt"
-
-    variant_report_2=pandas.DataFrame(variant_report)
     variant_report_3=variant_report_2[variant_report_2.PreferredTranscript!=False]
     variant_report_4= variant_report_3.iloc[:,[23,29,25,26,2,5,3,6,24,1]]
 
+    
+    #Add Present in sample column to the NTC tab to show if the variants in the NTC are also present in the sample
+    
     num_rows_NTC=variant_report_NTC_4.shape[0]
     num_rows_variant_report=variant_report_4.shape[0]
-
-
-    #determine if variants in the sample are also present in the NTC    
     variant_in_sample=[]
     row=0
     while (row<num_rows_NTC):
@@ -682,6 +756,9 @@ def get_variants(path, worksheet, referral, sampleid, runid):
         variant_in_sample.append(present)
         row=row+1    
     variant_report_NTC_4['Present in sample']=variant_in_sample
+
+
+    #Add variant allele calls column (for each variant, allele frequency is multiplied by depth)
 
     variant_allele_calls=[]
     row=0
@@ -702,7 +779,7 @@ def get_variants(path, worksheet, referral, sampleid, runid):
 
 
 
-    #create the extra table at the side of the variant_calls tab 
+    #create the extra table at the side of the variant_calls tab to determine if each variant is present in the NTC, and the level of NTC contamination
 
     row=0
     num_rows_variant_report=variant_report_4.shape[0]      
@@ -727,7 +804,9 @@ def get_variants(path, worksheet, referral, sampleid, runid):
             row2=row2+1
         variant_in_NTC.append(present)
         row=row+1
+
         
+    #Add columns to the variant calls tab to enable the conclusion of each variant to be filled in
 
     variant_report_4["Conclusion 1st checker"]=""
     variant_report_4["QC"]=""
@@ -742,11 +821,12 @@ def get_variants(path, worksheet, referral, sampleid, runid):
 def get_poly_artefacts(variant_report_4, variant_report_NTC_4):
 
     '''
-    extract the relevant information from "CRM_Poly and Artefact list.xlsx" by matching the variant name with the ones in the variant report table 
+    match each of the variants in the variant calls tab with those in "CRM_Poly and Artefact list.xlsx" to determine if they are known polys or artefacts 
+    Create the second table in the variant calls tab to give the reason for each of the conclusions for the variant
     '''
 
     poly_artefact_dict={}
-    poly_and_Artefact_list=pandas.read_excel("CRM_poly_artefact_list.xlsx")
+    poly_and_Artefact_list=pandas.read_excel("/home/transfer/pipelines/CRMworksheetCreator/CRM_poly_artefact_list.xlsx")
     poly_and_Artefact_list_2=pandas.DataFrame(poly_and_Artefact_list)
 
     num_rows_variant_report=variant_report_4.shape[0]
@@ -779,10 +859,10 @@ def get_poly_artefacts(variant_report_4, variant_report_NTC_4):
                     variant_report_4.iloc[row3,13]=3
                 if (variant_report_4.iloc[row3,10]=='Genuine'):
                     variant_report_4.iloc[row3,11]=1
-                    variant_report_4.iloc_[row3,13]=1
+                    variant_report_4.iloc[row3,13]=1
                 if (variant_report_4.iloc[row3,10]=='SNP'):
                     variant_report_4.iloc[row3,11]=1
-                    variant_report_4.iloc_[row3,13]=1      
+                    variant_report_4.iloc[row3,13]=1      
         row3=row3+1
      
 
@@ -791,6 +871,7 @@ def get_poly_artefacts(variant_report_4, variant_report_NTC_4):
     variant_report_4["#of mutant reads in patient sample "]=""
     variant_report_4["#of mutant reads in NTC if present "]=""
     variant_report_4["Is the NTC contamination significant?"]=""
+
 
     #Determine if the level of NTC contamination is significant
 
@@ -1031,21 +1112,14 @@ if __name__ == "__main__":
     print(referral)
 
     referrals_list=['FOCUS4', 'GIST']
-
-    referral_present=False
-
-    for referral_value in referrals_list:
-        if (referral==referral_value):
-            referral_present=True
-
-
-    if (referral_present==True):
-
+    
+    if referral in referrals_list:
+        
         NTC_depth=get_NTC_depth(path, referral, worksheet, runid)
-        print ('Finished processing NTC')
+        
         sample_depth=get_sample_depth(path, referral, sampleid, runid,NTC_depth)
 
-        get_depth_2(sample_depth)
+        calculate_coverage_500x(sample_depth)
 
         variant_report, variant_report_NTC=get_variants(path, worksheet, referral, sampleid, runid)
 
