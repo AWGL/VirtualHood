@@ -818,7 +818,7 @@ def get_variants(path, worksheet, referral, sampleid, runid):
 
 
 
-def get_poly_artefacts(variant_report_4, variant_report_NTC_4):
+def get_poly_artefacts(variant_report_4, variant_report_NTC_4, poly_list):
 
     '''
     match each of the variants in the variant calls tab with those in "CRM_Poly and Artefact list.xlsx" to determine if they are known polys or artefacts 
@@ -826,7 +826,7 @@ def get_poly_artefacts(variant_report_4, variant_report_NTC_4):
     '''
 
     poly_artefact_dict={}
-    poly_and_Artefact_list=pandas.read_excel("/home/transfer/pipelines/CRMworksheetCreator/CRM_poly_artefact_list.xlsx")
+    poly_and_Artefact_list=pandas.read_excel(poly_list)
     poly_and_Artefact_list_2=pandas.DataFrame(poly_and_Artefact_list)
 
     num_rows_variant_report=variant_report_4.shape[0]
@@ -1091,7 +1091,7 @@ def add_excel_formulae():
 
 
 
-    wb.save(path+'/'+sampleid+'_'+referral+'_CRM.xlsx')
+    wb.save(path +'/' + sampleid + '/' + sampleid + '_' + referral + '_CRM.xlsx')
 
 
 
@@ -1105,6 +1105,9 @@ if __name__ == "__main__":
     worksheet=sys.argv[3]
     referral=sys.argv[4]
     path= sys.argv[5]
+    poly_list = sys.argv[6]    
+
+
 
     print(runid)
     print(sampleid)
@@ -1123,7 +1126,7 @@ if __name__ == "__main__":
 
         variant_report, variant_report_NTC=get_variants(path, worksheet, referral, sampleid, runid)
 
-        get_poly_artefacts(variant_report, variant_report_NTC)
+        get_poly_artefacts(variant_report, variant_report_NTC, poly_list)
 
         get_gaps(referral,path, sampleid, runid)
 
