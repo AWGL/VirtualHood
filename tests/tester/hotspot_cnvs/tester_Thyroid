@@ -1,0 +1,2 @@
+gene    chromosome	start   end     log2    depth   weight  baf     ci_hi   ci_lo   n_bins  segment_weight  segment_probes
+OTU9    8	2385729 2769769 0.085   15.794  7.5937  0.111111        0.0004769	0.006847        5	69.6947 583
