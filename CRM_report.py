@@ -837,8 +837,8 @@ def get_poly_artefacts(variant_report_4, variant_report_NTC_4, poly_list):
     while (row1<num_rows_variant_report):
         row2=0
         while(row2<num_rows_poly_artefact):
-            if (poly_and_Artefact_list_2.iloc[row2,2]==variant_report_4.iloc[row1,2]):
-                poly_artefact_dict[variant_report_4.iloc[row1,2]]= poly_and_Artefact_list_2.iloc[row2,2]
+            if (poly_and_Artefact_list_2.iloc[row2,5]==variant_report_4.iloc[row1,9]):
+                poly_artefact_dict[variant_report_4.iloc[row1,5]]= poly_and_Artefact_list_2.iloc[row2,9]
                 variant_report_4.iloc[row1,10]= poly_and_Artefact_list_2.iloc[row2,6]
                 variant_report_4.iloc[row1,12]= poly_and_Artefact_list_2.iloc[row2,6]
             row2=row2+1
