@@ -6,11 +6,12 @@ import os
 import xlrd
 import sys
 from openpyxl.styles import PatternFill
-
-
+from openpyxl.styles.borders import Border, Side, BORDER_MEDIUM, BORDER_THIN, BORDER_THICK
+from openpyxl.styles import Font
 
 wb=Workbook()
 ws1= wb.create_sheet("Sheet_1")
+ws9= wb.create_sheet("Sheet_9")
 ws2= wb.create_sheet("Sheet_2")
 ws3= wb.create_sheet("Sheet_3")
 ws4= wb.create_sheet("Sheet_4")
@@ -18,7 +19,6 @@ ws5= wb.create_sheet("Sheet_5")
 ws6= wb.create_sheet("Sheet_6")
 ws7= wb.create_sheet("Sheet_7")
 ws8= wb.create_sheet("Sheet_8")
-ws9= wb.create_sheet("Sheet_9")
 ws10= wb.create_sheet("Sheet_10")
 
 #name the tabs
@@ -51,7 +51,7 @@ ws1['H1']='Referring Clinician'
 ws1['I1']='Hospital'
 ws1['J1']='Date reported'
 ws1['K1']='TAT'
-ws1['L1']='No of days in history'
+ws1['L1']='No of days in histo'
 ws1['M1']='Block/Slide/DNA'
 ws1['N1']='% Tumour'
 ws1['O1']='Result'
@@ -61,9 +61,9 @@ ws1['R1']='Qubit Dilution (ug/ul)'
 ws1['S1']='Post PCR1 Qubit'
 ws1['T1']='Average bp'
 ws1['U1']='Average molarity(nM)'
-ws1['V1']='Date of MiSeq run'
-ws1['W1']='MiSeq run ID'
-ws1['X1']='Comments'
+ws1['V1']='Date of NextSeq run'
+ws1['W1']='NextSeq run ID'
+ws1['W1']='Comments'
 
 
 #variant calls table headers
@@ -76,10 +76,11 @@ ws2['E6']='NTC check 2'
 ws2['G3']='1st checker name & date'
 ws2['G6']='2nd checker name & date'
 
-ws2['K3']='GeneRead worksheet'
+ws2['K3']='Pan Cancer worksheet'
 ws2['K6']='Analysis pipeline:Roche_PanCancer'
 ws2['A8']=" "
 
+ws2['I3']= "% Tumour"
 
 #variant calls table headers
 ws3['B3']='DNA number'
@@ -95,6 +96,7 @@ ws3['K3']='GeneRead worksheet'
 ws3['K6']='Analysis pipeline:Roche_PanCancer'
 ws3['A8']=" "
 
+ws3['I3']="% Tumour"
 
 #Mutations and SNPs table headers
 ws4['B2']='Gene'
@@ -107,8 +109,9 @@ ws4['H2']='Depth'
 ws4['I2']='Classification'
 ws4['J2']='Transcript'
 ws4['K2']='Variant'
-ws4['L2']='Conclusion 1st checker'
-ws4['M2']='Conclusion 2nd checker'
+ws4['L2']='Position'
+ws4['M2']='Conclusion 1st checker'
+ws4['N2']='Conclusion 2nd checker'
 
 
 #Report headers
@@ -123,11 +126,11 @@ ws6['G4']='Post PCR1 Qubit'
 ws6['H4']='Average bp'
 ws6['I4']='Due date'
 
-ws6['G7']='NGS wks'
-ws6['H7']='Average molarity(nM)'
-ws6['I7']='MiSeq run ID'
-ws6['J7']='NTC check 1'
-ws6['K7']='NTC check 2'
+ws6['E7']='NGS wks'
+ws6['F7']='Average molarity(nM)'
+ws6['G7']='MiSeq run ID'
+ws6['H7']='NTC check 1'
+ws6['I7']='NTC check 2'
 
 ws6['A4'].fill= PatternFill("solid", fgColor="00CCFFFF")
 ws6['B4'].fill= PatternFill("solid", fgColor="00CCFFFF")
@@ -138,14 +141,14 @@ ws6['F4'].fill= PatternFill("solid", fgColor="00CCFFFF")
 ws6['G4'].fill= PatternFill("solid", fgColor="00CCFFFF")
 ws6['H4'].fill= PatternFill("solid", fgColor="00CCFFFF")
 ws6['I4'].fill= PatternFill("solid", fgColor="00CCFFFF")
+ws6['E7'].fill= PatternFill("solid", fgColor="00CCFFFF")
+ws6['F7'].fill= PatternFill("solid", fgColor="00CCFFFF")
 ws6['G7'].fill= PatternFill("solid", fgColor="00CCFFFF")
 ws6['H7'].fill= PatternFill("solid", fgColor="00CCFFFF")
 ws6['I7'].fill= PatternFill("solid", fgColor="00CCFFFF")
-ws6['J7'].fill= PatternFill("solid", fgColor="00CCFFFF")
-ws6['K7'].fill= PatternFill("solid", fgColor="00CCFFFF")
 
-
-
+ws6['H38'].fill= PatternFill("solid", fgColor="00CCFFFF")
+ws6['H39'].fill= PatternFill("solid", fgColor="00CCFFFF")
 
 ws6['A11']='Confirmed variant calls'
 ws6['A12']='Gene'
@@ -402,8 +405,8 @@ def get_CNV_file(referral, path, sampleid):
     ws6['F23']="Chromosome"
     ws6['G23']="log2"
 
-    ws6['H35']="Analysed by:"
-    ws6['H36']="Checked by:"
+    ws6['H38']="Analysed by:"
+    ws6['H39']="Checked by:"
 
 
     return (gaps)
@@ -720,6 +723,7 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
             row2=row2+1
         row=row+1
 
+
     #Add upper-limit and lower-limit variant report dataframes to the excel workbook
 
     for row in dataframe_to_rows(variant_report_4, header=True, index=False):
@@ -751,7 +755,7 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
             variant_report_5.iloc[row,3]='SNP in Ref.Seq'     
         row=row+1
 
-    ws3['A30']=" "
+    ws3['A60']=" "
 
 
     row=0
@@ -767,7 +771,7 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
             variant_report_5_upper_limit.iloc[row,3]='SNP in Ref.Seq'
         row=row+1
 
-    ws2['A30']=" "
+    ws2['A60']=" "
 
 
 
@@ -788,6 +792,9 @@ def add_excel_formulae():
 
     #add excel formulae to the spreadsheets to enable automation after program has finished
 
+    ws2['I4']= "='Patient demographics'!N2"
+    ws3['I4']= "='Patient demographics'!N2"
+     
     ws6['A13']= "='Mutations and SNPS'!B3"
     ws6['B13']= "='Mutations and SNPS'!C3"
     ws6['C13']= "='Mutations and SNPS'!K3"
@@ -865,9 +872,6 @@ def add_excel_formulae():
     ws6['G22'].fill= PatternFill("solid", fgColor="FFBB00")
     ws6['H22'].fill= PatternFill("solid", fgColor="FFBB00")
 
-
-
-
     ws6['E24']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N2&" ")),"",hotspot_cnvs!A2)'
     ws6['E25']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N3&" ")),"",hotspot_cnvs!A3)'
     ws6['E26']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N4&" ")),"",hotspot_cnvs!A4)'
@@ -902,7 +906,7 @@ def add_excel_formulae():
 
     ws6['A1']=sampleid
     ws6['C1']='Patient Analysis Summary Sheet-PanCancer'
-
+    ws6['H1']="='Patient demographics'!C2"
 
     ws6['A5'] = sampleid
     ws6['B5']="='Patient demographics'!E2"
@@ -913,16 +917,12 @@ def add_excel_formulae():
     ws6['G5']= "='Patient demographics'!S2"
     ws6['H5']= "='Patient demographics'!T2"
     ws6['I5']= "='Patient demographics'!C2"
-    ws6['G8']="='Patient demographics'!P2"
-    
-
-    ws6['H8']="='Patient demographics'!U2"
-    ws6['I8']="='Patient demographics'!W2"
-    ws6['J8']= "='Subpanel NTC check'!K4"
-    ws6['K8']= "='Subpanel NTC check'!K5"
-    
-    ws1['C2']="=DATE(YEAR(B2), MONTH(B2), DAY(B2)+10)"
-    ws1['C2'].number_format='DD/MM/YYYY'
+    ws6['E8']="='Patient demographics'!P2"
+    ws6['F8']="='Patient demographics'!U2"
+    ws6['G8']="='Patient demographics'!W2"
+    ws6['H8']= "='Subpanel NTC check'!K4"
+    ws6['I8']= "='Subpanel NTC check'!K5"
+        
 
     ws9['J4']="NTC check 1"
     ws9['J5']="NTC check 2"
@@ -941,9 +941,670 @@ def add_excel_formulae():
 
 
     #change widths of columns
-    ws3.column_dimensions['J'].width=50
-    ws2.column_dimensions['J'].width=50    
-    ws6.column_dimensions['C'].width=50
+    ws6.column_dimensions['C'].width=40
+    ws6.column_dimensions['A'].width=40
+    ws6.column_dimensions['B'].width=10
+    ws6.column_dimensions['D'].width=40
+    ws6.column_dimensions['E'].width=20
+    ws6.column_dimensions['F'].width=20
+    ws6.column_dimensions['G'].width=20
+    ws6.column_dimensions['H'].width=20
+    ws9.column_dimensions['A'].width=60
+    ws9.column_dimensions['B'].width=15
+    ws9.column_dimensions['C'].width=25
+    ws9.column_dimensions['D'].width=20
+    ws9.column_dimensions['E'].width=15
+    ws9.column_dimensions['F'].width=15
+    ws2.row_dimensions[9].height=40
+    ws2.row_dimensions[61].height=40
+    ws3.row_dimensions[9].height=40
+    ws3.row_dimensions[61].height=40
+
+    ws2.column_dimensions['C'].width=20
+    ws3.column_dimensions['C'].width=20
+
+    ws2.column_dimensions['D'].width=53
+    ws3.column_dimensions['D'].width=53
+
+    ws2.column_dimensions['E'].width=20
+    ws3.column_dimensions['E'].width=20
+
+    ws2.column_dimensions['H'].width=20
+    ws3.column_dimensions['H'].width=20
+
+    ws2.column_dimensions['I'].width=20
+    ws3.column_dimensions['I'].width=20
+
+    ws3.column_dimensions['J'].width=20
+    ws2.column_dimensions['J'].width=20
+
+    ws3.column_dimensions['K'].width=20
+    ws2.column_dimensions['K'].width=20
+
+    ws3.column_dimensions['L'].width=20
+    ws2.column_dimensions['L'].width=20
+
+    ws3.column_dimensions['M'].width=20
+    ws2.column_dimensions['M'].width=20
+
+    ws3.column_dimensions['N'].width=20
+    ws2.column_dimensions['N'].width=20
+
+    ws3.column_dimensions['O'].width=20
+    ws2.column_dimensions['O'].width=20
+
+    ws3.column_dimensions['P'].width=40
+    ws2.column_dimensions['P'].width=40
+
+    ws3.column_dimensions['Q'].width=30
+    ws2.column_dimensions['Q'].width=30
+
+    ws3.column_dimensions['R'].width=33
+    ws2.column_dimensions['R'].width=33
+
+    ws3.column_dimensions['S'].width=33
+    ws2.column_dimensions['S'].width=33
+
+    ws3.column_dimensions['T'].width=40
+    ws2.column_dimensions['T'].width=40
+
+    ws4.column_dimensions['B'].width=20
+    ws4.column_dimensions['C'].width=20
+    ws4.column_dimensions['D'].width=20
+    ws4.column_dimensions['E'].width=20
+    ws4.column_dimensions['F'].width=20
+    ws4.column_dimensions['G'].width=20
+    ws4.column_dimensions['H'].width=20
+    ws4.column_dimensions['I'].width=20
+    ws4.column_dimensions['J'].width=20
+    ws4.column_dimensions['K'].width=20
+    ws4.column_dimensions['L'].width=20
+    ws4.column_dimensions['M'].width=25
+    ws4.column_dimensions['N'].width=25
+
+    ws1.column_dimensions['A'].width=20
+    ws1.column_dimensions['B'].width=20
+    ws1.column_dimensions['C'].width=20
+    ws1.column_dimensions['D'].width=20
+    ws1.column_dimensions['E'].width=20
+    ws1.column_dimensions['F'].width=20
+    ws1.column_dimensions['G'].width=20
+    ws1.column_dimensions['H'].width=20
+    ws1.column_dimensions['I'].width=20
+    ws1.column_dimensions['J'].width=20
+    ws1.column_dimensions['K'].width=20
+    ws1.column_dimensions['L'].width=20
+    ws1.column_dimensions['M'].width=20
+    ws1.column_dimensions['N'].width=20
+    ws1.column_dimensions['O'].width=20
+    ws1.column_dimensions['P'].width=20
+    ws1.column_dimensions['Q'].width=20
+    ws1.column_dimensions['R'].width=20
+    ws1.column_dimensions['S'].width=20
+    ws1.column_dimensions['T'].width=20
+    ws1.column_dimensions['U'].width=20
+    ws1.column_dimensions['V'].width=20
+    ws1.column_dimensions['W'].width=20
+
+    ws7.column_dimensions['A'].width=20
+    ws7.column_dimensions['B'].width=20
+    ws7.column_dimensions['C'].width=20
+    ws7.column_dimensions['D'].width=20
+    ws7.column_dimensions['E'].width=20
+    ws7.column_dimensions['F'].width=20
+    ws7.column_dimensions['G'].width=20
+    ws7.column_dimensions['H'].width=20
+    ws7.column_dimensions['I'].width=20
+    ws7.column_dimensions['J'].width=20
+    ws7.column_dimensions['K'].width=20
+    ws7.column_dimensions['L'].width=20
+
+
+    ws10.column_dimensions['A'].width=50
+    ws10.column_dimensions['B'].width=20
+    ws10.column_dimensions['C'].width=25
+    ws10.column_dimensions['D'].width=20
+
+
+    ws6['A4'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['B4'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['C4'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['D4'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['E4'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['F4'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['G4'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['H4'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['I4'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['A5'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['B5'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['C5'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['D5'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['E5'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['F5'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['G5'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['H5'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['I5'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+
+    ws6['E7'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['F7'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['G7'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['H7'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['I7'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['E8'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['F8'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['G8'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['H8'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['I8'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+
+
+    ws6['A12'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['B12'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['C12'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['D12'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['E12'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['F12'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['G12'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['H12'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+
+
+    ws6['A22'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['B22'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['C22'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['D22'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['E22'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['F22'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['G22'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['H22'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+
+
+    ws6['A13'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['B13'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['C13'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D13'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['E13'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['F13'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G13'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H13'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+
+    ws6['A14'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['B14'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['C14'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D14'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['E14'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['F14'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G14'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H14'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+
+    ws6['A15'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['B15'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['C15'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D15'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['E15'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['F15'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G15'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H15'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+
+    ws6['A16'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['B16'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['C16'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D16'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['E16'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['F16'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G16'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H16'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+
+
+    ws6['A17'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['B17'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['C17'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D17'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['E17'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['F17'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G17'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H17'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+
+    ws6['A18'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['B18'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['C18'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D18'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['E18'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['F18'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G18'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H18'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+
+    ws6['A19'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['B19'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['C19'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D19'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['E19'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['F19'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G19'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H19'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+
+
+    ws6['A23'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['B23'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['C23'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D23'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H23'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+
+    ws6['A24'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['B24'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['C24'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D24'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H24'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+
+    ws6['A25'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['B25'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['C25'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D25'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H25'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+
+    ws6['A26'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['B26'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['C26'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D26'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H26'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+
+    ws6['A26'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['B26'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['C26'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D26'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H26'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+
+    ws6['A27'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['B27'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['C27'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D27'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H27'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+
+    ws6['A28'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['B28'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['C28'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D28'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H28'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+
+    ws6['A29'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['B29'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['C29'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D29'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H29'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+
+    ws6['A30'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['B30'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['C30'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D30'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H30'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+
+    ws6['A31'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['B31'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['C31'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D31'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H31'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+
+    ws6['A32'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['B32'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['C32'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D32'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H32'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+
+    ws6['A33'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['B33'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['C33'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D33'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H33'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+
+    ws6['A34'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['B34'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['C34'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D34'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H34'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+
+    ws6['A35'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['B35'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['C35'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D35'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H35'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+
+    ws6['A36'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['B36'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['C36'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['D36'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['E36'].border=Border(bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['F36'].border=Border(bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['G36'].border=Border(bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['H36'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_MEDIUM))
+
+
+    ws6['H38'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['H39'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['I38'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['I39'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+
+    ws6['A4'].font= Font(bold=True)
+    ws6['B4'].font= Font(bold=True)
+    ws6['C4'].font= Font(bold=True)
+    ws6['D4'].font= Font(bold=True)
+    ws6['E4'].font= Font(bold=True)
+    ws6['F4'].font= Font(bold=True)
+    ws6['G4'].font= Font(bold=True)
+    ws6['H4'].font= Font(bold=True)
+    ws6['I4'].font= Font(bold=True)
+
+    ws6['E7'].font= Font(bold=True)
+    ws6['F7'].font= Font(bold=True)
+    ws6['G7'].font= Font(bold=True)
+    ws6['H7'].font= Font(bold=True)
+    ws6['I7'].font= Font(bold=True)
+
+
+    ws6['A1'].font= Font(bold=True)
+    ws6['C1'].font= Font(bold=True)
+    ws6['A3'].font= Font(bold=True)
+    ws6['A9'].font= Font(bold=True)
+    ws6['A11'].font= Font(bold=True)
+
+    ws6['H38'].font= Font(bold=True)
+    ws6['H39'].font= Font(bold=True)
+
+    ws6['A1'].font=Font(size=16)
+    ws6['C1'].font=Font(size=16)
+    ws6['H1'].font=Font(size=16)
+
+    ws6['A1'].border=Border(left=Side(border_style=BORDER_THICK), right=Side(border_style=BORDER_THICK), top=Side(border_style=BORDER_THICK), bottom=Side(border_style=BORDER_THICK))
+    ws6['C1'].border=Border(left=Side(border_style=BORDER_THICK), right=Side(border_style=BORDER_THICK), top=Side(border_style=BORDER_THICK), bottom=Side(border_style=BORDER_THICK))
+
+
+
+    ws1['A1'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws1['B1'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws1['C1'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws1['D1'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws1['E1'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws1['F1'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws1['G1'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws1['H1'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws1['I1'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws1['J1'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws1['K1'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws1['L1'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws1['M1'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws1['N1'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws1['O1'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws1['P1'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws1['Q1'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws1['R1'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws1['S1'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws1['T1'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws1['U1'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws1['V1'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws1['W1'].fill= PatternFill("solid", fgColor="DCDCDC")
+
+    ws1['A1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws1['B1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws1['C1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws1['D1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws1['E1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws1['F1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws1['G1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws1['H1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws1['I1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws1['J1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws1['K1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws1['L1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws1['M1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws1['N1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws1['O1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws1['P1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws1['Q1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws1['R1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws1['S1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws1['T1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws1['U1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws1['V1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws1['W1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+
+    ws1['A1'].font= Font(bold=True)
+    ws1['B1'].font= Font(bold=True)
+    ws1['C1'].font= Font(bold=True)
+    ws1['D1'].font= Font(bold=True)
+    ws1['E1'].font= Font(bold=True)
+    ws1['F1'].font= Font(bold=True)
+    ws1['G1'].font= Font(bold=True)
+    ws1['H1'].font= Font(bold=True)
+    ws1['I1'].font= Font(bold=True)
+    ws1['J1'].font= Font(bold=True)
+    ws1['K1'].font= Font(bold=True)
+    ws1['L1'].font= Font(bold=True)
+    ws1['M1'].font= Font(bold=True)
+    ws1['N1'].font= Font(bold=True)
+    ws1['O1'].font= Font(bold=True)
+    ws1['P1'].font= Font(bold=True)
+    ws1['Q1'].font= Font(bold=True)
+    ws1['R1'].font= Font(bold=True)
+    ws1['S1'].font= Font(bold=True)
+    ws1['T1'].font= Font(bold=True)
+    ws1['U1'].font= Font(bold=True)
+    ws1['V1'].font= Font(bold=True)
+    ws1['W1'].font= Font(bold=True)
+
+    ws2['U9']= "Y/N"
+ 
+    ws2['A9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws2['B9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws2['C9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws2['D9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws2['E9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws2['F9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws2['G9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws2['H9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws2['I9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws2['J9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws2['K9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws2['L9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws2['M9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws2['N9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws2['O9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws2['P9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws2['Q9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws2['R9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws2['S9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws2['T9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws2['U9'].fill= PatternFill("solid", fgColor="DCDCDC")
+
+    ws2['A9'].font= Font(bold=True)
+    ws2['B9'].font= Font(bold=True)
+    ws2['C9'].font= Font(bold=True)
+    ws2['D9'].font= Font(bold=True)
+    ws2['E9'].font= Font(bold=True)
+    ws2['F9'].font= Font(bold=True)
+    ws2['G9'].font= Font(bold=True)
+    ws2['H9'].font= Font(bold=True)
+    ws2['I9'].font= Font(bold=True)
+    ws2['J9'].font= Font(bold=True)
+    ws2['K9'].font= Font(bold=True)
+    ws2['L9'].font= Font(bold=True)
+    ws2['M9'].font= Font(bold=True)
+    ws2['N9'].font= Font(bold=True)
+    ws2['O9'].font= Font(bold=True)
+    ws2['P9'].font= Font(bold=True)
+    ws2['Q9'].font= Font(bold=True)
+    ws2['R9'].font= Font(bold=True)
+    ws2['S9'].font= Font(bold=True)
+    ws2['T9'].font= Font(bold=True)
+    ws2['U9'].font= Font(bold=True)
+
+
+    ws2['B3'].font= Font(bold=True)
+    ws2['B6'].font= Font(bold=True)
+    ws2['E3'].font= Font(bold=True)
+    ws2['E6'].font= Font(bold=True)
+    ws2['G3'].font= Font(bold=True)
+    ws2['G6'].font= Font(bold=True)
+    ws2['K3'].font= Font(bold=True)
+    ws2['K6'].font= Font(bold=True)
+    ws2['I3'].font= Font(bold=True)
+
+    ws2['A61'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws2['B61'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws2['C61'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws2['D61'].fill= PatternFill("solid", fgColor="DCDCDC")
+
+
+    ws2['A61'].font= Font(bold=True)
+    ws2['B61'].font= Font(bold=True)
+    ws2['C61'].font= Font(bold=True)
+    ws2['D61'].font= Font(bold=True)
+
+
+    ws2['A9'].border=Border(left=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['B9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['C9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['D9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['E9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['F9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['G9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['H9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))    
+    ws2['I9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['J9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['K9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['L9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['M9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['N9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['O9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['P9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['Q9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['R9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['S9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['T9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['U9'].border=Border(right=Side(border_style=BORDER_MEDIUM),top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+
+    ws2['A61'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['B61'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['C61'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['D61'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+
+    ws3['U9']= "Y/N"
+
+    ws3['A9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws3['B9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws3['C9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws3['D9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws3['E9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws3['F9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws3['G9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws3['H9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws3['I9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws3['J9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws3['K9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws3['L9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws3['M9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws3['N9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws3['O9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws3['P9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws3['Q9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws3['R9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws3['S9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws3['T9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws3['U9'].fill= PatternFill("solid", fgColor="DCDCDC")
+
+    ws3['A9'].font= Font(bold=True)
+    ws3['B9'].font= Font(bold=True)
+    ws3['C9'].font= Font(bold=True)
+    ws3['D9'].font= Font(bold=True)
+    ws3['E9'].font= Font(bold=True)
+    ws3['F9'].font= Font(bold=True)
+    ws3['G9'].font= Font(bold=True)
+    ws3['H9'].font= Font(bold=True)
+    ws3['I9'].font= Font(bold=True)
+    ws3['J9'].font= Font(bold=True)
+    ws3['K9'].font= Font(bold=True)
+    ws3['L9'].font= Font(bold=True)
+    ws3['M9'].font= Font(bold=True)
+    ws3['N9'].font= Font(bold=True)
+    ws3['O9'].font= Font(bold=True)
+    ws3['P9'].font= Font(bold=True)
+    ws3['Q9'].font= Font(bold=True)
+    ws3['R9'].font= Font(bold=True)
+    ws3['S9'].font= Font(bold=True)
+    ws3['T9'].font= Font(bold=True)
+    ws3['U9'].font= Font(bold=True)
+
+    ws3['B3'].font= Font(bold=True)
+    ws3['B6'].font= Font(bold=True)
+    ws3['E3'].font= Font(bold=True)
+    ws3['E6'].font= Font(bold=True)
+    ws3['G3'].font= Font(bold=True)
+    ws3['G6'].font= Font(bold=True)
+    ws3['K3'].font= Font(bold=True)
+    ws3['K6'].font= Font(bold=True)
+    ws3['I3'].font= Font(bold=True)
+
+    ws3['A9'].border=Border(left=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws3['B9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws3['C9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws3['D9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws3['E9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws3['F9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws3['G9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws3['H9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws3['I9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws3['J9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws3['K9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws3['L9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws3['M9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws3['N9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws3['O9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws3['P9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws3['Q9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws3['R9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws3['S9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws3['T9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws3['U9'].border=Border(right=Side(border_style=BORDER_MEDIUM),top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+
+    ws3['A61'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws3['B61'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws3['C61'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws3['D61'].fill= PatternFill("solid", fgColor="DCDCDC")
+
+
+    ws3['A61'].font= Font(bold=True)
+    ws3['B61'].font= Font(bold=True)
+    ws3['C61'].font= Font(bold=True)
+    ws3['D61'].font= Font(bold=True)
+
+    ws3['A61'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws3['B61'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws3['C61'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws3['D61'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+
+    ws4['B2'].font= Font(bold=True)
+    ws4['C2'].font= Font(bold=True)
+    ws4['D2'].font= Font(bold=True)
+    ws4['E2'].font= Font(bold=True)
+    ws4['F2'].font= Font(bold=True)
+    ws4['G2'].font= Font(bold=True)
+    ws4['H2'].font= Font(bold=True)
+    ws4['I2'].font= Font(bold=True)
+    ws4['J2'].font= Font(bold=True)
+    ws4['K2'].font= Font(bold=True)
+    ws4['L2'].font= Font(bold=True)
+    ws4['M2'].font= Font(bold=True)
+    ws4['N2'].font= Font(bold=True)
+
+    ws7['A1'].font= Font(bold=True)
+    ws7['B1'].font= Font(bold=True)
+    ws7['C1'].font= Font(bold=True)
+    ws7['D1'].font= Font(bold=True)
+    ws7['E1'].font= Font(bold=True)
+    ws7['F1'].font= Font(bold=True)
+    ws7['G1'].font= Font(bold=True)
+    ws7['H1'].font= Font(bold=True)
+    ws7['I1'].font= Font(bold=True)
+    ws7['J1'].font= Font(bold=True)
+    ws7['K1'].font= Font(bold=True)
+    ws7['L1'].font= Font(bold=True)
+
 
     wb.save(path+sampleid+'_'+referral+'_panCancer.xlsx')
 
