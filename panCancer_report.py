@@ -195,7 +195,6 @@ def get_variantReport_NTC(referral, path):
 
 
 
-
 def get_variant_report(referral, path, sampleid):
 
     '''
@@ -344,11 +343,11 @@ def get_gaps_file(referral, path, sampleid):
     Open the relevant gap file to append to the end of the mutations and snps tab. If the gap file is empty, write 'no gaps'.
     '''
 
-    if(os.stat(path+sampleid+"/hotspot_coverage/" +sampleid+"_"+referral+"_hotspots.gaps").st_size==0):
+    if(os.stat(path+sampleid+"/hotspot_coverage_"+coverage_value+"/" +sampleid+"_"+referral+"_hotspots.gaps").st_size==0):
         ws5['A1']= 'No gaps'
         bedfile=""
-    if (os.stat(path+sampleid+"/hotspot_coverage/" +sampleid+"_"+referral+"_hotspots.gaps").st_size!=0):
-        bedfile=pandas.read_csv(path+ sampleid+"/hotspot_coverage/" +sampleid+"_"+referral+"_hotspots.gaps", sep="\t")
+    if (os.stat(path+sampleid+"/hotspot_coverage_"+coverage_value+"/" +sampleid+"_"+referral+"_hotspots.gaps").st_size!=0):
+        bedfile=pandas.read_csv(path+ sampleid+"/hotspot_coverage_"+coverage_value+"/" +sampleid+"_"+referral+"_hotspots.gaps", sep="\t")
         for row in dataframe_to_rows(bedfile, header=True, index=False):
             ws5.append(row)
 
@@ -420,10 +419,10 @@ def get_hotspots_coverage_file(referral, path, sampleid):
     Open the relevant coverage file to append to the end of the mutations and snps tab. If the coverage file is empty, write 'No hotspots'.
     '''
 
-    if(os.stat(path+sampleid+"/hotspot_coverage/"+sampleid+"_"+referral+"_hotspots.coverage").st_size==0):
+    if(os.stat(path+sampleid+"/hotspot_coverage_"+coverage_value+"/"+sampleid+"_"+referral+"_hotspots.coverage").st_size==0):
         ws9['A1']= 'No hotspots'
-    if (os.stat(path+ sampleid+"/hotspot_coverage/"+sampleid+"_"+referral+"_hotspots.coverage").st_size!=0):
-        Coverage=pandas.read_csv(path+ sampleid+"/hotspot_coverage/"+sampleid+"_"+referral+"_hotspots.coverage", sep="\t")
+    if (os.stat(path+ sampleid+"/hotspot_coverage_"+coverage_value+"/"+sampleid+"_"+referral+"_hotspots.coverage").st_size!=0):
+        Coverage=pandas.read_csv(path+ sampleid+"/hotspot_coverage_"+coverage_value+"/"+sampleid+"_"+referral+"_hotspots.coverage", sep="\t")
       
 
     Coverage= Coverage.iloc[:,[3,4,5]]
@@ -439,11 +438,11 @@ def get_NTC_hotspots_coverage_file(referral, path):
     Open the relevant NTC hotspots coverage file.
     '''
        
-    if(os.stat(path+ "NTC/hotspot_coverage/NTC_"+referral+"_hotspots.coverage").st_size==0):
+    if(os.stat(path+ "NTC/hotspot_coverage_"+coverage_value+"/NTC_"+referral+"_hotspots.coverage").st_size==0):
         data= [{'CHR':'NA', 'START':'NA', 'END':'NA', 'META':'NA', 'AVG_DEPTH':'NA', 'PERC_COVERAGE@250':'NA'}]
         NTC_check=pandas.DataFrame(data)
-    if (os.stat(path+ "NTC/hotspot_coverage/NTC_"+referral+"_hotspots.coverage").st_size!=0):
-        NTC_check=pandas.read_csv(path+ "NTC/hotspot_coverage/NTC_"+referral+"_hotspots.coverage", sep="\t")
+    if (os.stat(path+ "NTC/hotspot_coverage_"+coverage_value+"/NTC_"+referral+"_hotspots.coverage").st_size!=0):
+        NTC_check=pandas.read_csv(path+ "NTC/hotspot_coverage_"+coverage_value+"/NTC_"+referral+"_hotspots.coverage", sep="\t")
     
     return(NTC_check)
 
@@ -499,14 +498,12 @@ def get_genescreen_coverage_file(referral, path, sampleid):
     '''
     Open the coverage file to append to the mutations and snps tab. If the coverage file is empty, write 'No hotspots'.
     '''
-    if(os.stat(path+sampleid+"/hotspot_coverage/"+sampleid+"_"+referral+"_genescreen.coverage").st_size==0):
+    if(os.stat(path+sampleid+"/hotspot_coverage_"+coverage_value+"/"+sampleid+"_"+referral+"_genescreen.coverage").st_size==0):
         ws9['A1']= 'No hotspots'
-    if (os.stat(path+ sampleid+"/hotspot_coverage/"+sampleid+"_"+referral+"_genescreen.coverage").st_size!=0):
-        Coverage=pandas.read_csv(path+ sampleid+"/hotspot_coverage/"+sampleid+"_"+referral+"_genescreen.coverage", sep="\t")
+    if (os.stat(path+ sampleid+"/hotspot_coverage_"+coverage_value+"/"+sampleid+"_"+referral+"_genescreen.coverage").st_size!=0):
+        Coverage=pandas.read_csv(path+ sampleid+"/hotspot_coverage_"+coverage_value+"/"+sampleid+"_"+referral+"_genescreen.coverage", sep="\t")
     
-
     Coverage= Coverage.iloc[:,[3,4,5]]
-
 
     return(Coverage)
 
@@ -518,11 +515,11 @@ def get_NTC_genescreen_coverage_file(referral, path):
     '''
     Open the relevant NTC  genescreen coverage file to append to the Subpanel NTC check tab.
     '''
-    if(os.stat(path+ "/NTC/hotspot_coverage/NTC_"+referral+"_genescreen.coverage").st_size==0):
+    if(os.stat(path+ "/NTC/hotspot_coverage_"+coverage_value+"/NTC_"+referral+"_genescreen.coverage").st_size==0):
         data= [{'CHR':'NA', 'START':'NA', 'END':'NA', 'META':'NA', 'AVG_DEPTH':'NA', 'PERC_COVERAGE@250':'NA'}]
         NTC_check=pandas.DataFrame(data)
-    if (os.stat(path+ "/NTC/hotspot_coverage/NTC_"+referral+"_genescreen.coverage").st_size!=0):
-        NTC_check=pandas.read_csv(path+ "/NTC/hotspot_coverage/NTC_"+referral+"_genescreen.coverage", sep="\t")
+    if (os.stat(path+ "/NTC/hotspot_coverage_"+coverage_value+"/NTC_"+referral+"_genescreen.coverage").st_size!=0):
+        NTC_check=pandas.read_csv(path+ "/NTC/hotspot_coverage_"+coverage_value+"/NTC_"+referral+"_genescreen.coverage", sep="\t")
        
 
     return (NTC_check)
@@ -586,12 +583,12 @@ def add_columns_genescreen_coverage(Coverage, NTC_check, num_rows_coverage):
 def get_subpanel_coverage(referral, path, sampleid):
 
     #Add coverage table
-    if(os.stat(path+sampleid+"/hotspot_coverage/"+sampleid+"_coverage.txt").st_size==0):
+    if(os.stat(path+sampleid+"/hotspot_coverage_"+coverage_value+"/"+sampleid+"_coverage.txt").st_size==0):
         ws10['A1']= 'No coverage'
         Coverage=""
         Coverage_2=""
-    if (os.stat(path+ sampleid+"/hotspot_coverage/"+sampleid+"_coverage.txt").st_size!=0):
-        Coverage=pandas.read_csv(path+ sampleid+"/hotspot_coverage/"+sampleid+"_coverage.txt", sep="\t")
+    if (os.stat(path+ sampleid+"/hotspot_coverage_"+coverage_value+"/"+sampleid+"_coverage.txt").st_size!=0):
+        Coverage=pandas.read_csv(path+ sampleid+"/hotspot_coverage_"+coverage_value+"/"+sampleid+"_coverage.txt", sep="\t")
 
         s=Coverage['FEATURE'].apply(lambda x: x.split('_'))
         Coverage['Referral']=s.apply(lambda x:x[1])
@@ -946,8 +943,8 @@ def add_excel_formulae():
     #change widths of columns
     ws6.column_dimensions['C'].width=40
     ws6.column_dimensions['A'].width=40
-    ws6.column_dimensions['B'].width=10
-    ws6.column_dimensions['D'].width=40
+    ws6.column_dimensions['B'].width=15
+    ws6.column_dimensions['D'].width=10
     ws6.column_dimensions['E'].width=20
     ws6.column_dimensions['F'].width=20
     ws6.column_dimensions['G'].width=20
@@ -1369,8 +1366,8 @@ def add_excel_formulae():
     ws6['A9'].font= Font(bold=True)
     ws6['A11'].font= Font(bold=True)
 
-    ws6['H38'].font= Font(bold=True)
-    ws6['H39'].font= Font(bold=True)
+    ws6['H46'].font= Font(bold=True)
+    ws6['H47'].font= Font(bold=True)
 
     ws6['A1'].font=Font(size=16)
     ws6['C1'].font=Font(size=16)
@@ -1671,7 +1668,7 @@ def add_excel_formulae():
     ws7['L1'].font= Font(bold=True)
 
 
-    wb.save(path+sampleid+'_'+referral+'_panCancer.xlsx')
+    wb.save(path+sampleid+'_'+referral+'_panCancer_'+coverage_value+'.xlsx')
 
 
 
@@ -1683,11 +1680,13 @@ if __name__ == "__main__":
     sampleid=sys.argv[2]
     worksheet=sys.argv[3]
     referral=sys.argv[4]
+    coverage_value=sys.argv[5]
 
     print(runid)
     print(sampleid)
     print(worksheet)
     print(referral)
+    print(coverage_value)
 
     path="/data/results/"+runid + "/RochePanCancer/"
 
