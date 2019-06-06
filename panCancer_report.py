@@ -1758,10 +1758,33 @@ if __name__ == "__main__":
 
     path="/data/results/"+runid + "/RochePanCancer/"
 
-    
+
+    referral=referral.upper()
+    if referral=="BREAST":
+        referral="Breast"
+    elif referral=="COLORECTAL":
+        referral="Colorectal"
+    elif referral=="GIST":
+        referral="GIST"
+    elif referral=="GLIOMA":
+        referral="Glioma"
+    elif referral=="HEAD&NECK":
+        referral="Head&Neck"
+    elif referral=="LUNG":
+        referral="Lung"
+    elif referral=="MELANOMA":
+        referral="Melanoma"
+    elif referral=="OVARIAN":
+        referral="Ovarian"
+    elif referral=="PROSTATE":
+        referral="Prostate"
+    elif referral=="THYROID":
+        referral="Thyroid"
+    else:
+        print ("referral not recognised")    
     
 
-    referrals_list=['Breast','Colorectal','GIST','Glioma','HN','Lung','Melanoma','Ovarian','Prostate','Thyroid']
+    referrals_list=['Breast','Colorectal','GIST','Glioma','Head&Neck','Lung','Melanoma','Ovarian','Prostate','Thyroid']
 
     referral_present=False
     
