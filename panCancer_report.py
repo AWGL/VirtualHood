@@ -63,7 +63,7 @@ ws1['T1']='Average bp'
 ws1['U1']='Average molarity(nM)'
 ws1['V1']='Date of NextSeq run'
 ws1['W1']='NextSeq run ID'
-ws1['W1']='Comments'
+ws1['X1']='Comments'
 
 
 #variant calls table headers
@@ -128,7 +128,7 @@ ws6['I4']='Due date'
 
 ws6['E7']='NGS wks'
 ws6['F7']='Average molarity(nM)'
-ws6['G7']='MiSeq run ID'
+ws6['G7']='NextSeq run ID'
 ws6['H7']='NTC check 1'
 ws6['I7']='NTC check 2'
 
@@ -226,9 +226,7 @@ def get_variant_report(referral, path, sampleid):
                 else:
                     value=1
         variant_3=''.join(variant_2)
-        variant_4=variant_3.split(":")
-        variant_5=variant_4[1]
-        variant_list.append(variant_5)
+        variant_list.append(variant_3)
         
 
     variant_report_4['Position']=variant_list
@@ -798,8 +796,8 @@ def add_excel_formulae():
     ws6['D13']= "='Mutations and SNPS'!D3"
     ws6['E13']= "='Mutations and SNPS'!E3"
     ws6['F13']= "='Mutations and SNPS'!F3"
-    ws6['G13']= "='Mutations and SNPS'!L3"
-    ws6['H13']= "='Mutations and SNPS'!M3"
+    ws6['G13']= "='Mutations and SNPS'!M3"
+    ws6['H13']= "='Mutations and SNPS'!N3"
 
     ws6['A14']= "='Mutations and SNPS'!B4"
     ws6['B14']= "='Mutations and SNPS'!C4"
@@ -807,8 +805,8 @@ def add_excel_formulae():
     ws6['D14']= "='Mutations and SNPS'!D4"
     ws6['E14']= "='Mutations and SNPS'!E4"
     ws6['F14']= "='Mutations and SNPS'!F4"
-    ws6['G14']= "='Mutations and SNPS'!L4"
-    ws6['H14']= "='Mutations and SNPS'!M4"
+    ws6['G14']= "='Mutations and SNPS'!M4"
+    ws6['H14']= "='Mutations and SNPS'!N4"
 
     ws6['A15']= "='Mutations and SNPS'!B5"
     ws6['B15']= "='Mutations and SNPS'!C5"
@@ -816,8 +814,8 @@ def add_excel_formulae():
     ws6['D15']= "='Mutations and SNPS'!D5"
     ws6['E15']= "='Mutations and SNPS'!E5"
     ws6['F15']= "='Mutations and SNPS'!F5"
-    ws6['G15']= "='Mutations and SNPS'!L5"
-    ws6['H15']= "='Mutations and SNPS'!M5"
+    ws6['G15']= "='Mutations and SNPS'!M5"
+    ws6['H15']= "='Mutations and SNPS'!N5"
 
     ws6['A16']= "='Mutations and SNPS'!B6"
     ws6['B16']= "='Mutations and SNPS'!C6"
@@ -825,8 +823,8 @@ def add_excel_formulae():
     ws6['D16']= "='Mutations and SNPS'!D6"
     ws6['E16']= "='Mutations and SNPS'!E6"
     ws6['F16']= "='Mutations and SNPS'!F6"
-    ws6['G16']= "='Mutations and SNPS'!L6"
-    ws6['H16']= "='Mutations and SNPS'!M6"
+    ws6['G16']= "='Mutations and SNPS'!M6"
+    ws6['H16']= "='Mutations and SNPS'!N6"
 
     ws6['A17']= "='Mutations and SNPS'!B7"
     ws6['B17']= "='Mutations and SNPS'!C7"
@@ -834,8 +832,8 @@ def add_excel_formulae():
     ws6['D17']= "='Mutations and SNPS'!D7"
     ws6['E17']= "='Mutations and SNPS'!E7"
     ws6['F17']= "='Mutations and SNPS'!F7"
-    ws6['G17']= "='Mutations and SNPS'!L7"
-    ws6['H17']= "='Mutations and SNPS'!M7"
+    ws6['G17']= "='Mutations and SNPS'!M7"
+    ws6['H17']= "='Mutations and SNPS'!N7"
 
     ws6['A18']= "='Mutations and SNPS'!B8"
     ws6['B18']= "='Mutations and SNPS'!C8"
@@ -843,8 +841,8 @@ def add_excel_formulae():
     ws6['D18']= "='Mutations and SNPS'!D8"
     ws6['E18']= "='Mutations and SNPS'!E8"
     ws6['F18']= "='Mutations and SNPS'!F8"
-    ws6['G18']= "='Mutations and SNPS'!L8"
-    ws6['H18']= "='Mutations and SNPS'!M8"
+    ws6['G18']= "='Mutations and SNPS'!M8"
+    ws6['H18']= "='Mutations and SNPS'!N8"
 
     ws6['A19']= "='Mutations and SNPS'!B9"
     ws6['B19']= "='Mutations and SNPS'!C9"
@@ -852,8 +850,73 @@ def add_excel_formulae():
     ws6['D19']= "='Mutations and SNPS'!D9"
     ws6['E19']= "='Mutations and SNPS'!E9"
     ws6['F19']= "='Mutations and SNPS'!F9"
-    ws6['G19']= "='Mutations and SNPS'!L9"
-    ws6['H19']= "='Mutations and SNPS'!M9"
+    ws6['G19']= "='Mutations and SNPS'!M9"
+    ws6['H19']= "='Mutations and SNPS'!N9"
+
+    ws6['A20']= "='Mutations and SNPS'!B10"
+    ws6['B20']= "='Mutations and SNPS'!C10"
+    ws6['C20']= "='Mutations and SNPS'!K10"
+    ws6['D20']= "='Mutations and SNPS'!D10"
+    ws6['E20']= "='Mutations and SNPS'!E10"
+    ws6['F20']= "='Mutations and SNPS'!F10"
+    ws6['G20']= "='Mutations and SNPS'!M10"
+    ws6['H20']= "='Mutations and SNPS'!N10"
+
+    ws6['A21']= "='Mutations and SNPS'!B11"
+    ws6['B21']= "='Mutations and SNPS'!C11"
+    ws6['C21']= "='Mutations and SNPS'!K11"
+    ws6['D21']= "='Mutations and SNPS'!D11"
+    ws6['E21']= "='Mutations and SNPS'!E11"
+    ws6['F21']= "='Mutations and SNPS'!F11"
+    ws6['G21']= "='Mutations and SNPS'!M11"
+    ws6['H21']= "='Mutations and SNPS'!N11"
+
+    ws6['A22']= "='Mutations and SNPS'!B12"
+    ws6['B22']= "='Mutations and SNPS'!C12"
+    ws6['C22']= "='Mutations and SNPS'!K12"
+    ws6['D22']= "='Mutations and SNPS'!D12"
+    ws6['E22']= "='Mutations and SNPS'!E12"
+    ws6['F22']= "='Mutations and SNPS'!F12"
+    ws6['G22']= "='Mutations and SNPS'!M12"
+    ws6['H22']= "='Mutations and SNPS'!N12"
+
+    ws6['A23']= "='Mutations and SNPS'!B13"
+    ws6['B23']= "='Mutations and SNPS'!C13"
+    ws6['C23']= "='Mutations and SNPS'!K13"
+    ws6['D23']= "='Mutations and SNPS'!D13"
+    ws6['E23']= "='Mutations and SNPS'!E13"
+    ws6['F23']= "='Mutations and SNPS'!F13"
+    ws6['G23']= "='Mutations and SNPS'!M13"
+    ws6['H23']= "='Mutations and SNPS'!N13"
+
+    ws6['A24']= "='Mutations and SNPS'!B14"
+    ws6['B24']= "='Mutations and SNPS'!C14"
+    ws6['C24']= "='Mutations and SNPS'!K14"
+    ws6['D24']= "='Mutations and SNPS'!D14"
+    ws6['E24']= "='Mutations and SNPS'!E14"
+    ws6['F24']= "='Mutations and SNPS'!F14"
+    ws6['G24']= "='Mutations and SNPS'!M14"
+    ws6['H24']= "='Mutations and SNPS'!N14"
+
+    ws6['A25']= "='Mutations and SNPS'!B15"
+    ws6['B25']= "='Mutations and SNPS'!C15"
+    ws6['C25']= "='Mutations and SNPS'!K15"
+    ws6['D25']= "='Mutations and SNPS'!D15"
+    ws6['E25']= "='Mutations and SNPS'!E15"
+    ws6['F25']= "='Mutations and SNPS'!F15"
+    ws6['G25']= "='Mutations and SNPS'!M15"
+    ws6['H25']= "='Mutations and SNPS'!N15"
+
+    ws6['A26']= "='Mutations and SNPS'!B16"
+    ws6['B26']= "='Mutations and SNPS'!C16"
+    ws6['C26']= "='Mutations and SNPS'!K16"
+    ws6['D26']= "='Mutations and SNPS'!D16"
+    ws6['E26']= "='Mutations and SNPS'!E16"
+    ws6['F26']= "='Mutations and SNPS'!F16"
+    ws6['G26']= "='Mutations and SNPS'!M16"
+    ws6['H26']= "='Mutations and SNPS'!N16"
+
+
 
     ws6['H29']="Comments"
     ws6['A29']= sampleid +"_" + referral
@@ -1401,6 +1464,8 @@ def add_excel_formulae():
     ws1['U1'].fill= PatternFill("solid", fgColor="DCDCDC")
     ws1['V1'].fill= PatternFill("solid", fgColor="DCDCDC")
     ws1['W1'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws1['X1'].fill= PatternFill("solid", fgColor="DCDCDC")
+
 
     ws1['A1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws1['B1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
@@ -1425,6 +1490,8 @@ def add_excel_formulae():
     ws1['U1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws1['V1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws1['W1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws1['X1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+
 
     ws1['A1'].font= Font(bold=True)
     ws1['B1'].font= Font(bold=True)
@@ -1449,6 +1516,7 @@ def add_excel_formulae():
     ws1['U1'].font= Font(bold=True)
     ws1['V1'].font= Font(bold=True)
     ws1['W1'].font= Font(bold=True)
+    ws1['X1'].font= Font(bold=True)
 
     ws2['U9']= "Y/N"
  
