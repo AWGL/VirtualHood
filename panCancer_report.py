@@ -300,6 +300,7 @@ def expand_variant_report(variant_report_4, variant_report_NTC_4):
 
 
     while (row<num_rows_variant_report):
+        print(variant_report_4.iloc[row,4])
         variant_report_4.iloc[row,4]= variant_report_4.iloc[row,4].strip('%')
         variant_report_4.iloc[row,4]= float(variant_report_4.iloc[row,4])
         variant_report_4.iloc[row,4]= (variant_report_4.iloc[row,4])/100
@@ -1768,8 +1769,8 @@ if __name__ == "__main__":
         referral="GIST"
     elif referral=="GLIOMA":
         referral="Glioma"
-    elif referral=="HEAD&NECK":
-        referral="Head&Neck"
+    elif referral=="HEADANDNECK":
+        referral="HeadAndNeck"
     elif referral=="LUNG":
         referral="Lung"
     elif referral=="MELANOMA":
@@ -1784,7 +1785,7 @@ if __name__ == "__main__":
         print ("referral not recognised")    
     
 
-    referrals_list=['Breast','Colorectal','GIST','Glioma','Head&Neck','Lung','Melanoma','Ovarian','Prostate','Thyroid']
+    referrals_list=['Breast','Colorectal','GIST','Glioma','HeadAndNeck','Lung','Melanoma','Ovarian','Prostate','Thyroid']
 
     referral_present=False
     
