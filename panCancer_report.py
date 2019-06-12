@@ -13,7 +13,6 @@ wb=Workbook()
 ws1= wb.create_sheet("Sheet_1")
 ws9= wb.create_sheet("Sheet_9")
 ws2= wb.create_sheet("Sheet_2")
-ws3= wb.create_sheet("Sheet_3")
 ws4= wb.create_sheet("Sheet_4")
 ws5= wb.create_sheet("Sheet_5")
 ws6= wb.create_sheet("Sheet_6")
@@ -23,8 +22,7 @@ ws10= wb.create_sheet("Sheet_10")
 
 #name the tabs
 ws1.title="Patient demographics"
-ws2.title="Variant_calls_upper_limit"
-ws3.title="Variant-calls_lower_limit"
+ws2.title="Variant_calls"
 ws4.title="Mutations and SNPs"
 ws5.title="hotspots.gaps"
 ws6.title="Report"
@@ -82,21 +80,6 @@ ws2['A8']=" "
 
 ws2['I3']= "% Tumour"
 
-#variant calls table headers
-ws3['B3']='DNA number'
-ws3['B6']='Patient name'
-
-ws3['E3']='NTC check 1'
-ws3['E6']='NTC check 2'
-
-ws3['G3']='1st checker name & date'
-ws3['G6']='2nd checker name & date'
-
-ws3['K3']='GeneRead worksheet'
-ws3['K6']='Analysis pipeline:Roche_PanCancer'
-ws3['A8']=" "
-
-ws3['I3']="% Tumour"
 
 #Mutations and SNPs table headers
 ws4['B2']='Gene'
@@ -267,6 +250,9 @@ def add_extra_columns_NTC_report(variant_report_NTC_4, variant_report_4):
     row=0
     num_rows_NTC=variant_report_NTC_4.shape[0]
     while (row<num_rows_NTC):
+        variant_report_NTC_4.iloc[row,4]=variant_report_NTC_4.iloc[row,4].strip('%')
+        variant_report_NTC_4.iloc[row,4]=float(variant_report_NTC_4.iloc[row,4])
+        variant_report_NTC_4.iloc[row,4]= variant_report_NTC_4.iloc[row,4]/100
         variant_report_NTC_4.iloc[row,6]=int(variant_report_NTC_4.iloc[row,6])
         allele_call= variant_report_NTC_4.iloc[row,4]*variant_report_NTC_4.iloc[row,6]
         variant_allele_calls.append(allele_call)
@@ -297,6 +283,9 @@ def expand_variant_report(variant_report_4, variant_report_NTC_4):
 
 
     while (row<num_rows_variant_report):
+        variant_report_4.iloc[row,4]=variant_report_4.iloc[row,4].strip('%')
+        variant_report_4.iloc[row,4]=float(variant_report_4.iloc[row,4])
+        variant_report_4.iloc[row,4]= variant_report_4.iloc[row,4]/100
         variant_report_4.iloc[row,6]= int(variant_report_4.iloc[row,6])
         if (variant_report_4.iloc[row,6]<=500):
             value_2= variant_report_4.iloc[row,4]*variant_report_4.iloc[row,6]
@@ -556,7 +545,6 @@ def add_columns_genescreen_coverage(Coverage, NTC_check, num_rows_coverage):
     num_rows_coverage_2=Coverage.shape[0]
     num_rows_coverage_3=num_rows_coverage +num_rows_coverage_2
 
-    print(num_rows_coverage)
     row =0
     while (row< num_rows_coverage_2):
         row_spreadsheet=row+2+num_rows_coverage
@@ -715,36 +703,16 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
 
     #Add upper-limit and lower-limit variant report dataframes to the excel workbook
 
-    for row in dataframe_to_rows(variant_report_4, header=True, index=False):
-        ws3.append(row)
     
     variant_report_4_upper_limit=variant_report_4[variant_report_4.Frequency>0.045]
 
     for row in dataframe_to_rows(variant_report_4_upper_limit, header=True, index=False):
         ws2.append(row)
 
-    variant_report_5= variant_report_4.iloc[:,[0,1,2]]
-    variant_report_5['Comments/Notes/evidence:how conclusion was reached']=""
 
     variant_report_5_upper_limit= variant_report_4_upper_limit.iloc[:,[0,1,2]]
     variant_report_5_upper_limit['Comments/Notes/evidence:how conclusion was reached']=""
 
-
-
-    row=0
-
-    num_rows_variant_report=variant_report_4.shape[0]
-
-    while (row<num_rows_variant_report):
-        if (variant_report_4.iloc[row,11]=='Known artefact'):
-            variant_report_5.iloc[row,3]='On artefact list'
-        if (variant_report_4.iloc[row,11]=='Known Poly'):
-            variant_report_5.iloc[row,3]='On Poly list'
-        if (variant_report_4.iloc[row,11]=='WT'):
-            variant_report_5.iloc[row,3]='SNP in Ref.Seq'     
-        row=row+1
-
-    ws3['A60']=" "
 
 
     row=0
@@ -764,9 +732,6 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
 
 
 
-    for row in dataframe_to_rows(variant_report_5, header=True, index=False):
-        ws3.append(row)
-
 
     #add dataframe to variant calls tab
 
@@ -782,7 +747,6 @@ def add_excel_formulae():
     #add excel formulae to the spreadsheets to enable automation after program has finished
 
     ws2['I4']= "='Patient demographics'!N2"
-    ws3['I4']= "='Patient demographics'!N2"
      
     ws6['A13']= "='Mutations and SNPS'!B3"
     ws6['B13']= "='Mutations and SNPS'!C3"
@@ -984,12 +948,6 @@ def add_excel_formulae():
     ws9['J4']="NTC check 1"
     ws9['J5']="NTC check 2"
 
-    ws3['B4']= sampleid
-    ws3['B7']="='Patient demographics'!E2"
-    ws3['E4']="='Subpanel NTC check'!K4"
-    ws3['E7']="='Subpanel NTC check'!K5"
-    ws3['K4']=worksheet
-
     ws2['B4']= sampleid
     ws2['B7']="='Patient demographics'!E2"
     ws2['E4']="='Subpanel NTC check'!K4"
@@ -1014,55 +972,22 @@ def add_excel_formulae():
     ws9.column_dimensions['F'].width=15
     ws2.row_dimensions[9].height=40
     ws2.row_dimensions[61].height=40
-    ws3.row_dimensions[9].height=40
-    ws3.row_dimensions[61].height=40
 
     ws2.column_dimensions['C'].width=20
-    ws3.column_dimensions['C'].width=20
-
     ws2.column_dimensions['D'].width=53
-    ws3.column_dimensions['D'].width=53
-
     ws2.column_dimensions['E'].width=20
-    ws3.column_dimensions['E'].width=20
-
     ws2.column_dimensions['H'].width=20
-    ws3.column_dimensions['H'].width=20
-
     ws2.column_dimensions['I'].width=20
-    ws3.column_dimensions['I'].width=20
-
-    ws3.column_dimensions['J'].width=20
     ws2.column_dimensions['J'].width=20
-
-    ws3.column_dimensions['K'].width=20
     ws2.column_dimensions['K'].width=20
-
-    ws3.column_dimensions['L'].width=20
     ws2.column_dimensions['L'].width=20
-
-    ws3.column_dimensions['M'].width=20
     ws2.column_dimensions['M'].width=20
-
-    ws3.column_dimensions['N'].width=20
     ws2.column_dimensions['N'].width=20
-
-    ws3.column_dimensions['O'].width=20
     ws2.column_dimensions['O'].width=20
-
-    ws3.column_dimensions['P'].width=40
     ws2.column_dimensions['P'].width=40
-
-    ws3.column_dimensions['Q'].width=30
     ws2.column_dimensions['Q'].width=30
-
-    ws3.column_dimensions['R'].width=33
     ws2.column_dimensions['R'].width=33
-
-    ws3.column_dimensions['S'].width=33
     ws2.column_dimensions['S'].width=33
-
-    ws3.column_dimensions['T'].width=40
     ws2.column_dimensions['T'].width=40
 
     ws4.column_dimensions['B'].width=20
@@ -1607,100 +1532,6 @@ def add_excel_formulae():
     ws2['B61'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws2['C61'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws2['D61'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-
-    ws3['U9']= "Y/N"
-
-    ws3['A9'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws3['B9'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws3['C9'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws3['D9'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws3['E9'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws3['F9'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws3['G9'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws3['H9'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws3['I9'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws3['J9'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws3['K9'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws3['L9'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws3['M9'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws3['N9'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws3['O9'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws3['P9'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws3['Q9'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws3['R9'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws3['S9'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws3['T9'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws3['U9'].fill= PatternFill("solid", fgColor="DCDCDC")
-
-    ws3['A9'].font= Font(bold=True)
-    ws3['B9'].font= Font(bold=True)
-    ws3['C9'].font= Font(bold=True)
-    ws3['D9'].font= Font(bold=True)
-    ws3['E9'].font= Font(bold=True)
-    ws3['F9'].font= Font(bold=True)
-    ws3['G9'].font= Font(bold=True)
-    ws3['H9'].font= Font(bold=True)
-    ws3['I9'].font= Font(bold=True)
-    ws3['J9'].font= Font(bold=True)
-    ws3['K9'].font= Font(bold=True)
-    ws3['L9'].font= Font(bold=True)
-    ws3['M9'].font= Font(bold=True)
-    ws3['N9'].font= Font(bold=True)
-    ws3['O9'].font= Font(bold=True)
-    ws3['P9'].font= Font(bold=True)
-    ws3['Q9'].font= Font(bold=True)
-    ws3['R9'].font= Font(bold=True)
-    ws3['S9'].font= Font(bold=True)
-    ws3['T9'].font= Font(bold=True)
-    ws3['U9'].font= Font(bold=True)
-
-    ws3['B3'].font= Font(bold=True)
-    ws3['B6'].font= Font(bold=True)
-    ws3['E3'].font= Font(bold=True)
-    ws3['E6'].font= Font(bold=True)
-    ws3['G3'].font= Font(bold=True)
-    ws3['G6'].font= Font(bold=True)
-    ws3['K3'].font= Font(bold=True)
-    ws3['K6'].font= Font(bold=True)
-    ws3['I3'].font= Font(bold=True)
-
-    ws3['A9'].border=Border(left=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws3['B9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws3['C9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws3['D9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws3['E9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws3['F9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws3['G9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws3['H9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws3['I9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws3['J9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws3['K9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws3['L9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws3['M9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws3['N9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws3['O9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws3['P9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws3['Q9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws3['R9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws3['S9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws3['T9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws3['U9'].border=Border(right=Side(border_style=BORDER_MEDIUM),top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-
-    ws3['A61'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws3['B61'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws3['C61'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws3['D61'].fill= PatternFill("solid", fgColor="DCDCDC")
-
-
-    ws3['A61'].font= Font(bold=True)
-    ws3['B61'].font= Font(bold=True)
-    ws3['C61'].font= Font(bold=True)
-    ws3['D61'].font= Font(bold=True)
-
-    ws3['A61'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws3['B61'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws3['C61'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws3['D61'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
 
     ws4['B2'].font= Font(bold=True)
     ws4['C2'].font= Font(bold=True)
