@@ -1605,11 +1605,13 @@ if __name__ == "__main__":
         referral="Prostate"
     elif referral=="THYROID":
         referral="Thyroid"
+    elif referral="TUMOUR"
+        referral="Tumour"
     else:
         print ("referral not recognised")    
     
 
-    referrals_list=['Breast','Colorectal','GIST','Glioma','HeadAndNeck','Lung','Melanoma','Ovarian','Prostate','Thyroid']
+    referrals_list=['Breast','Colorectal','GIST','Glioma','HeadAndNeck','Lung','Melanoma','Ovarian','Prostate','Thyroid', 'Tumour']
 
     referral_present=False
     
