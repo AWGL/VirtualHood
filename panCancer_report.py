@@ -1605,7 +1605,7 @@ if __name__ == "__main__":
         referral="Prostate"
     elif referral=="THYROID":
         referral="Thyroid"
-    elif referral="TUMOUR"
+    elif referral=="TUMOUR":
         referral="Tumour"
     else:
         print ("referral not recognised")    
