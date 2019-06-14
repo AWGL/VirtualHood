@@ -388,7 +388,9 @@ def get_CNV_file(referral, path, sampleid):
     ws6['H46']="Analysed by:"
     ws6['H47']="Checked by:"
 
+    title="Percentage of bases in ROI covered to"+coverage_value
 
+    ws6['B29']= title
     return (gaps)
 
 
