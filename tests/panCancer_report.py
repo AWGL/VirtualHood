@@ -313,7 +313,6 @@ def expand_variant_report(variant_report_4, variant_report_NTC_4):
     variant_report_4["Detection threshold based on depth"]=detection_threshold
     variant_report_4["Is variant present in NTC "]=variant_in_NTC
 
-
     return (variant_report_4)
 
 
