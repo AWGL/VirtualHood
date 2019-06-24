@@ -270,9 +270,8 @@ def expand_variant_report(variant_report_4, variant_report_NTC_4):
 
 
     while (row<num_rows_variant_report):
-        print(variant_report_4)
         variant_report_4.iloc[row,6]= int(variant_report_4.iloc[row,6])
-        if (variant_report_4.iloc[row,6]<=250):
+        if (variant_report_4.iloc[row,6]<=500):
             value_2= variant_report_4.iloc[row,4]*variant_report_4.iloc[row,6]
             value_2=str(value_2)
         else:
@@ -449,9 +448,7 @@ def get_subpanel_coverage(referral, path, sampleid):
       
         for row in dataframe_to_rows(Coverage_2, header=True, index=False):
             ws10.append(row)
-
     
-
 
     return(Coverage_2)
 
@@ -1148,7 +1145,6 @@ def add_excel_formulae():
     ws6['J7'].font= Font(bold=True)
     ws6['K7'].font= Font(bold=True)
 
-
     ws6['A1'].font= Font(bold=True)
     ws6['C1'].font= Font(bold=True)
     ws6['A3'].font= Font(bold=True)
@@ -1164,7 +1160,6 @@ def add_excel_formulae():
 
     ws6['A1'].border=Border(left=Side(border_style=BORDER_THICK), right=Side(border_style=BORDER_THICK), top=Side(border_style=BORDER_THICK), bottom=Side(border_style=BORDER_THICK))
     ws6['C1'].border=Border(left=Side(border_style=BORDER_THICK), right=Side(border_style=BORDER_THICK), top=Side(border_style=BORDER_THICK), bottom=Side(border_style=BORDER_THICK))
-
 
     ws1['A1'].fill= PatternFill("solid", fgColor="DCDCDC")
     ws1['B1'].fill= PatternFill("solid", fgColor="DCDCDC")
@@ -1255,7 +1250,6 @@ def add_excel_formulae():
     ws2['T9'].font= Font(bold=True)
     ws2['U9'].font= Font(bold=True)
 
-
     ws2['B3'].font= Font(bold=True)
     ws2['B6'].font= Font(bold=True)
     ws2['E3'].font= Font(bold=True)
@@ -1271,12 +1265,10 @@ def add_excel_formulae():
     ws2['C61'].fill= PatternFill("solid", fgColor="DCDCDC")
     ws2['D61'].fill= PatternFill("solid", fgColor="DCDCDC")
 
-
     ws2['A61'].font= Font(bold=True)
     ws2['B61'].font= Font(bold=True)
     ws2['C61'].font= Font(bold=True)
     ws2['D61'].font= Font(bold=True)
-
 
     ws2['A9'].border=Border(left=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws2['B9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
@@ -1331,7 +1323,6 @@ def add_excel_formulae():
     ws7['J1'].font= Font(bold=True)
     ws7['K1'].font= Font(bold=True)
     ws7['L1'].font= Font(bold=True)
-
 
     wb.save(path+sampleid+'_'+referral+'_CRM.xlsx')
 
