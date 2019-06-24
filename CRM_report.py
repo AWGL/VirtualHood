@@ -271,7 +271,7 @@ def expand_variant_report(variant_report_4, variant_report_NTC_4):
     while (row<num_rows_variant_report):
         variant_report_4.iloc[row,6]= int(variant_report_4.iloc[row,6])
 
-        if (variant_report_4.iloc[row,6]<=250):
+        if (variant_report_4.iloc[row,6]<=500):
             value_2= variant_report_4.iloc[row,4]*variant_report_4.iloc[row,6]
             value_2=str(value_2)
         else:
