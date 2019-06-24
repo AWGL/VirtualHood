@@ -9,6 +9,7 @@ from openpyxl.styles import PatternFill
 from openpyxl.styles.borders import Border, Side, BORDER_MEDIUM, BORDER_THIN, BORDER_THICK
 from openpyxl.styles import Font
 
+
 wb=Workbook()
 ws1= wb.create_sheet("Sheet_1")
 ws9= wb.create_sheet("Sheet_9")
@@ -292,6 +293,8 @@ def expand_variant_report(variant_report_4, variant_report_NTC_4):
     variant_report_4["QC"]=""
     variant_report_4["Conclusion 2nd checker"]=""
     variant_report_4["QC "]=""
+    variant_report_4[""]=""
+    variant_report_4["Variant classification if seen before"]=""
 
 
     variant_report_4["Detection threshold based on depth"]=detection_threshold
@@ -484,9 +487,8 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
     '''
 
     poly_artefact_dict={}
-    poly_and_Artefact_list=pandas.read_excel("/data/temp/artefacts_lists/Pan_Poly_and_Artefact_list.xlsx")
-    poly_and_Artefact_list_2=pandas.DataFrame(poly_and_Artefact_list)
-
+    poly_and_Artefact_list_2=pandas.read_excel("/data/temp/artefacts_lists/Pan_Poly_and_Artefact_list.xlsx")
+    variant_spreadsheet=pandas.read_excel("FOCUS_4_Variants.xlsx",sheet_name="Variants")
 
     num_rows_variant_report=variant_report_4.shape[0]
     num_rows_poly_artefact=poly_and_Artefact_list_2.shape[0]
@@ -497,10 +499,10 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
     while (row1<num_rows_variant_report):
         row2=0
         while(row2<num_rows_poly_artefact):
-            if (poly_and_Artefact_list_2.iloc[row2,9]==variant_report_4.iloc[row1,9]):
-                poly_artefact_dict[variant_report_4.iloc[row1,9]]= poly_and_Artefact_list_2.iloc[row2,13]
-                variant_report_4.iloc[row1,11]= poly_and_Artefact_list_2.iloc[row2,13]
-                variant_report_4.iloc[row1,13]= poly_and_Artefact_list_2.iloc[row2,13]
+            if (poly_and_Artefact_list_2.iloc[row2,2]==variant_report_4.iloc[row1,2]):
+                poly_artefact_dict[variant_report_4.iloc[row1,2]]= poly_and_Artefact_list_2.iloc[row2,2]
+                variant_report_4.iloc[row1,11]= poly_and_Artefact_list_2.iloc[row2,6]
+                variant_report_4.iloc[row1,13]= poly_and_Artefact_list_2.iloc[row2,6]
             row2=row2+1
         row1=row1+1
 
@@ -535,6 +537,20 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
 														
         row3=row3+1
 
+
+    #Fill the conclusion columns using the relevant column in the Poly and Artefact spreadsheet
+    num_rows_variant_spreadsheet=variant_spreadsheet.shape[0]
+    row1=0
+    while (row1<num_rows_variant_report):
+        row2=0
+        while(row2<num_rows_variant_spreadsheet):
+            if (variant_spreadsheet.iloc[row2,11]==variant_report_4.iloc[row1,9]):
+                variant_report_4.iloc[row1,16]= variant_spreadsheet.iloc[row2,12]
+            row2=row2+1
+        row1=row1+1
+
+
+
  
 
    #Add extra columns to the variant report table to determine level of NTC contamination
@@ -559,8 +575,6 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
         while (row2<num_rows_NTC):
             if (variant_report_4.iloc[row, 9]==variant_report_NTC_4.iloc[row2,9]):
                 variant_report_4.iloc[row,18]=variant_report_NTC_4.iloc[row2,11]
-                print(variant_report_4.iloc[row,18])
-                print(variant_report_4.iloc[row,17]) 
                 variant_report_4.iloc[row,19]=variant_report_4.iloc[row,18]/variant_report_4.iloc[row,17]
             row2=row2+1
         row=row+1
@@ -845,7 +859,7 @@ def add_excel_formulae():
     ws6['K8']="='Variant_calls'!E7"
 
     ws6['G5']="='Variant_calls'!G4"
-    ws6['G5']="='Variant_calls'!G7"
+    ws6['H5']="='Variant_calls'!G7"
 
     ws9['J4']="NTC check 1"
     ws9['J5']="NTC check 2"
@@ -886,7 +900,7 @@ def add_excel_formulae():
     ws2.column_dimensions['M'].width=20
     ws2.column_dimensions['N'].width=20
     ws2.column_dimensions['O'].width=20
-    ws2.column_dimensions['P'].width=40
+    ws2.column_dimensions['P'].width=10
     ws2.column_dimensions['Q'].width=30
     ws2.column_dimensions['R'].width=33
     ws2.column_dimensions['S'].width=33
@@ -1329,12 +1343,13 @@ def add_excel_formulae():
     ws2['M9'].fill= PatternFill("solid", fgColor="DCDCDC")
     ws2['N9'].fill= PatternFill("solid", fgColor="DCDCDC")
     ws2['O9'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws2['P9'].fill= PatternFill("solid", fgColor="DCDCDC")
     ws2['Q9'].fill= PatternFill("solid", fgColor="DCDCDC")
     ws2['R9'].fill= PatternFill("solid", fgColor="DCDCDC")
     ws2['S9'].fill= PatternFill("solid", fgColor="DCDCDC")
     ws2['T9'].fill= PatternFill("solid", fgColor="DCDCDC")
     ws2['U9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws2['V9'].fill= PatternFill("solid", fgColor="DCDCDC")
+ 
 
     ws2['A9'].font= Font(bold=True)
     ws2['B9'].font= Font(bold=True)
@@ -1357,7 +1372,7 @@ def add_excel_formulae():
     ws2['S9'].font= Font(bold=True)
     ws2['T9'].font= Font(bold=True)
     ws2['U9'].font= Font(bold=True)
-
+    ws2['V9'].font= Font(bold=True)
 
     ws2['B3'].font= Font(bold=True)
     ws2['B6'].font= Font(bold=True)
@@ -1395,13 +1410,13 @@ def add_excel_formulae():
     ws2['L9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws2['M9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws2['N9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws2['O9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws2['P9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws2['Q9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['O9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM),right=Side(border_style=BORDER_MEDIUM))
+    ws2['Q9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM),left=Side(border_style=BORDER_MEDIUM))
     ws2['R9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws2['S9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws2['T9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws2['U9'].border=Border(right=Side(border_style=BORDER_MEDIUM),top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['U9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['v9'].border=Border(right=Side(border_style=BORDER_MEDIUM),top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
 
     ws2['A61'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws2['B61'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
