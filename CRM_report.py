@@ -239,9 +239,6 @@ def add_extra_columns_NTC_report(variant_report_NTC_4, variant_report_4):
     row=0
     num_rows_NTC=variant_report_NTC_4.shape[0]
     while (row<num_rows_NTC):
-        variant_report_NTC_4.iloc[row,4]=variant_report_NTC_4.iloc[row,4].strip('%')
-        variant_report_NTC_4.iloc[row,4]=float(variant_report_4.iloc[row,4])
-        variant_report_NTC_4.iloc[row,4]=(variant_report_NTC_4.iloc[row,4])/100
         variant_report_NTC_4.iloc[row,6]=int(variant_report_NTC_4.iloc[row,6])
         allele_call= variant_report_NTC_4.iloc[row,4]*variant_report_NTC_4.iloc[row,6]
         variant_allele_calls.append(allele_call)
@@ -272,9 +269,6 @@ def expand_variant_report(variant_report_4, variant_report_NTC_4):
 
 
     while (row<num_rows_variant_report):
-        variant_report_4.iloc[row,4]=variant_report_4.iloc[row,4].strip('%')
-       	variant_report_4.iloc[row,4]=float(variant_report_4.iloc[row,4])
-       	variant_report_4.iloc[row,4]=(variant_report_4.iloc[row,4])/100
         variant_report_4.iloc[row,6]= int(variant_report_4.iloc[row,6])
 
         if (variant_report_4.iloc[row,6]<=250):
@@ -1469,7 +1463,7 @@ if __name__ == "__main__":
         referral="FOCUS4"
     elif referral=="GIST":
         referral="GIST"
-     elif referral=="iNATT":
+    elif referral=="iNATT":
         referral="iNATT"
     else:
         print ("referral not recognised")    
