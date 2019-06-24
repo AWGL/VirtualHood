@@ -905,6 +905,8 @@ def add_excel_formulae():
     ws2.column_dimensions['R'].width=33
     ws2.column_dimensions['S'].width=33
     ws2.column_dimensions['T'].width=40
+    ws2.column_dimensions['U'].width=40
+    ws2.column_dimensions['V'].width=40
 
     ws4.column_dimensions['B'].width=20
     ws4.column_dimensions['C'].width=20
@@ -1326,7 +1328,7 @@ def add_excel_formulae():
     ws1['L1'].font= Font(bold=True)
     ws1['M1'].font= Font(bold=True)
 
-    ws2['U9']= "Y/N"
+    ws2['W9']= "Y/N"
  
     ws2['A9'].fill= PatternFill("solid", fgColor="DCDCDC")
     ws2['B9'].fill= PatternFill("solid", fgColor="DCDCDC")
@@ -1349,7 +1351,7 @@ def add_excel_formulae():
     ws2['T9'].fill= PatternFill("solid", fgColor="DCDCDC")
     ws2['U9'].fill= PatternFill("solid", fgColor="DCDCDC")
     ws2['V9'].fill= PatternFill("solid", fgColor="DCDCDC")
- 
+    ws2['W9'].fill= PatternFill("solid", fgColor="DCDCDC") 
 
     ws2['A9'].font= Font(bold=True)
     ws2['B9'].font= Font(bold=True)
@@ -1373,6 +1375,7 @@ def add_excel_formulae():
     ws2['T9'].font= Font(bold=True)
     ws2['U9'].font= Font(bold=True)
     ws2['V9'].font= Font(bold=True)
+    ws2['W9'].font= Font(bold=True)
 
     ws2['B3'].font= Font(bold=True)
     ws2['B6'].font= Font(bold=True)
@@ -1416,7 +1419,8 @@ def add_excel_formulae():
     ws2['S9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws2['T9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws2['U9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws2['v9'].border=Border(right=Side(border_style=BORDER_MEDIUM),top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['V9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['W9'].border=Border(right=Side(border_style=BORDER_MEDIUM),top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
 
     ws2['A61'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws2['B61'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
