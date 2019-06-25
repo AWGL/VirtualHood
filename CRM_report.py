@@ -538,7 +538,7 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
         row3=row3+1
 
 
-    #Fill the conclusion columns using the relevant column in the Poly and Artefact spreadsheet
+    #Match variants to the variants list to determine what its classification was before
     num_rows_variant_spreadsheet=variant_spreadsheet.shape[0]
     row1=0
     while (row1<num_rows_variant_report):
@@ -759,6 +759,7 @@ def add_excel_formulae():
     ws6['C29']= "Regions"               
     ws6['D29'] = "% bases"
     ws6['E29']= "Hotspots.gaps"
+    ws6['G29']= "Comments"
 
     ws6['A30']= "='SUBPANEL NTC CHECK'!A2"
     ws6['A31']= "='SUBPANEL NTC CHECK'!A3"
@@ -839,7 +840,7 @@ def add_excel_formulae():
     ws6['D29'].fill= PatternFill("solid", fgColor="FFBB00")
     ws6['E29'].fill= PatternFill("solid", fgColor="FFBB00")
     ws6['F29'].fill= PatternFill("solid", fgColor="FFBB00")
-
+    ws6['G29'].fill= PatternFill("solid", fgColor="FFBB00")
 
     ws6['A1']=sampleid
     ws6['C1']='Patient Analysis Summary Sheet-CRM'
@@ -1007,7 +1008,7 @@ def add_excel_formulae():
     ws6['D29'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['E29'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['F29'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-
+    ws6['G29'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
 
     ws6['A13'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B13'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
@@ -1232,7 +1233,7 @@ def add_excel_formulae():
     ws6['E41'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['E42'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['E43'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['E44'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['E44'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_MEDIUM))
 
 
     ws6['F30'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
@@ -1249,8 +1250,23 @@ def add_excel_formulae():
     ws6['F41'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['F42'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['F43'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['F44'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['F44'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_MEDIUM))
 
+    ws6['G30'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G31'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G32'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G33'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G34'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G35'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G36'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G37'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G38'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G39'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G40'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G41'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G42'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G43'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G44'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_MEDIUM))
 
     ws6['A4'].font= Font(bold=True)
     ws6['B4'].font= Font(bold=True)
