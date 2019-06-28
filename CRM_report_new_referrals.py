@@ -381,11 +381,11 @@ def get_NTC_hotspots_coverage_file(referral, path):
     Open the relevant NTC hotspots coverage file.
     '''
        
-    if(os.stat(path+ "NTC-CRM/hotspot_coverage/"+runid+"_"+NTC_name+"_"+referral+".coverage").st_size==0):
+    if(os.stat(path+ NTC_name+"/hotspot_coverage/"+runid+"_"+NTC_name+"_"+referral+".coverage").st_size==0):
         data= [{'CHR':'NA', 'START':'NA', 'END':'NA', 'META':'NA', 'AVG_DEPTH':'NA', 'PERC_COVERAGE@250':'NA'}]
         NTC_check=pandas.DataFrame(data)
-    if (os.stat(path+ "NTC-CRM/hotspot_coverage/"+runid+"_"+NTC_name+"_"+referral+".coverage").st_size!=0):
-        NTC_check=pandas.read_csv(path+ "NTC-CRM/hotspot_coverage/"+runid+"_"+NTC_name+"_"+referral+".coverage", sep="\t")
+    if (os.stat(path+ NTC_name+"/hotspot_coverage/"+runid+"_"+NTC_name+"_"+referral+".coverage").st_size!=0):
+        NTC_check=pandas.read_csv(path+ NTC_name+"/hotspot_coverage/"+runid+"_"+NTC_name+"_"+referral+".coverage", sep="\t")
     
     return(NTC_check)
 
