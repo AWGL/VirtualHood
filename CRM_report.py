@@ -317,7 +317,7 @@ def get_gaps_file(referral, path, sampleid):
     hotspot_variants=referral
     #open the relevant bed files (ready for screening gaps tab)
     if (hotspot_variants=='GIST'):
-        if((os.path.getsize(path+ sampleid+ "/hotspot_coverage/"+runid+"_"+sampleid+"_KIT_gaps.bed")==0) and (os.path.getsize(path+ sampleid+ "/hotspot_coverage/"+runid+"_"+sampleid+"_PDGFRA.gaps")==0)):
+        if((os.path.getsize(path+ sampleid+ "/hotspot_coverage/"+runid+"_"+sampleid+"_KIT.gaps")==0) and (os.path.getsize(path+ sampleid+ "/hotspot_coverage/"+runid+"_"+sampleid+"_PDGFRA.gaps")==0)):
             ws5['A1']= 'No gaps'
         if (os.path.getsize(path+ sampleid+ "/hotspot_coverage/"+runid+"_"+sampleid+"_KIT.gaps")>0):
             bedfile_KIT=pandas.read_csv(path+ sampleid+ "/hotspot_coverage/"+runid+"_"+sampleid+"_KIT.gaps", sep="\t")
