@@ -294,8 +294,11 @@ def expand_variant_report(variant_report_4, variant_report_NTC_4):
     variant_report_4["Conclusion 2nd checker"]=""
     variant_report_4["QC "]=""
     variant_report_4[""]=""
-    variant_report_4["Variant classification if seen before"]=""
-
+    
+    if (referral=="FOCUS4"):
+        variant_report_4["Variant classification if seen before"]=""
+    else:
+        variant_report_4[""]=""
 
     variant_report_4["Detection threshold based on depth"]=detection_threshold
     variant_report_4["Is variant present in NTC "]=variant_in_NTC
@@ -307,8 +310,8 @@ def expand_variant_report(variant_report_4, variant_report_NTC_4):
 
 
 def get_gaps_file(referral, path, sampleid):
- 
-    '''
+    
+    ''' 
     Open the relevant gap file to append to the end of the mutations and snps tab. If the gap file is empty, write 'no gaps'.
     '''
     hotspot_variants=referral
@@ -487,8 +490,8 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
     '''
 
     poly_artefact_dict={}
-    poly_and_Artefact_list_2=pandas.read_excel("/data/temp/artefacts_lists/Pan_Poly_and_Artefact_list.xlsx")
-    variant_spreadsheet=pandas.read_excel("FOCUS_4_Variants.xlsx",sheet_name="Variants")
+    poly_and_Artefact_list_2=pandas.read_excel("/data/temp/artefacts_lists/CRM_poly_artefact_list.xlsx")
+    variant_spreadsheet=pandas.read_excel("/data/temp/artefacts_lists/FOCUS_4_Variants.xlsx",sheet_name="Variants")
 
     num_rows_variant_report=variant_report_4.shape[0]
     num_rows_poly_artefact=poly_and_Artefact_list_2.shape[0]
@@ -537,17 +540,18 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
 														
         row3=row3+1
 
-
+    
     #Match variants to the variants list to determine what its classification was before
-    num_rows_variant_spreadsheet=variant_spreadsheet.shape[0]
-    row1=0
-    while (row1<num_rows_variant_report):
-        row2=0
-        while(row2<num_rows_variant_spreadsheet):
-            if (variant_spreadsheet.iloc[row2,11]==variant_report_4.iloc[row1,9]):
-                variant_report_4.iloc[row1,16]= variant_spreadsheet.iloc[row2,12]
-            row2=row2+1
-        row1=row1+1
+    if (referral=="FOCUS4"):
+        num_rows_variant_spreadsheet=variant_spreadsheet.shape[0]
+        row1=0
+        while (row1<num_rows_variant_report):
+            row2=0
+            while(row2<num_rows_variant_spreadsheet):
+                if (variant_spreadsheet.iloc[row2,11]==variant_report_4.iloc[row1,9]):
+                    variant_report_4.iloc[row1,16]= variant_spreadsheet.iloc[row2,12]
+                row2=row2+1
+            row1=row1+1
 
 
 
