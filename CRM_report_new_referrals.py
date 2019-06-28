@@ -152,9 +152,9 @@ def get_variantReport_NTC(referral, path):
     Fill out the NTC variants tab using the relevant variant report
     '''
 
-    if(os.stat(path+"NTC-CRM/hotspot_variants/"+runid+"_NTC-CRM_"+referral+"_VariantReport.txt").st_size!=0):
-        variant_report_NTC=pandas.read_csv(path+"NTC-CRM/hotspot_variants/"+runid+"_NTC-CRM_"+referral+"_VariantReport.txt", sep="\t")
-        ws6['A9']=(path+"NTC-CRM/hotspot_variants/"+runid+"_NTC-CRM_"+referral+"_VariantReport.txt")
+    if(os.stat(path+NTC_name+"/hotspot_variants/"+runid+"_"+NTC_name+"_"+referral+"_VariantReport.txt").st_size!=0):
+        variant_report_NTC=pandas.read_csv(path+NTC_name+"/hotspot_variants/"+runid+"_"+NTC_name+"_"+referral+"_VariantReport.txt", sep="\t")
+        ws6['A9']=(path+NTC_name+"/hotspot_variants/"+runid+"_"+NTC_name+"_"+referral+"_VariantReport.txt")
     else:
         variant_report_NTC=pandas.DataFrame(columns=["SampleID", "Variant", "Filter", "Frequency", "Depth", "Genotype", "Quality", "Classification", "Preferred","dbSNP", "Cosmic", "HGMD", "ExAC_African","ExAC_American", "ExAC_EuropeanNonFinnish", "ExAC_Finnish", "ExAC_EastAsian", "ExAC_SouthAsian", "ExAC_Other", "1KG_African", "1KG_American","1KG_European", "1KG_EastAsian", "1KG_SouthAsian", "Gene", "Transcript", "HGVSc", "HGVSp", "Consequence", "INTRON", "EXON", "SIFT", "PolyPhen"])
  
@@ -381,11 +381,11 @@ def get_NTC_hotspots_coverage_file(referral, path):
     Open the relevant NTC hotspots coverage file.
     '''
        
-    if(os.stat(path+ "NTC-CRM/hotspot_coverage/"+runid+"_NTC-CRM_"+referral+".coverage").st_size==0):
+    if(os.stat(path+ "NTC-CRM/hotspot_coverage/"+runid+"_"+NTC_name+"_"+referral+".coverage").st_size==0):
         data= [{'CHR':'NA', 'START':'NA', 'END':'NA', 'META':'NA', 'AVG_DEPTH':'NA', 'PERC_COVERAGE@250':'NA'}]
         NTC_check=pandas.DataFrame(data)
-    if (os.stat(path+ "NTC-CRM/hotspot_coverage/"+runid+"_NTC-CRM_"+referral+".coverage").st_size!=0):
-        NTC_check=pandas.read_csv(path+ "NTC-CRM/hotspot_coverage/"+runid+"_NTC-CRM_"+referral+".coverage", sep="\t")
+    if (os.stat(path+ "NTC-CRM/hotspot_coverage/"+runid+"_"+NTC_name+"_"+referral+".coverage").st_size!=0):
+        NTC_check=pandas.read_csv(path+ "NTC-CRM/hotspot_coverage/"+runid+"_"+NTC_name+"_"+referral+".coverage", sep="\t")
     
     return(NTC_check)
 
@@ -1336,6 +1336,7 @@ if __name__ == "__main__":
     sampleid=sys.argv[2]
     worksheet=sys.argv[3]
     referral=sys.argv[4]
+    NTC_name=sys.argv[5]    
 
     print(runid)
     print(sampleid)
