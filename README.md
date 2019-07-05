@@ -23,15 +23,14 @@ Additional requirements include:
 * poly and artefacts list in /home/transfer/pipelines/VirtualHood
 
 
-### To run:
+## For the CRM pipeline:
 
 
 ```
-referral=(grep "referral" <variablesfile> | cut -d "=" -f2);
 
 source /home/transfer/miniconda3/bin/activate VirtualHood
 
-python CRM_report.py $seqId $sample $worksheet $referral $path
+python CRM_report.py <seqId> <sampleid> <worksheet> <referral> <path> <poly_list>
 
 source /home/transfer/miniconda3/bin/deactivate
 ```
@@ -40,7 +39,9 @@ source /home/transfer/miniconda3/bin/deactivate
 
 ## For the panCancer pipeline:
 
-python panCancer_report.py $seqId $sample $worksheet $referral coverage
+source /home/transfer/miniconda3/bin/activate VirtualHood
+
+python panCancer_report.py <seqId> <sampleid> <worksheet> <referral> <coverage>
 
 source /home/transfer/miniconda3/bin/deactivate
 ```
