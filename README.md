@@ -40,14 +40,8 @@ source /home/transfer/miniconda3/bin/deactivate
 
 ## For the panCancer pipeline:
 
-### To run:
-
-```
-referral=(grep "referral" <variablesfile> | cut -d "=" -f2);
-
-source /home/transfer/miniconda3/bin/activate VirtualHood
-
 python panCancer_report.py $seqId $sample $worksheet $referral coverage
 
 source /home/transfer/miniconda3/bin/deactivate
 ```
+
