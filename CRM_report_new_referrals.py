@@ -1349,7 +1349,7 @@ if __name__ == "__main__":
     referral=referral.upper()
     if referral=="COLORECTAL":
         referral="Colorectal"
-    if referral=="GLIOMA":
+    elif referral=="GLIOMA":
         referral="Glioma"
     elif referral=="LUNG":
         referral="Lung"
