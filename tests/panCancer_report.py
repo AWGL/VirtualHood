@@ -228,7 +228,6 @@ def add_extra_columns_NTC_report(variant_report_NTC_4, variant_report_4):
     '''
 
 
-
     num_rows_NTC=variant_report_NTC_4.shape[0]
     num_rows_variant_report=variant_report_4.shape[0]
 
@@ -251,6 +250,9 @@ def add_extra_columns_NTC_report(variant_report_NTC_4, variant_report_4):
     row=0
     num_rows_NTC=variant_report_NTC_4.shape[0]
     while (row<num_rows_NTC):
+        variant_report_NTC_4.iloc[row,4]=variant_report_NTC_4.iloc[row,4].strip('%')
+        variant_report_NTC_4.iloc[row,4]=float(variant_report_NTC_4.iloc[row,4])
+        variant_report_NTC_4.iloc[row,4]= variant_report_NTC_4.iloc[row,4]/100
         variant_report_NTC_4.iloc[row,6]=int(variant_report_NTC_4.iloc[row,6])
         allele_call= variant_report_NTC_4.iloc[row,4]*variant_report_NTC_4.iloc[row,6]
         variant_allele_calls.append(allele_call)
@@ -281,6 +283,9 @@ def expand_variant_report(variant_report_4, variant_report_NTC_4):
 
 
     while (row<num_rows_variant_report):
+        variant_report_4.iloc[row,4]=variant_report_4.iloc[row,4].strip('%')
+        variant_report_4.iloc[row,4]=float(variant_report_4.iloc[row,4])
+        variant_report_4.iloc[row,4]= variant_report_4.iloc[row,4]/100
         variant_report_4.iloc[row,6]= int(variant_report_4.iloc[row,6])
         if (variant_report_4.iloc[row,6]<=250):
             value_2= variant_report_4.iloc[row,4]*variant_report_4.iloc[row,6]
@@ -307,7 +312,6 @@ def expand_variant_report(variant_report_4, variant_report_NTC_4):
 
     variant_report_4["Detection threshold based on depth"]=detection_threshold
     variant_report_4["Is variant present in NTC "]=variant_in_NTC
-
 
     return (variant_report_4)
 
@@ -685,8 +689,6 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
 
     while (row<num_rows_variant_report):
         if variant_report_4.iloc[row,16]=="YES":
-            variant_report_4.iloc[row,6]=float(variant_report_4.iloc[row,6])
-            variant_report_4.iloc[row,4]=float(variant_report_4.iloc[row,4])
             value2= variant_report_4.iloc[row,4]*variant_report_4.iloc[row,6]
             variant_report_4.iloc[row,17]=value2
         row2=0
@@ -699,6 +701,7 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
 
 
     #Add upper-limit and lower-limit variant report dataframes to the excel workbook
+
     
     variant_report_4_upper_limit=variant_report_4[variant_report_4.Frequency>0.045]
 

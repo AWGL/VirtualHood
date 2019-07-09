@@ -17,7 +17,6 @@ ws4= wb.create_sheet("Sheet_4")
 ws5= wb.create_sheet("Sheet_5")
 ws6= wb.create_sheet("Sheet_6")
 ws7= wb.create_sheet("Sheet_7")
-ws8= wb.create_sheet("Sheet_8")
 ws10= wb.create_sheet("Sheet_10")
 
 #name the tabs
@@ -27,7 +26,6 @@ ws4.title="Mutations and SNPs"
 ws5.title="hotspots.gaps"
 ws6.title="Report"
 ws7.title="NTC variant"
-ws8.title="hotspot_cnvs"
 ws9.title="Subpanel NTC check"
 ws10.title="Subpanel coverage"
 
@@ -36,33 +34,20 @@ ws10.title="Subpanel coverage"
 ws6.page_setup.orientation=ws6.ORIENTATION_LANDSCAPE
 ws6.page_setup.paperSize=ws6.PAPERSIZE_A4
 
-
-#Patient demographics tab table headers
+#Add titles to patient demographics tab
 ws1['A1']='Date Received'
-ws1['B1']='Date Requested'
-ws1['C1']='Due Date'
-ws1['D1']='LABNO'
-ws1['E1']='Patient name'
-ws1['F1']='DOB'
-ws1['G1']='Reason for referral'
-ws1['H1']='Referring Clinician'
-ws1['I1']='Hospital'
-ws1['J1']='Date reported'
-ws1['K1']='TAT'
-ws1['L1']='No of days in histo'
-ws1['M1']='Block/Slide/DNA'
-ws1['N1']='% Tumour'
-ws1['O1']='Result'
-ws1['P1']='NGS Worksheet'
-ws1['Q1']='Qubit DNA conc. (ng/ul)'
-ws1['R1']='Qubit Dilution (ug/ul)'
-ws1['S1']='Post PCR1 Qubit'
-ws1['T1']='Average bp'
-ws1['U1']='Average molarity(nM)'
-ws1['V1']='Date of NextSeq run'
-ws1['W1']='NextSeq run ID'
-ws1['X1']='Comments'
-
+ws1['B1']='LAB No'
+ws1['C1']='Name'
+ws1['D1']='Tumour %'
+ws1['E1']='Analysis'
+ws1['F1']='Panel run'
+ws1['G1']='Qubit [DNA] ng/ul'
+ws1['H1']='Dilution (ng/ul)'
+ws1['I1']='NGS wks'
+ws1['J1']='Date Set up'
+ws1['K1']='Date of MiSeq run'
+ws1['L1']='Library ng/ul'
+ws1['M1']='Library nM'
 
 #variant calls table headers
 ws2['B3']='DNA number'
@@ -74,8 +59,8 @@ ws2['E6']='NTC check 2'
 ws2['G3']='1st checker name & date'
 ws2['G6']='2nd checker name & date'
 
-ws2['K3']='Pan Cancer worksheet'
-ws2['K6']='Analysis pipeline:Roche_PanCancer'
+ws2['K3']='CRM worksheet'
+ws2['K6']='Analysis pipeline:CRM'
 ws2['A8']=" "
 
 ws2['I3']= "% Tumour"
@@ -105,15 +90,20 @@ ws6['C4']='Tumour %'
 ws6['D4']='Analysis'
 ws6['E4']='Qubit[DNA] ng/ul'
 ws6['F4']='Dilution (ng/ul)'
-ws6['G4']='Post PCR1 Qubit'
-ws6['H4']='Average bp'
-ws6['I4']='Due date'
+ws6['G4']='Analysed by:'
+ws6['H4']='Checked by:'
 
+
+ws6['E7']='NGS wks'
+ws6['F7']='Date set up'
+ws6['G7']='Date of MiSeq run'
+ws6['H7']='Library ng/ul(Qubit)'
+ws6['I7']='Library nm'
+ws6['J7']='NTC check 1'
+ws6['K7']='NTC check 2'
 ws6['E7']='NGS wks'
 ws6['F7']='Average molarity(nM)'
 ws6['G7']='NextSeq run ID'
-ws6['H7']='NTC check 1'
-ws6['I7']='NTC check 2'
 
 ws6['A4'].fill= PatternFill("solid", fgColor="00CCFFFF")
 ws6['B4'].fill= PatternFill("solid", fgColor="00CCFFFF")
@@ -123,12 +113,14 @@ ws6['E4'].fill= PatternFill("solid", fgColor="00CCFFFF")
 ws6['F4'].fill= PatternFill("solid", fgColor="00CCFFFF")
 ws6['G4'].fill= PatternFill("solid", fgColor="00CCFFFF")
 ws6['H4'].fill= PatternFill("solid", fgColor="00CCFFFF")
-ws6['I4'].fill= PatternFill("solid", fgColor="00CCFFFF")
 ws6['E7'].fill= PatternFill("solid", fgColor="00CCFFFF")
 ws6['F7'].fill= PatternFill("solid", fgColor="00CCFFFF")
 ws6['G7'].fill= PatternFill("solid", fgColor="00CCFFFF")
 ws6['H7'].fill= PatternFill("solid", fgColor="00CCFFFF")
 ws6['I7'].fill= PatternFill("solid", fgColor="00CCFFFF")
+ws6['J7'].fill= PatternFill("solid", fgColor="00CCFFFF")
+ws6['K7'].fill= PatternFill("solid", fgColor="00CCFFFF")
+
 
 ws6['H46'].fill= PatternFill("solid", fgColor="00CCFFFF")
 ws6['H47'].fill= PatternFill("solid", fgColor="00CCFFFF")
@@ -160,9 +152,9 @@ def get_variantReport_NTC(referral, path):
     Fill out the NTC variants tab using the relevant variant report
     '''
 
-    if(os.stat(path+"NTC/hotspot_variants/NTC_"+referral+"_VariantReport.txt").st_size!=0):
-        variant_report_NTC=pandas.read_csv(path+"NTC/hotspot_variants/NTC_"+referral+"_VariantReport.txt", sep="\t")
-        ws6['A9']=(path+"NTC/hotspot_variants/NTC_"+referral+"_VariantReport.txt")
+    if(os.stat(path+NTC_name+"/hotspot_variants/"+runid+"_"+NTC_name+"_"+referral+"_VariantReport.txt").st_size!=0):
+        variant_report_NTC=pandas.read_csv(path+NTC_name+"/hotspot_variants/"+runid+"_"+NTC_name+"_"+referral+"_VariantReport.txt", sep="\t")
+        ws6['A9']=(path+NTC_name+"/hotspot_variants/"+runid+"_"+NTC_name+"_"+referral+"_VariantReport.txt")
     else:
         variant_report_NTC=pandas.DataFrame(columns=["SampleID", "Variant", "Filter", "Frequency", "Depth", "Genotype", "Quality", "Classification", "Preferred","dbSNP", "Cosmic", "HGMD", "ExAC_African","ExAC_American", "ExAC_EuropeanNonFinnish", "ExAC_Finnish", "ExAC_EastAsian", "ExAC_SouthAsian", "ExAC_Other", "1KG_African", "1KG_American","1KG_European", "1KG_EastAsian", "1KG_SouthAsian", "Gene", "Transcript", "HGVSc", "HGVSp", "Consequence", "INTRON", "EXON", "SIFT", "PolyPhen"])
  
@@ -171,7 +163,7 @@ def get_variantReport_NTC(referral, path):
 
     #Sort by preferred transcript and filter columns
     variant_report_NTC_3=variant_report_NTC_2[variant_report_NTC_2.Preferred!=False]
-    variant_report_NTC_4= variant_report_NTC_3.iloc[:,[24,30,26,27,3,6,4,7,25,1]]
+    variant_report_NTC_4= variant_report_NTC_3.iloc[:,[23,29,25,26,2,5,3,6,24,1]]
 
     return (variant_report_NTC_4)
 
@@ -184,8 +176,8 @@ def get_variant_report(referral, path, sampleid):
     Open the relevant variant file to append to the variant calls tab.
     '''
 
-    if(os.stat(path+ sampleid +"/hotspot_variants/"+sampleid+"_"+referral+"_VariantReport.txt").st_size!=0):
-        variant_report=pandas.read_csv(path+sampleid+"/hotspot_variants/" +sampleid+"_"+referral+"_VariantReport.txt", sep="\t")
+    if(os.stat(path+ sampleid +"/hotspot_variants/"+runid+"_"+sampleid+"_"+referral+"_VariantReport.txt").st_size!=0):
+        variant_report=pandas.read_csv(path+sampleid+"/hotspot_variants/"+runid+"_" +sampleid+"_"+referral+"_VariantReport.txt", sep="\t")
         ws6['A9']=(sampleid+"_"+referral+"_VariantReport.txt")
     else:
         variant_report=pandas.DataFrame(columns=["SampleID", "Variant", "Filter", "Frequency", "Depth", "Genotype", "Quality", "Classification", "Preferred", "dbSNP", "Cosmic", "HGMD", "ExAC_African","ExAC_American", "ExAC_EuropeanNonFinnish", "ExAC_Finnish", "ExAC_EastAsian", "ExAC_SouthAsian", "ExAC_Other", "1KG_African", "1KG_American","1KG_European", "1KG_EastAsian", "1KG_SouthAsian", "Gene", "Transcript", "HGVSc", "HGVSp", "Consequence", "INTRON", "EXON", "SIFT", "PolyPhen"])
@@ -194,8 +186,7 @@ def get_variant_report(referral, path, sampleid):
     #sort dataframe by preferred transcript an filter out certain columns
     variant_report_2=pandas.DataFrame(variant_report)
     variant_report_3=variant_report_2[variant_report_2.Preferred!=False]
-    variant_report_4= variant_report_3.iloc[:,[24,30,26,27,3,6,4,7,25,1]]
-    
+    variant_report_4= variant_report_3.iloc[:,[23,29,25,26,2,5,3,6,24,1]]    
     
     #Add position column in variant calls tab by splitting the variant column 
     variant_list=[]    
@@ -226,8 +217,6 @@ def add_extra_columns_NTC_report(variant_report_NTC_4, variant_report_4):
     '''
     Add 'Present in sample' and 'variant allele calls' columns to NTC variant table
     '''
-
-
 
     num_rows_NTC=variant_report_NTC_4.shape[0]
     num_rows_variant_report=variant_report_4.shape[0]
@@ -282,7 +271,7 @@ def expand_variant_report(variant_report_4, variant_report_NTC_4):
 
     while (row<num_rows_variant_report):
         variant_report_4.iloc[row,6]= int(variant_report_4.iloc[row,6])
-        if (variant_report_4.iloc[row,6]<=250):
+        if (variant_report_4.iloc[row,6]<=500):
             value_2= variant_report_4.iloc[row,4]*variant_report_4.iloc[row,6]
             value_2=str(value_2)
         else:
@@ -314,39 +303,19 @@ def expand_variant_report(variant_report_4, variant_report_NTC_4):
 
 
 
-def get_gaps_file(referral, path, sampleid, coverage_value):
+def get_gaps_file(referral, path, sampleid):
  
     '''
     Open the relevant gap file to append to the end of the mutations and snps tab. If the gap file is empty, write 'no gaps'.
     '''
 
-    if(os.stat(path+sampleid+"/hotspot_coverage_"+coverage_value+"/" +sampleid+"_"+referral+"_hotspots.gaps").st_size==0):
+    if(os.stat(path+sampleid+"/hotspot_coverage/"+runid+"_" +sampleid+"_"+referral+".gaps").st_size==0):
         ws5['A1']= 'No gaps'
-        bedfile=""
-    if (os.stat(path+sampleid+"/hotspot_coverage_"+coverage_value+"/" +sampleid+"_"+referral+"_hotspots.gaps").st_size!=0):
-        bedfile=pandas.read_csv(path+ sampleid+"/hotspot_coverage_"+coverage_value+"/" +sampleid+"_"+referral+"_hotspots.gaps", sep="\t")
-        for row in dataframe_to_rows(bedfile, header=True, index=False):
+        gaps=""
+    if (os.stat(path+sampleid+"/hotspot_coverage/"+runid+"_" +sampleid+"_"+referral+".gaps").st_size!=0):
+        gaps=pandas.read_csv(path+ sampleid+"/hotspot_coverage/"+runid+"_" +sampleid+"_"+referral+".gaps", sep="\t")
+        for row in dataframe_to_rows(gaps, header=True, index=False):
             ws5.append(row)
-
-    return (bedfile)
-
-
-
-
-def get_CNV_file(referral, path, sampleid):
- 
-    '''
-    Open the relevant CNV file to append to the end of the mutations and snps tab. If the CNV file is empty, write 'No CNVs'.
-    '''
-
-    if(os.stat(path+ sampleid+"/hotspot_cnvs/"+ sampleid+"_"+referral).st_size==0):
-        ws8['A1']= 'No CNVs'
-    if (os.stat(path+ sampleid+"/hotspot_cnvs/"+sampleid+"_"+referral).st_size!=0):
-        gaps=pandas.read_csv(path+sampleid+"/hotspot_cnvs/"+sampleid+"_"+referral, sep="\t")
-       
-    for row in dataframe_to_rows(gaps, header=True, index=False):
-        ws8.append(row)
-
 
 
     ws6['C30']="=hotspots.gaps!D1"
@@ -377,9 +346,6 @@ def get_CNV_file(referral, path, sampleid):
     ws6['D41']="=hotspots.gaps!D25"
     ws6['D42']="=hotspots.gaps!D26"
 
-    ws6['E30']="Gene"
-    ws6['F30']="Chromosome"
-    ws6['G30']="log2"
 
     ws6['H46']="Analysed by:"
     ws6['H47']="Checked by:"
@@ -390,16 +356,16 @@ def get_CNV_file(referral, path, sampleid):
 
 
 
-def get_hotspots_coverage_file(referral, path, sampleid, coverage_value):
+def get_hotspots_coverage_file(referral, path, sampleid):
 
     '''
     Open the relevant coverage file to append to the end of the mutations and snps tab. If the coverage file is empty, write 'No hotspots'.
     '''
 
-    if(os.stat(path+sampleid+"/hotspot_coverage_"+coverage_value+"/"+sampleid+"_"+referral+"_hotspots.coverage").st_size==0):
+    if(os.stat(path+sampleid+"/hotspot_coverage/"+runid+"_"+sampleid+"_"+referral+".coverage").st_size==0):
         ws9['A1']= 'No hotspots'
-    if (os.stat(path+ sampleid+"/hotspot_coverage_"+coverage_value+"/"+sampleid+"_"+referral+"_hotspots.coverage").st_size!=0):
-        Coverage=pandas.read_csv(path+ sampleid+"/hotspot_coverage_"+coverage_value+"/"+sampleid+"_"+referral+"_hotspots.coverage", sep="\t")
+    if (os.stat(path+ sampleid+"/hotspot_coverage/"+runid+"_"+sampleid+"_"+referral+".coverage").st_size!=0):
+        Coverage=pandas.read_csv(path+ sampleid+"/hotspot_coverage/"+runid+"_"+sampleid+"_"+referral+".coverage", sep="\t")
       
 
     Coverage= Coverage.iloc[:,[3,4,5]]
@@ -409,17 +375,17 @@ def get_hotspots_coverage_file(referral, path, sampleid, coverage_value):
 
 
 
-def get_NTC_hotspots_coverage_file(referral, path, coverage_value):
+def get_NTC_hotspots_coverage_file(referral, path):
 
     '''
     Open the relevant NTC hotspots coverage file.
     '''
        
-    if(os.stat(path+ "NTC/hotspot_coverage_"+coverage_value+"/NTC_"+referral+"_hotspots.coverage").st_size==0):
+    if(os.stat(path+ NTC_name+"/hotspot_coverage/"+runid+"_"+NTC_name+"_"+referral+".coverage").st_size==0):
         data= [{'CHR':'NA', 'START':'NA', 'END':'NA', 'META':'NA', 'AVG_DEPTH':'NA', 'PERC_COVERAGE@250':'NA'}]
         NTC_check=pandas.DataFrame(data)
-    if (os.stat(path+ "NTC/hotspot_coverage_"+coverage_value+"/NTC_"+referral+"_hotspots.coverage").st_size!=0):
-        NTC_check=pandas.read_csv(path+ "NTC/hotspot_coverage_"+coverage_value+"/NTC_"+referral+"_hotspots.coverage", sep="\t")
+    if (os.stat(path+ NTC_name+"/hotspot_coverage/"+runid+"_"+NTC_name+"_"+referral+".coverage").st_size!=0):
+        NTC_check=pandas.read_csv(path+ NTC_name+"/hotspot_coverage/"+runid+"_"+NTC_name+"_"+referral+".coverage", sep="\t")
     
     return(NTC_check)
 
@@ -448,7 +414,6 @@ def add_columns_hotspots_coverage(Coverage, NTC_check):
     
     Coverage['%NTC']=Coverage['NTC_AVG_Depth']/Coverage['AVG_DEPTH']
     Coverage['%NTC']= Coverage['%NTC']*100
-    Coverage['Screen Type']= "Hotspots"
 
     for row in dataframe_to_rows(Coverage, header=True, index=False):
         ws9.append(row)
@@ -460,7 +425,6 @@ def add_columns_hotspots_coverage(Coverage, NTC_check):
         row_spreadsheet_2=str(row_spreadsheet)
         if (Coverage.iloc[row,4]>10):
             ws9['E'+row_spreadsheet_2].fill= PatternFill("solid", fgColor="FFBB00")
-        ws9['F'+row_spreadsheet_2].fill= PatternFill("solid", fgColor="00CCFFFF")
         row=row+1
     
     return (Coverage, num_rows_coverage)
@@ -468,143 +432,23 @@ def add_columns_hotspots_coverage(Coverage, NTC_check):
 
 
 
-
-def get_genescreen_coverage_file(referral, path, sampleid,coverage_value):
-
-    '''
-    Open the coverage file to append to the mutations and snps tab. If the coverage file is empty, write 'No hotspots'.
-    '''
-    if(os.stat(path+sampleid+"/hotspot_coverage_"+coverage_value+"/"+sampleid+"_"+referral+"_genescreen.coverage").st_size==0):
-        ws9['A1']= 'No hotspots'
-    if (os.stat(path+ sampleid+"/hotspot_coverage_"+coverage_value+"/"+sampleid+"_"+referral+"_genescreen.coverage").st_size!=0):
-        Coverage=pandas.read_csv(path+ sampleid+"/hotspot_coverage_"+coverage_value+"/"+sampleid+"_"+referral+"_genescreen.coverage", sep="\t")
-    
-    Coverage= Coverage.iloc[:,[3,4,5]]
-
-    return(Coverage)
-
-
-
-
-def get_NTC_genescreen_coverage_file(referral, path,coverage_value):
-
-    '''
-    Open the relevant NTC  genescreen coverage file to append to the Subpanel NTC check tab.
-    '''
-    if(os.stat(path+ "/NTC/hotspot_coverage_"+coverage_value+"/NTC_"+referral+"_genescreen.coverage").st_size==0):
-        data= [{'CHR':'NA', 'START':'NA', 'END':'NA', 'META':'NA', 'AVG_DEPTH':'NA', 'PERC_COVERAGE@250':'NA'}]
-        NTC_check=pandas.DataFrame(data)
-    if (os.stat(path+ "/NTC/hotspot_coverage_"+coverage_value+"/NTC_"+referral+"_genescreen.coverage").st_size!=0):
-        NTC_check=pandas.read_csv(path+ "/NTC/hotspot_coverage_"+coverage_value+"/NTC_"+referral+"_genescreen.coverage", sep="\t")
-       
-
-    return (NTC_check)
-
-
-
-def add_columns_genescreen_coverage(Coverage, NTC_check, num_rows_coverage):
-
-    '''
-    Add NTC and subpanel columns to the Coverage table
-    '''
-
-    Coverage['NTC_AVG_Depth']=""
-    Coverage['%NTC']=""
-
-    num_rows_NTC= NTC_check.shape[0]
-    num_rows_sample= Coverage.shape[0]
-
-    row1=0
-
-    while(row1<num_rows_sample):
-        row2=0
-        while (row2<num_rows_NTC):
-            if(Coverage.iloc[row1,0] == NTC_check.iloc[row2,3]):
-                Coverage.iloc[row1,3]= NTC_check.iloc[row2,4]
-            row2=row2+1
-        row1=row1+1
-    
-   
-    
-
-    Coverage['%NTC']=Coverage['NTC_AVG_Depth']/Coverage['AVG_DEPTH']
-    Coverage['%NTC']= Coverage['%NTC']*100
- 
-   
-    Coverage['Screen Type']= "Gene screen"
-
-
-    for row in dataframe_to_rows(Coverage, header=False, index=False):
-        ws9.append(row)
-
-    num_rows_coverage_2=Coverage.shape[0]
-    num_rows_coverage_3=num_rows_coverage +num_rows_coverage_2
-
-    row =0
-    while (row< num_rows_coverage_2):
-        row_spreadsheet=row+2+num_rows_coverage
-        row_spreadsheet_2=str(row_spreadsheet)
-        if (Coverage.iloc[row,4]>10):
-            ws9['E'+row_spreadsheet_2].fill= PatternFill("solid", fgColor="FFBB00")
-        ws9['F'+row_spreadsheet_2].fill= PatternFill("solid", fgColor="009999FF")
-        row=row+1
-
-
-    return(Coverage)
-
-
-
-
-def get_subpanel_coverage(referral, path, sampleid, coverage_value):
+def get_subpanel_coverage(referral, path, sampleid):
 
     #Add coverage table
-    if(os.stat(path+sampleid+"/hotspot_coverage_"+coverage_value+"/"+sampleid+"_coverage.txt").st_size==0):
+    if(os.stat(path+sampleid+"/hotspot_coverage/"+sampleid+"_coverage.txt").st_size==0):
         ws10['A1']= 'No coverage'
         Coverage=""
         Coverage_2=""
-    if (os.stat(path+ sampleid+"/hotspot_coverage_"+coverage_value+"/"+sampleid+"_coverage.txt").st_size!=0):
-        Coverage=pandas.read_csv(path+ sampleid+"/hotspot_coverage_"+coverage_value+"/"+sampleid+"_coverage.txt", sep="\t")
+    if (os.stat(path+ sampleid+"/hotspot_coverage/"+sampleid+"_coverage.txt").st_size!=0):
+        Coverage=pandas.read_csv(path+ sampleid+"/hotspot_coverage/"+sampleid+"_coverage.txt", sep="\t")
 
         s=Coverage['FEATURE'].apply(lambda x: x.split('_'))
-        Coverage['Referral']=s.apply(lambda x:x[1])
-
+        Coverage['Referral']=s.apply(lambda x:x[5])
         Coverage_2=Coverage[Coverage.Referral==referral]
- 
+      
         for row in dataframe_to_rows(Coverage_2, header=True, index=False):
             ws10.append(row)
-
     
-
-    ws6['A30']="='Subpanel coverage'!A2"
-    ws6['A31']="='Subpanel coverage'!A3"
-    ws6['A32']= "='Subpanel coverage'!A4"
-    ws6['A33']="='Subpanel coverage'!A5"
-    ws6['A34']="='Subpanel coverage'!A6"
-    ws6['A35']="='Subpanel coverage'!A7"
-    ws6['A36']="='Subpanel coverage'!A8"
-    ws6['A37']="='Subpanel coverage'!A9"
-    ws6['A38']="='Subpanel coverage'!A10"
-    ws6['A39']="='Subpanel coverage'!A11"
-    ws6['A40']="='Subpanel coverage'!A12"
-    ws6['A41']="='Subpanel coverage'!A13"
-    ws6['A42']="='Subpanel coverage'!A14"
-    ws6['A43']="='Subpanel coverage'!A15"
-
-    ws6['B30']="='Subpanel coverage'!C2"
-    ws6['B31']="='Subpanel coverage'!C3"
-    ws6['B32']="='Subpanel coverage'!C4"
-    ws6['B33']="='Subpanel coverage'!C5"
-    ws6['B34']="='Subpanel coverage'!C6"
-    ws6['B35']="='Subpanel coverage'!C7"
-    ws6['B36']="='Subpanel coverage'!C8"
-    ws6['B37']="='Subpanel coverage'!C9"
-    ws6['B38']="='Subpanel coverage'!C10"
-    ws6['B39']="='Subpanel coverage'!C11"
-    ws6['B40']= "='Subpanel coverage'!C12"
-    ws6['B41']="='Subpanel coverage'!C13"
-    ws6['B42']="='Subpanel coverage'!C14"
-    ws6['B43']="='Subpanel coverage'!C15"
-
 
     return(Coverage_2)
 
@@ -742,7 +586,7 @@ def add_excel_formulae():
 
     #add excel formulae to the spreadsheets to enable automation after program has finished
 
-    ws2['I4']= "='Patient demographics'!N2"
+    ws2['I4']= "='Patient demographics'!D2"
      
     ws6['A13']= "='Mutations and SNPS'!B3"
     ws6['B13']= "='Mutations and SNPS'!C3"
@@ -870,13 +714,55 @@ def add_excel_formulae():
     ws6['G26']= "='Mutations and SNPS'!M16"
     ws6['H26']= "='Mutations and SNPS'!N16"
 
-    title="Percentage of bases in ROI covered to"+coverage_value
-    ws6['B29']= title
 
-    ws6['H29']="Comments"
+    ws6['A5'] = sampleid
+    ws6['B5']="='Patient demographics'!C2"
+    ws6['C5']="='Patient demographics'!D2"
+    ws6['D5']= referral
+    ws6['E5']= "='Patient demographics'!G2"
+    ws6['F5']= "='Patient demographics'!H2"
+    ws6['E8']="='Patient demographics'!I2"
+    ws6['F8']="='Patient demographics'!J2"
+    ws6['G8']="='Patient demographics'!K2"
+    ws6['H8']="='Patient demographics'!L2"
+    ws6['I8']="='Patient demographics'!M2"
+    ws6['J8']="='Variant_calls'!E4"
+    ws6['K8']="='Variant_calls'!E7"
+
+
+    ws6['A30']="='Subpanel coverage'!A2"
+    ws6['A31']="='Subpanel coverage'!A3"
+    ws6['A32']= "='Subpanel coverage'!A4"
+    ws6['A33']="='Subpanel coverage'!A5"
+    ws6['A34']="='Subpanel coverage'!A6"
+    ws6['A35']="='Subpanel coverage'!A7"
+    ws6['A36']="='Subpanel coverage'!A8"
+    ws6['A37']="='Subpanel coverage'!A9"
+    ws6['A38']="='Subpanel coverage'!A10"
+    ws6['A39']="='Subpanel coverage'!A11"
+    ws6['A40']="='Subpanel coverage'!A12"
+    ws6['A41']="='Subpanel coverage'!A13"
+    ws6['A42']="='Subpanel coverage'!A14"
+    ws6['A43']="='Subpanel coverage'!A15"
+
+    ws6['B30']="='Subpanel coverage'!C2"
+    ws6['B31']="='Subpanel coverage'!C3"
+    ws6['B32']="='Subpanel coverage'!C4"
+    ws6['B33']="='Subpanel coverage'!C5"
+    ws6['B34']="='Subpanel coverage'!C6"
+    ws6['B35']="='Subpanel coverage'!C7"
+    ws6['B36']="='Subpanel coverage'!C8"
+    ws6['B37']="='Subpanel coverage'!C9"
+    ws6['B38']="='Subpanel coverage'!C10"
+    ws6['B39']="='Subpanel coverage'!C11"
+    ws6['B40']= "='Subpanel coverage'!C12"
+    ws6['B41']="='Subpanel coverage'!C13"
+    ws6['B42']="='Subpanel coverage'!C14"
+    ws6['B43']="='Subpanel coverage'!C15"
+
+
     ws6['A29']= sampleid +"_" + referral
     ws6['C29'] = "Gaps in hotspots ROI"
-    ws6['F29']= "CNV results"
 
     ws6['A27']=sampleid
     ws6['A27'].font= Font(bold=True)
@@ -886,67 +772,18 @@ def add_excel_formulae():
     ws6['B29'].fill= PatternFill("solid", fgColor="FFBB00")
     ws6['C29'].fill= PatternFill("solid", fgColor="FFBB00")
     ws6['D29'].fill= PatternFill("solid", fgColor="FFBB00")
-    ws6['E29'].fill= PatternFill("solid", fgColor="FFBB00")
-    ws6['F29'].fill= PatternFill("solid", fgColor="FFBB00")
-    ws6['G29'].fill= PatternFill("solid", fgColor="FFBB00")
-    ws6['H29'].fill= PatternFill("solid", fgColor="FFBB00")
-
-    ws6['E31']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N2&" ")),"",hotspot_cnvs!A2)'
-    ws6['E32']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N3&" ")),"",hotspot_cnvs!A3)'
-    ws6['E33']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N4&" ")),"",hotspot_cnvs!A4)'
-    ws6['E34']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N5&" ")),"",hotspot_cnvs!A5)'
-    ws6['E35']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N6&" ")),"",hotspot_cnvs!A6)'
-    ws6['E36']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N7&" ")),"",hotspot_cnvs!A7)'
-    ws6['E37']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N8&" ")),"",hotspot_cnvs!A8)'
-    ws6['E38']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N9&" ")),"",hotspot_cnvs!A9)'
-    ws6['E39']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N10&" ")),"",hotspot_cnvs!A10)'
-
-    ws6['F31']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N2&" ")),"",hotspot_cnvs!B2)'
-    ws6['F32']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N3&" ")),"",hotspot_cnvs!B3)'
-    ws6['F33']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N4&" ")),"",hotspot_cnvs!B4)'
-    ws6['F34']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N5&" ")),"",hotspot_cnvs!B5)'
-    ws6['F35']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N6&" ")),"",hotspot_cnvs!B6)'  
-    ws6['F36']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N7&" ")),"",hotspot_cnvs!B7)'
-    ws6['F37']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N8&" ")),"",hotspot_cnvs!B8)'
-    ws6['F38']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N9&" ")),"",hotspot_cnvs!B9)'
-    ws6['F39']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N10&" ")),"",hotspot_cnvs!B10)'
-
-    ws6['G31']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N2&" ")),"",hotspot_cnvs!E2)'
-    ws6['G32']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N3&" ")),"",hotspot_cnvs!E3)'
-    ws6['G33']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N4&" ")),"",hotspot_cnvs!E4)'
-    ws6['G34']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N5&" ")),"",hotspot_cnvs!E5)'
-    ws6['G35']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N6&" ")),"",hotspot_cnvs!E6)'
-    ws6['G36']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N7&" ")),"",hotspot_cnvs!E7)'
-    ws6['G37']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N8&" ")),"",hotspot_cnvs!E8)'
-    ws6['G38']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N9&" ")),"",hotspot_cnvs!E9)'
-    ws6['G39']= '=IF(ISERR(SEARCH("Genuine"," "& hotspot_cnvs!N10&" ")),"",hotspot_cnvs!E10)'
-
 
 
     ws6['A1']=sampleid
-    ws6['C1']='Patient Analysis Summary Sheet-PanCancer'
+    ws6['C1']='Patient Analysis Summary Sheet-CRM'
 
-    ws6['A5'] = sampleid
-    ws6['B5']="='Patient demographics'!E2"
-    ws6['C5']="='Patient demographics'!N2"
-    ws6['D5']= referral
-    ws6['E5']= "='Patient demographics'!Q2"
-    ws6['F5']= "='Patient demographics'!R2"
-    ws6['G5']= "='Patient demographics'!S2"
-    ws6['H5']= "='Patient demographics'!T2"
-    ws6['I5']= "='Patient demographics'!C2"
-    ws6['E8']="='Patient demographics'!P2"
-    ws6['F8']="='Patient demographics'!U2"
-    ws6['G8']="='Patient demographics'!W2"
-    ws6['H8']= "='Subpanel NTC check'!K4"
-    ws6['I8']= "='Subpanel NTC check'!K5"
         
 
     ws9['J4']="NTC check 1"
     ws9['J5']="NTC check 2"
 
     ws2['B4']= sampleid
-    ws2['B7']="='Patient demographics'!E2"
+    ws2['B7']="='Patient demographics'!C2"
     ws2['E4']="='Subpanel NTC check'!K4"
     ws2['E7']="='Subpanel NTC check'!K5"
     ws2['K4']=worksheet
@@ -1014,16 +851,6 @@ def add_excel_formulae():
     ws1.column_dimensions['K'].width=20
     ws1.column_dimensions['L'].width=20
     ws1.column_dimensions['M'].width=20
-    ws1.column_dimensions['N'].width=20
-    ws1.column_dimensions['O'].width=20
-    ws1.column_dimensions['P'].width=20
-    ws1.column_dimensions['Q'].width=20
-    ws1.column_dimensions['R'].width=20
-    ws1.column_dimensions['S'].width=20
-    ws1.column_dimensions['T'].width=20
-    ws1.column_dimensions['U'].width=20
-    ws1.column_dimensions['V'].width=20
-    ws1.column_dimensions['W'].width=20
 
     ws7.column_dimensions['A'].width=20
     ws7.column_dimensions['B'].width=20
@@ -1053,7 +880,6 @@ def add_excel_formulae():
     ws6['F4'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['G4'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['H4'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws6['I4'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['A5'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['B5'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['C5'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
@@ -1062,19 +888,21 @@ def add_excel_formulae():
     ws6['F5'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['G5'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['H5'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws6['I5'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
 
     ws6['E7'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['F7'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['G7'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['H7'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['I7'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['J7'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['K7'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['E8'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['F8'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['G8'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['H8'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['I8'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-
+    ws6['J8'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['K8'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))  
 
     ws6['A12'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['B12'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
@@ -1090,10 +918,6 @@ def add_excel_formulae():
     ws6['B29'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['C29'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['D29'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws6['E29'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws6['F29'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws6['G29'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws6['H29'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
 
 
     ws6['A13'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
@@ -1226,96 +1050,77 @@ def add_excel_formulae():
     ws6['A30'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B30'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C30'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D30'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['H30'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D30'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
 
     ws6['A31'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B31'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C31'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D31'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['H31'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D31'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
 
     ws6['A32'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B32'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C32'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D32'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['H32'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D32'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
 
     ws6['A33'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B33'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C33'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D33'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['H33'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D33'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
 
     ws6['A34'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B34'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C34'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D34'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['H34'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D34'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
 
     ws6['A35'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B35'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C35'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D35'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['H35'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D35'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
 
     ws6['A36'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B36'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C36'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D36'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['H36'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D36'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
 
     ws6['A37'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B37'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C37'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D37'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['H37'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D37'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
 
     ws6['A38'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B38'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C38'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D38'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['H38'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D38'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
 
     ws6['A39'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B39'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C39'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D39'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['H39'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D39'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
 
     ws6['A40'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B40'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C40'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D40'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['H40'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D40'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
 
     ws6['A41'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B41'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C41'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D41'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['H41'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D41'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
 
     ws6['A42'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B42'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C42'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D42'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['H42'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D42'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
 
     ws6['A43'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B43'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C43'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D43'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['H43'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D43'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
 
     ws6['A44'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['B44'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['C44'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['D44'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_MEDIUM))
-    ws6['E44'].border=Border(bottom=Side(border_style=BORDER_MEDIUM))
-    ws6['F44'].border=Border(bottom=Side(border_style=BORDER_MEDIUM))
-    ws6['G44'].border=Border(bottom=Side(border_style=BORDER_MEDIUM))
-    ws6['H44'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_MEDIUM))
-
 
     ws6['H46'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['H47'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
@@ -1337,7 +1142,8 @@ def add_excel_formulae():
     ws6['G7'].font= Font(bold=True)
     ws6['H7'].font= Font(bold=True)
     ws6['I7'].font= Font(bold=True)
-
+    ws6['J7'].font= Font(bold=True)
+    ws6['K7'].font= Font(bold=True)
 
     ws6['A1'].font= Font(bold=True)
     ws6['C1'].font= Font(bold=True)
@@ -1355,8 +1161,6 @@ def add_excel_formulae():
     ws6['A1'].border=Border(left=Side(border_style=BORDER_THICK), right=Side(border_style=BORDER_THICK), top=Side(border_style=BORDER_THICK), bottom=Side(border_style=BORDER_THICK))
     ws6['C1'].border=Border(left=Side(border_style=BORDER_THICK), right=Side(border_style=BORDER_THICK), top=Side(border_style=BORDER_THICK), bottom=Side(border_style=BORDER_THICK))
 
-
-
     ws1['A1'].fill= PatternFill("solid", fgColor="DCDCDC")
     ws1['B1'].fill= PatternFill("solid", fgColor="DCDCDC")
     ws1['C1'].fill= PatternFill("solid", fgColor="DCDCDC")
@@ -1370,17 +1174,6 @@ def add_excel_formulae():
     ws1['K1'].fill= PatternFill("solid", fgColor="DCDCDC")
     ws1['L1'].fill= PatternFill("solid", fgColor="DCDCDC")
     ws1['M1'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws1['N1'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws1['O1'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws1['P1'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws1['Q1'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws1['R1'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws1['S1'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws1['T1'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws1['U1'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws1['V1'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws1['W1'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws1['X1'].fill= PatternFill("solid", fgColor="DCDCDC")
 
 
     ws1['A1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
@@ -1396,18 +1189,6 @@ def add_excel_formulae():
     ws1['K1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws1['L1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws1['M1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws1['N1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws1['O1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws1['P1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws1['Q1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws1['R1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws1['S1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws1['T1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws1['U1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws1['V1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws1['W1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws1['X1'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-
 
     ws1['A1'].font= Font(bold=True)
     ws1['B1'].font= Font(bold=True)
@@ -1422,17 +1203,6 @@ def add_excel_formulae():
     ws1['K1'].font= Font(bold=True)
     ws1['L1'].font= Font(bold=True)
     ws1['M1'].font= Font(bold=True)
-    ws1['N1'].font= Font(bold=True)
-    ws1['O1'].font= Font(bold=True)
-    ws1['P1'].font= Font(bold=True)
-    ws1['Q1'].font= Font(bold=True)
-    ws1['R1'].font= Font(bold=True)
-    ws1['S1'].font= Font(bold=True)
-    ws1['T1'].font= Font(bold=True)
-    ws1['U1'].font= Font(bold=True)
-    ws1['V1'].font= Font(bold=True)
-    ws1['W1'].font= Font(bold=True)
-    ws1['X1'].font= Font(bold=True)
 
     ws2['U9']= "Y/N"
  
@@ -1480,7 +1250,6 @@ def add_excel_formulae():
     ws2['T9'].font= Font(bold=True)
     ws2['U9'].font= Font(bold=True)
 
-
     ws2['B3'].font= Font(bold=True)
     ws2['B6'].font= Font(bold=True)
     ws2['E3'].font= Font(bold=True)
@@ -1496,12 +1265,10 @@ def add_excel_formulae():
     ws2['C61'].fill= PatternFill("solid", fgColor="DCDCDC")
     ws2['D61'].fill= PatternFill("solid", fgColor="DCDCDC")
 
-
     ws2['A61'].font= Font(bold=True)
     ws2['B61'].font= Font(bold=True)
     ws2['C61'].font= Font(bold=True)
     ws2['D61'].font= Font(bold=True)
-
 
     ws2['A9'].border=Border(left=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws2['B9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
@@ -1557,8 +1324,7 @@ def add_excel_formulae():
     ws7['K1'].font= Font(bold=True)
     ws7['L1'].font= Font(bold=True)
 
-
-    wb.save(path+sampleid+'_'+referral+'_panCancer_'+coverage_value+'.xlsx')
+    wb.save(path+sampleid+'_'+referral+'_CRM.xlsx')
 
 
 
@@ -1570,45 +1336,32 @@ if __name__ == "__main__":
     sampleid=sys.argv[2]
     worksheet=sys.argv[3]
     referral=sys.argv[4]
-    coverage_value=sys.argv[5]
+    NTC_name=sys.argv[5]    
 
     print(runid)
     print(sampleid)
     print(worksheet)
     print(referral)
-    print(coverage_value)
 
-    path="/data/results/"+runid + "/RochePanCancer/"
+    path="/data/results/"+runid + "/NGHS-101X/"
 
 
     referral=referral.upper()
-    if referral=="BREAST":
-        referral="Breast"
-    elif referral=="COLORECTAL":
+    if referral=="COLORECTAL":
         referral="Colorectal"
-    elif referral=="GIST":
-        referral="GIST"
     elif referral=="GLIOMA":
         referral="Glioma"
-    elif referral=="HEADANDNECK":
-        referral="HeadAndNeck"
     elif referral=="LUNG":
         referral="Lung"
     elif referral=="MELANOMA":
         referral="Melanoma"
-    elif referral=="OVARIAN":
-        referral="Ovarian"
-    elif referral=="PROSTATE":
-        referral="Prostate"
-    elif referral=="THYROID":
-        referral="Thyroid"
     elif referral=="TUMOUR":
         referral="Tumour"
     else:
         print ("referral not recognised")    
     
 
-    referrals_list=['Breast','Colorectal','GIST','Glioma','HeadAndNeck','Lung','Melanoma','Ovarian','Prostate','Thyroid', 'Tumour']
+    referrals_list=['Colorectal','Glioma','Lung','Melanoma','Tumour']
 
     referral_present=False
     
@@ -1628,23 +1381,15 @@ if __name__ == "__main__":
 
         variant_report_referral_2=expand_variant_report(variant_report_referral, variant_report_NTC_2)
 
-        gaps_file=get_gaps_file(referral, path, sampleid, coverage_value)
+        gaps_file=get_gaps_file(referral, path, sampleid)
 
-        CNV_file=get_CNV_file(referral, path, sampleid)
+        hotspots_coverage=get_hotspots_coverage_file(referral, path, sampleid)
 
-        hotspots_coverage=get_hotspots_coverage_file(referral, path, sampleid, coverage_value)
-
-        hotspots_coverage_NTC=get_NTC_hotspots_coverage_file(referral, path, coverage_value)
+        hotspots_coverage_NTC=get_NTC_hotspots_coverage_file(referral, path)
 
         hotspots_coverage_2, num_rows_coverage=add_columns_hotspots_coverage(hotspots_coverage, hotspots_coverage_NTC)
    
-        genescreen_coverage=get_genescreen_coverage_file(referral, path, sampleid, coverage_value)
-    
-        genescreen_coverage_NTC= get_NTC_genescreen_coverage_file(referral, path, coverage_value)
-
-        genescreen_coverage_2=add_columns_genescreen_coverage(genescreen_coverage, genescreen_coverage_NTC, num_rows_coverage)
-
-        subpanel_coverage=get_subpanel_coverage(referral, path, sampleid, coverage_value)
+        subpanel_coverage=get_subpanel_coverage(referral, path, sampleid)
 
         variant_report_referral_3=match_polys_and_artefacts(variant_report_referral_2, variant_report_NTC_2)
 

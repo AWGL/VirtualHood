@@ -2,7 +2,7 @@
 
 ## For the CRM pipeline:
 
-### Installation 
+### Installation
 
 Clone the VirtualHood repository using:
 
@@ -18,20 +18,19 @@ Additional requirements include:
 
 * Runid
 * Sampleid
-* Worksheet number 
+* Worksheet number
 * Referral must be in variables file in the the form "referral=<referral>"
 * poly and artefacts list in /home/transfer/pipelines/VirtualHood
 
 
-### To run:
+## For the CRM pipeline:
 
 
 ```
-referral=(grep "referral" <variablesfile> | cut -d "=" -f2);
 
 source /home/transfer/miniconda3/bin/activate VirtualHood
 
-python CRM_report.py $seqId $sample $worksheet $referral $path
+python CRM_report.py <seqId> <sampleid> <worksheet> <referral> <path> <poly_list>
 
 source /home/transfer/miniconda3/bin/deactivate
 ```
@@ -40,14 +39,9 @@ source /home/transfer/miniconda3/bin/deactivate
 
 ## For the panCancer pipeline:
 
-### To run:
-
-```
-referral=(grep "referral" <variablesfile> | cut -d "=" -f2);
-
 source /home/transfer/miniconda3/bin/activate VirtualHood
 
-python panCancer_report.py $seqId $sample $worksheet $referral coverage
+python panCancer_report.py <seqId> <sampleid> <worksheet> <referral> <coverage>
 
 source /home/transfer/miniconda3/bin/deactivate
 ```
