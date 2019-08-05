@@ -1741,7 +1741,7 @@ if __name__ == "__main__":
         referral="Breast"
     elif referral=="COLORECTAL":
         referral="Colorectal"
-    elif referral== "DPYD"
+    elif referral== "DPYD":
         referral="DPYD"
     elif referral=="GIST":
         referral="GIST"
@@ -1765,7 +1765,7 @@ if __name__ == "__main__":
         print ("referral not recognised")    
     
 
-    referrals_list=['Breast','Colorectal','GIST','Glioma','HeadAndNeck','Lung','Melanoma','Ovarian','Prostate','Thyroid', 'Tumour']
+    referrals_list=['Breast','Colorectal','DYPD','GIST','Glioma','HeadAndNeck','Lung','Melanoma','Ovarian','Prostate','Thyroid', 'Tumour']
 
     referral_present=False
     
