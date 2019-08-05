@@ -435,12 +435,12 @@ def add_columns_hotspots_coverage(Coverage, NTC_check):
 def get_subpanel_coverage(referral, path, sampleid):
 
     #Add coverage table
-    if(os.stat(path+sampleid+"/hotspot_coverage/"+sampleid+"_coverage.txt").st_size==0):
+    if(os.stat(path+sampleid+"/hotspot_coverage/"+runid+"_"+sampleid+"_coverage.txt").st_size==0):
         ws10['A1']= 'No coverage'
         Coverage=""
         Coverage_2=""
-    if (os.stat(path+ sampleid+"/hotspot_coverage/"+sampleid+"_coverage.txt").st_size!=0):
-        Coverage=pandas.read_csv(path+ sampleid+"/hotspot_coverage/"+sampleid+"_coverage.txt", sep="\t")
+    if (os.stat(path+ sampleid+"/hotspot_coverage/"+runid+"_"+sampleid+"_coverage.txt").st_size!=0):
+        Coverage=pandas.read_csv(path+ sampleid+"/hotspot_coverage/"+runid+"_"+sampleid+"_coverage.txt", sep="\t")
 
         s=Coverage['FEATURE'].apply(lambda x: x.split('_'))
         Coverage['Referral']=s.apply(lambda x:x[5])
@@ -505,12 +505,7 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
             if (variant_report_4.iloc[row3,11]=='SNP'):
                 variant_report_4.iloc[row3,12]=1
                 variant_report_4.iloc_[row3,14]=1
-            if ((variant_report_4.iloc[row3,11]!='Known artefact')and (variant_report_4.iloc[row3,10]!="Known Poly") and (variant_report_4.iloc[row3,10]!='WT') and (variant_report_4.iloc[row3,10]!='Genuine') and (variant_report_4.iloc[row3,10]!="SNP")):
-                variant_report_4.iloc[row3,11]=""
-                variant_report_4.iloc[row3,12]=""
-                variant_report_4.iloc[row3,13]=""
-                variant_report_4.iloc[row3,14]=""
-														
+
         row3=row3+1
 
  

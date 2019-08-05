@@ -1741,6 +1741,8 @@ if __name__ == "__main__":
         referral="Breast"
     elif referral=="COLORECTAL":
         referral="Colorectal"
+    elif referral== "DPYD"
+        referral="DPYD"
     elif referral=="GIST":
         referral="GIST"
     elif referral=="GLIOMA":
@@ -1782,11 +1784,11 @@ if __name__ == "__main__":
         variant_report_NTC_2=add_extra_columns_NTC_report(variant_report_NTC, variant_report_referral)
 
         variant_report_referral_2=expand_variant_report(variant_report_referral, variant_report_NTC_2)
-
+        
         if (referral!="GIST"):
             CNV_file=get_CNV_file(referral, path, sampleid)
 
-
+        
 
         coverage_value="250x"
 
