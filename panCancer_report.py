@@ -1765,7 +1765,7 @@ if __name__ == "__main__":
         print ("referral not recognised")    
     
 
-    referrals_list=['Breast','Colorectal','DYPD','GIST','Glioma','HeadAndNeck','Lung','Melanoma','Ovarian','Prostate','Thyroid', 'Tumour']
+    referrals_list=['Breast','Colorectal','DPYD','GIST','Glioma','HeadAndNeck','Lung','Melanoma','Ovarian','Prostate','Thyroid', 'Tumour']
 
     referral_present=False
     
@@ -1785,7 +1785,7 @@ if __name__ == "__main__":
 
         variant_report_referral_2=expand_variant_report(variant_report_referral, variant_report_NTC_2)
         
-        if (referral!="GIST"):
+        if (referral!="GIST" and referral!="DPYD"):
             CNV_file=get_CNV_file(referral, path, sampleid)
 
         
@@ -1800,7 +1800,7 @@ if __name__ == "__main__":
 
         hotspots_coverage_2, num_rows_coverage=add_columns_hotspots_coverage(hotspots_coverage, hotspots_coverage_NTC)
    
-        if (referral!="GIST"):
+        if (referral!="GIST" and referral != "DPYD"):
 
             genescreen_coverage=get_genescreen_coverage_file(referral, path, sampleid, coverage_value)
      
