@@ -118,9 +118,6 @@ ws6['J7'].fill= PatternFill("solid", fgColor="00CCFFFF")
 ws6['K7'].fill= PatternFill("solid", fgColor="00CCFFFF")
 
 
-ws6['H46'].fill= PatternFill("solid", fgColor="00CCFFFF")
-ws6['H47'].fill= PatternFill("solid", fgColor="00CCFFFF")
-
 ws6['A11']='Confirmed variant calls'
 ws6['A12']='Gene'
 ws6['B12']='Exon'
@@ -385,11 +382,6 @@ def get_gaps_file(referral, path, sampleid):
     ws6['F43']="=hotspots.gaps!D30"
     ws6['F44']="=hotspots.gaps!D31"
 
-    ws6['H46']="Analysed by:"
-    ws6['H47']="Checked by:"
-
-
-
 
 
 
@@ -489,7 +481,7 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
     '''
 
     poly_artefact_dict={}
-    poly_and_Artefact_list_2=pandas.read_excel("/data/temp/artefacts_lists/CRM_poly_artefact_list.xlsx")
+    poly_and_Artefact_list_2=pandas.read_excel("/data/temp/artefacts_lists/CRM_Poly_and_Artefact_list.xlsx")
     variant_spreadsheet=pandas.read_excel("/data/temp/artefacts_lists/FOCUS_4_Variants.xlsx",sheet_name="Variants")
     num_rows_variant_report=variant_report_4.shape[0]
     num_rows_poly_artefact=poly_and_Artefact_list_2.shape[0]
@@ -501,11 +493,10 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
     while (row1<num_rows_variant_report):
         row2=0
         while(row2<num_rows_poly_artefact):
-            if (poly_and_Artefact_list_2.iloc[row2,2]==variant_report_4.iloc[row1,2]):
-                poly_artefact_dict[variant_report_4.iloc[row1,2]]= poly_and_Artefact_list_2.iloc[row2,2]
-                variant_report_4.iloc[row1,11]= poly_and_Artefact_list_2.iloc[row2,6]
-                print(variant_report_4.iloc[row1,11])
-                variant_report_4.iloc[row1,13]= poly_and_Artefact_list_2.iloc[row2,6]
+            if (poly_and_Artefact_list_2.iloc[row2,9]==variant_report_4.iloc[row1,9]):
+                poly_artefact_dict[variant_report_4.iloc[row1,9]]= poly_and_Artefact_list_2.iloc[row2,13]
+                variant_report_4.iloc[row1,11]= poly_and_Artefact_list_2.iloc[row2,13]
+                variant_report_4.iloc[row1,13]= poly_and_Artefact_list_2.iloc[row2,13]
             row2=row2+1
         row1=row1+1
 
@@ -613,7 +604,6 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
     for row in dataframe_to_rows(variant_report_5,  header=True, index=False):
         ws2.append(row)
 
-    print(variant_report_4)
 
     return(variant_report_4)
 
@@ -1211,12 +1201,6 @@ def add_excel_formulae():
     ws6['D44'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_MEDIUM))
 
 
-    ws6['H46'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws6['H47'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws6['I46'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws6['I47'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-
-
     ws6['E30'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['E31'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['E32'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
@@ -1489,7 +1473,7 @@ if __name__ == "__main__":
     print(worksheet)
     print(referral)
 
-    path="/data/results/"+runid+"/NGHS-101X/"
+    path="/data/results/"+path+"/NGHS-101X/"
 
 
     referral=referral.upper()
