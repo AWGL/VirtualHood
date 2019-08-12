@@ -481,7 +481,7 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
     '''
 
     poly_artefact_dict={}
-    poly_and_Artefact_list_2=pandas.read_excel("/data/temp/artefacts_lists/CRM_Poly_and_Artefact_list.xlsx")
+    poly_and_Artefact_list_2=pandas.read_excel("/data/temp/artefacts_lists/CRM_poly_artefact_list.xlsx")
     variant_spreadsheet=pandas.read_excel("/data/temp/artefacts_lists/FOCUS_4_Variants.xlsx",sheet_name="Variants")
     num_rows_variant_report=variant_report_4.shape[0]
     num_rows_poly_artefact=poly_and_Artefact_list_2.shape[0]
@@ -493,37 +493,32 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
     while (row1<num_rows_variant_report):
         row2=0
         while(row2<num_rows_poly_artefact):
-            if (poly_and_Artefact_list_2.iloc[row2,9]==variant_report_4.iloc[row1,9]):
-                poly_artefact_dict[variant_report_4.iloc[row1,9]]= poly_and_Artefact_list_2.iloc[row2,13]
-                variant_report_4.iloc[row1,11]= poly_and_Artefact_list_2.iloc[row2,13]
-                variant_report_4.iloc[row1,13]= poly_and_Artefact_list_2.iloc[row2,13]
+            if (poly_and_Artefact_list_2.iloc[row2,0]==variant_report_4.iloc[row1,9]):
+                variant_report_4.iloc[row1,11]= poly_and_Artefact_list_2.iloc[row2,9]
+                variant_report_4.iloc[row1,13]= poly_and_Artefact_list_2.iloc[row2,9]
             row2=row2+1
         row1=row1+1
 
-    
+    print(variant_report_4)
 
     #fill second table of variant-calls tab using the conclusion column of the first table
     row3=0
     while (row3<num_rows_variant_report):
-        for x in poly_artefact_dict:
-            if (variant_report_4.iloc[row3,9]==x):
-                variant_report_4.iloc[row3,11]=poly_artefact_dict[x]
-                variant_report_4.iloc[row3,13]=poly_artefact_dict[x]
-            if (variant_report_4.iloc[row3,11]=='Known Artefact'):
-                variant_report_4.iloc[row3,12]=3
-                variant_report_4.iloc[row3,14]=3
-            if (variant_report_4.iloc[row3,11]=='Known Poly'):
-                variant_report_4.iloc[row3,12]=1
-                variant_report_4.iloc[row3,14]=1
-            if (variant_report_4.iloc[row3,11]=='WT'):
-                variant_report_4.iloc[row3,12]=3
-                variant_report_4.iloc[row3,14]=3
-            if (variant_report_4.iloc[row3,11]=='Genuine'):
-                variant_report_4.iloc[row3,12]=1
-                variant_report_4.iloc_[row3,14]=1
-            if (variant_report_4.iloc[row3,11]=='SNP'):
-                variant_report_4.iloc[row3,12]=1
-                variant_report_4.iloc_[row3,14]=1
+        if (variant_report_4.iloc[row3,11]=='Known Artefact'):
+            variant_report_4.iloc[row3,12]=3
+            variant_report_4.iloc[row3,14]=3
+        if (variant_report_4.iloc[row3,11]=='Known Poly'):
+            variant_report_4.iloc[row3,12]=1
+            variant_report_4.iloc[row3,14]=1
+        if (variant_report_4.iloc[row3,11]=='WT'):
+            variant_report_4.iloc[row3,12]=3
+            variant_report_4.iloc[row3,14]=3
+        if (variant_report_4.iloc[row3,11]=='Genuine'):
+            variant_report_4.iloc[row3,12]=1
+            variant_report_4.iloc_[row3,14]=1
+        if (variant_report_4.iloc[row3,11]=='SNP'):
+            variant_report_4.iloc[row3,12]=1
+            variant_report_4.iloc_[row3,14]=1
 
         row3=row3+1
 
@@ -1454,7 +1449,7 @@ def add_excel_formulae():
 
 
 
-    wb.save(path+sampleid+'_'+referral+'_CRM_test.xlsx')
+    wb.save(path+sampleid+'_'+referral+'_CRM.xlsx')
 
 
 
@@ -1473,7 +1468,7 @@ if __name__ == "__main__":
     print(worksheet)
     print(referral)
 
-    path="/data/results/"+path+"/NGHS-101X/"
+    path="/data/results/"+runid+"/NGHS-101X/"
 
 
     referral=referral.upper()
