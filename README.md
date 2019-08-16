@@ -20,7 +20,7 @@ Additional requirements include:
 * Sampleid
 * Worksheet number
 * Referral must be in variables file in the the form "referral=<referral>"
-* poly and artefacts list in /home/transfer/pipelines/VirtualHood
+* poly and artefacts list in /data/temp/artefacts_lists
 
 
 ## For the old CRM  pipeline:
