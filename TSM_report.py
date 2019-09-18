@@ -1,5 +1,3 @@
-
-
 from openpyxl import Workbook 
 import pandas 
 from openpyxl.utils.dataframe import dataframe_to_rows 
@@ -442,7 +440,7 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
     Extract the relevant information from the haem artefacts list by matching the variant name with the ones in the variant report table
     '''
 
-    poly_and_Artefact_list=pandas.read_excel("/data/temp/artefacts_lists/HAEM_VARIANT_LIST.xlsx", sheet_name="Variant calls by case")
+    poly_and_Artefact_list=pandas.read_excel("/data/temp/artefacts_lists/HAEM_VARIANT_LIST.xlsx", sheet_name="Benign")
     poly_and_Artefact_list_2=pandas.DataFrame(poly_and_Artefact_list)
     variant_spreadsheet=pandas.read_excel("/data/temp/artefacts_lists/HAEM_VARIANT_LIST.xlsx", sheet_name="Known variants")
 
