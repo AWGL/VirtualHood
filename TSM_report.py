@@ -525,6 +525,8 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
 
     #Add variant report dataframes to the excel workbook
 
+    variant_report_4=variant_report_4[variant_report_4.Frequency>0.045]
+
     for row in dataframe_to_rows(variant_report_4, header=True, index=False):
         ws2.append(row)
 
