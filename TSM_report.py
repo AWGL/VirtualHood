@@ -382,7 +382,6 @@ def add_columns_hotspots_coverage(Coverage, NTC_check):
 
 
     Coverage_list=Coverage['PERC_COVERAGE@500']
-    print(Coverage_list)
     less_than_500_coverage_list=[]
 
     zero_coverage_list=[]
@@ -525,7 +524,7 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
 
     #Add variant report dataframes to the excel workbook
 
-    variant_report_4=variant_report_4[variant_report_4.Frequency>0.045]
+    variant_report_4=variant_report_4[variant_report_4.Frequency>=0.045]
 
     for row in dataframe_to_rows(variant_report_4, header=True, index=False):
         ws2.append(row)
