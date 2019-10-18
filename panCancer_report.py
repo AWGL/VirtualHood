@@ -269,9 +269,9 @@ def expand_variant_report(variant_report_4, variant_report_NTC_4):
 
 
     variant_report_4["Conclusion 1st checker"]=""
-    variant_report_4["QC"]=""
     variant_report_4["Conclusion 2nd checker"]=""
-    variant_report_4["QC "]=""
+    variant_report_4["Comments/Notes/evidence:how conclusion was reached "]=""
+    variant_report_4[" "]=""
 
 
     variant_report_4["Detection threshold based on depth"]=detection_threshold
@@ -589,7 +589,6 @@ def add_columns_hotspots_coverage(Coverage, NTC_check):
             row2=row2+1
         row1=row1+1
     
-    print(Coverage)
     Coverage['%NTC']=Coverage['NTC_AVG_Depth']/Coverage['AVG_DEPTH']
     Coverage['%NTC']= Coverage['%NTC']*100
     Coverage['Screen Type']= "Hotspots"
@@ -803,37 +802,18 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
         row2=0
         while(row2<num_rows_poly_artefact):
             if (poly_and_Artefact_list_2.iloc[row2,9]==variant_report_4.iloc[row1,9]):
-                poly_artefact_dict[variant_report_4.iloc[row1,9]]= poly_and_Artefact_list_2.iloc[row2,13]
                 variant_report_4.iloc[row1,11]= poly_and_Artefact_list_2.iloc[row2,13]
-                variant_report_4.iloc[row1,13]= poly_and_Artefact_list_2.iloc[row2,13]
+                variant_report_4.iloc[row1,12]= poly_and_Artefact_list_2.iloc[row2,13]
+                if (variant_report_4.iloc[row1,11]=='Known artefact'):
+                    variant_report_4.iloc[row1,13]='On artefact list'
+                elif (variant_report_4.iloc[row1,11]=='Known Poly'):
+                    variant_report_4.iloc[row1,13]='On Poly list'
+                elif (variant_report_4.iloc[row1,11]=='WT'):
+                    variant_report_4.iloc[row1,13]='SNP in Ref.Seq'
+                else:
+                    variant_report_4.iloc[row1,13]= ""
             row2=row2+1
         row1=row1+1
-
- 
-    #fill second table of variant-calls tab using the conclusion column of the first table
-    row3=0
-    while (row3<num_rows_variant_report):
-        for x in poly_artefact_dict:
-            if (variant_report_4.iloc[row3,9]==x):
-                variant_report_4.iloc[row3,11]=poly_artefact_dict[x]
-                variant_report_4.iloc[row3,13]=poly_artefact_dict[x]
-            if (variant_report_4.iloc[row3,11]=='Known artefact'):
-                variant_report_4.iloc[row3,12]=3
-                variant_report_4.iloc[row3,14]=3
-            if (variant_report_4.iloc[row3,11]=='Known Poly'):
-                variant_report_4.iloc[row3,12]=1
-                variant_report_4.iloc[row3,14]=1
-            if (variant_report_4.iloc[row3,11]=='WT'):
-                variant_report_4.iloc[row3,12]=3
-                variant_report_4.iloc[row3,14]=3
-            if (variant_report_4.iloc[row3,11]=='Genuine'):
-                variant_report_4.iloc[row3,12]=1
-                variant_report_4.iloc_[row3,14]=1
-            if (variant_report_4.iloc[row3,11]=='SNP'):
-                variant_report_4.iloc[row3,12]=1
-                variant_report_4.iloc_[row3,14]=1
-														
-        row3=row3+1
 
  
 
@@ -871,32 +851,6 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
     for row in dataframe_to_rows(variant_report_4_upper_limit, header=True, index=False):
         ws2.append(row)
 
-
-    variant_report_5_upper_limit= variant_report_4_upper_limit.iloc[:,[0,1,2]]
-    variant_report_5_upper_limit['Comments/Notes/evidence:how conclusion was reached']=""
-
-
-
-    row=0
-
-    num_rows_variant_report_upper_limit=variant_report_4_upper_limit.shape[0]
-
-    while (row<num_rows_variant_report_upper_limit):
-        if (variant_report_4_upper_limit.iloc[row,11]=='Known artefact'):
-            variant_report_5_upper_limit.iloc[row,3]='On artefact list'
-        if (variant_report_4_upper_limit.iloc[row,11]=='Known Poly'):
-            variant_report_5_upper_limit.iloc[row,3]='On Poly list'
-        if (variant_report_4_upper_limit.iloc[row,11]=='WT'):
-            variant_report_5_upper_limit.iloc[row,3]='SNP in Ref.Seq'
-        row=row+1
-
-    ws2['A60']=" "
-
-
-    #add dataframe to variant calls tab
-
-    for row in dataframe_to_rows(variant_report_5_upper_limit, header=True, index=False):
-        ws2.append(row)
 
     return(variant_report_4)
 
@@ -1040,7 +994,7 @@ def add_excel_formulae():
     ws6['D29']="Comments"
     ws6['A29']= sampleid +"_" + referral
     ws6['C29'] = "Percentage of bases covered to 135x"
-    ws6['A75']= "CNV results"
+    ws6['A74']= "CNV results"
 
     ws6['A27']=sampleid
     ws6['A27'].font= Font(bold=True)
@@ -1377,18 +1331,6 @@ def add_excel_formulae():
         ws2[cell].font=font_bold
 
 
-    ws2['A61'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws2['B61'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws2['C61'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws2['D61'].fill= PatternFill("solid", fgColor="DCDCDC")
-
-
-    ws2['A61'].font= Font(bold=True)
-    ws2['B61'].font= Font(bold=True)
-    ws2['C61'].font= Font(bold=True)
-    ws2['D61'].font= Font(bold=True)
-
-
     border_d=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     position= ['B9','C9','D9','E9','F9','G9','H9','I9','J9','K9','L9','M9','N9','O9','P9','Q9','R9','S9','T9']
     for cell in position:
@@ -1397,12 +1339,6 @@ def add_excel_formulae():
 
     ws2['A9'].border=Border(left=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws2['U9'].border=Border(right=Side(border_style=BORDER_MEDIUM),top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-
-    ws2['A61'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws2['B61'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws2['C61'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws2['D61'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-
 
     font_bold=Font(bold=True)
     position=['B2','C2','D2','E2','F2','G2','H2','I2','J2','K2','L2','M2','N2']
@@ -1416,7 +1352,7 @@ def add_excel_formulae():
         ws7[cell].font=font_bold
 
 
-    wb.save(path+sampleid+'_'+referral+'_panCancer_both_TEST_2.xlsx')
+    wb.save(path+sampleid+'_'+referral+'_panCancer_both.xlsx')
 
 
 
