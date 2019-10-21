@@ -331,6 +331,12 @@ def get_gaps_file(referral, path, sampleid, coverage_value):
         elif(coverage_value=="250x"):
             for row in dataframe_to_rows(bedfile, header=True, index=False):
                 ws5.append(row)
+        bedfile_size=bedfile.shape[0]
+        if coverage_value=="250x" and bedfile_size>75:
+            ws6["C73"]= "WARNING: not all gaps shown in report"
+        if coverage_value=="135x" and bedfile_size>75:
+       	    ws6["F73"]= "WARNING: not all gaps shown in report"
+
     return (bedfile)
 
 
