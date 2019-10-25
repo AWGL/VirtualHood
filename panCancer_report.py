@@ -1,4 +1,4 @@
-
+import datetime
 from openpyxl import Workbook
 import pandas
 from openpyxl.utils.dataframe import dataframe_to_rows
@@ -122,7 +122,7 @@ ws6['F12']='Allele frequency'
 ws6['G12']='Conclusion 1st checker'
 ws6['H12']='Conclusion 2nd checker'
 
-
+ws6['G1']="Associated testing"
 
 def get_variantReport_NTC(referral, path): 
     '''
@@ -274,8 +274,8 @@ def expand_variant_report(variant_report_4, variant_report_NTC_4):
     variant_report_4[" "]=""
 
 
-    variant_report_4["Detection threshold based on depth"]=detection_threshold
-    variant_report_4["Is variant present in NTC "]=variant_in_NTC
+    variant_report_4["#Mutant reads where depth<251"]=detection_threshold
+    variant_report_4["Is variant present in NTC? "]=variant_in_NTC
 
 
     return (variant_report_4)
@@ -826,7 +826,7 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
    #Add extra columns to the variant report table to determine level of NTC contamination
 
     
-    variant_report_4["#of mutant reads in patient sample"]=""
+    variant_report_4["#of mutant reads in patient sample(if present in NTC)"]=""
     variant_report_4["#of mutant reads in NTC if present "]=""
     variant_report_4["Is the NTC contamination significant?"]=""
 
@@ -1065,10 +1065,14 @@ def add_excel_formulae():
     ws6['E5']= "='Patient demographics'!Q2"
     ws6['F5']= "='Patient demographics'!R2"
     ws6['G5']= "='Patient demographics'!S2"
-    ws6['H5']= "='Patient demographics'!C2"
+    ws6['H5']="='Patient demographics'!C2"
+   
+    
+    ws6['H5'].number_format='mm-dd-yy'
+
     ws6['E8']="='Patient demographics'!P2"
     ws6['F8']="='Patient demographics'!W2"
-    ws6['G8']="='Patient demographics'!K4"
+    ws6['G8']= "='Subpanel NTC check'!K4"
     ws6['H8']= "='Subpanel NTC check'!K5"
         
 
@@ -1250,7 +1254,8 @@ def add_excel_formulae():
               'A81','B81','C81',
               'A82','B82','C82',
               'A83','B83','C83',
-              'A84','B84','C84']
+              'A84','B84','C84',
+              'G1', 'G2', 'H1', 'H2']
 
 
 
@@ -1277,7 +1282,7 @@ def add_excel_formulae():
     position= ['A4','B4','C4','D4','E4','F4','G4','H4',
                 'E7','F7','G7','H7',
                 'A1','C1','A3','A9','A11',
-                'F33','F34']
+                'F33','F34', 'G1']
     for cell in position:
         ws6[cell].font=font_bold
 
