@@ -3,7 +3,6 @@ from openpyxl import Workbook
 import pandas
 from openpyxl.utils.dataframe import dataframe_to_rows
 import os
-import xlrd
 import sys
 from openpyxl.styles import PatternFill
 from openpyxl.styles.borders import Border, Side, BORDER_MEDIUM, BORDER_THIN, BORDER_THICK
@@ -299,14 +298,17 @@ def get_gaps_file(referral, path, sampleid, coverage_value):
             ws5["I2"]="No gaps"
             bedfile=""
     if (os.stat(path+sampleid+"/hotspot_coverage_"+coverage_value+"/" +sampleid+"_"+referral+"_hotspots.gaps").st_size!=0):
-        bedfile=pandas.read_csv(path+ sampleid+"/hotspot_coverage_"+coverage_value+"/" +sampleid+"_"+referral+"_hotspots.gaps", sep="\t")
+        bedfile=pandas.read_csv(path+ sampleid+"/hotspot_coverage_"+coverage_value+"/" +sampleid+"_"+referral+"_hotspots.gaps", sep="\t", header=None)
         if (coverage_value=="135x"):
             ws5["I1"]="Gaps 135x"
             bedfile.columns=["Chromosome","start","end", "annotation"]
+            print(bedfile)
             list1=bedfile["Chromosome"].tolist()
             list2=bedfile["start"].tolist()
             list3=bedfile["end"].tolist()
             list4=bedfile["annotation"].tolist()
+            print(list1)
+            print(list2)
 
             number=2
             for value in list1:
