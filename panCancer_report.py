@@ -302,13 +302,10 @@ def get_gaps_file(referral, path, sampleid, coverage_value):
         if (coverage_value=="135x"):
             ws5["I1"]="Gaps 135x"
             bedfile.columns=["Chromosome","start","end", "annotation"]
-            print(bedfile)
             list1=bedfile["Chromosome"].tolist()
             list2=bedfile["start"].tolist()
             list3=bedfile["end"].tolist()
             list4=bedfile["annotation"].tolist()
-            print(list1)
-            print(list2)
 
             number=2
             for value in list1:
