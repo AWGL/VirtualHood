@@ -1,3 +1,9 @@
+'''
+Author: Laura McCluskey
+Version: 1.0
+'''
+
+
 import datetime
 from openpyxl import Workbook
 import pandas
@@ -328,7 +334,7 @@ def get_gaps_file(referral, path, sampleid, coverage_value):
                 ws5["L"+number_2]=value
                 number=number+1
         elif(coverage_value=="250x"):
-            for row in dataframe_to_rows(bedfile, header=True, index=False):
+            for row in dataframe_to_rows(bedfile, header=None, index=False):
                 ws5.append(row)
         bedfile_size=bedfile.shape[0]
         if coverage_value=="250x" and bedfile_size>75:
