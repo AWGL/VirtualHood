@@ -1,11 +1,11 @@
-FEATURE	AVG_DEPTH	PERC_COVERAGE@250
-tester_Breast_combined	437	97.0	
+FEATURE	AVG_DEPTH	PERC_COVERAGE@135
+tester_Breast_combined	437	97.0
 tester_Colorectal_combined	341	78.0
 tester_GIST_combined	224	69.5
-tester_Glioma_combined	332	85.2	
+tester_Glioma_combined	332	85.2
 tester_HN_combined	246	98.4
 tester_Lung_combined	331	78.5
 tester_Melanoma_combined	276	94.2
 tester_Ovarian_combined	175	78.6
-tester_Prostate_combined	269	89.7	
+tester_Prostate_combined	269	89.7
 tester_Thyroid_combined	185	85.1
