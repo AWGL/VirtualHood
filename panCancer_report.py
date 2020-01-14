@@ -108,7 +108,7 @@ ws6['B4']='Patient Name'
 ws6['C4']='Tumour %'
 ws6['D4']='Analysis'
 ws6['E4']='Qubit[DNA] ng/ul'
-ws6['F4']='Dilution (ng/ul)'
+ws6['F4']='Total DNA input (ng)'
 ws6['G4']='Post PCR1 Qubit'
 ws6['H4']='Due date'
 
@@ -575,7 +575,7 @@ def get_NTC_hotspots_coverage_file(referral, path, coverage_value):
 
 
 
-def add_columns_hotspots_coverage(Coverage, NTC_check):
+def add_columns_hotspots_coverage(Coverage, NTC_check, path, sampleid,referral):
 
     if(os.stat(path+sampleid+"/hotspot_coverage_135x/"+sampleid+"_"+referral+"_hotspots.coverage").st_size==0):
         ws9['A1']= 'No hotspots'
@@ -659,7 +659,7 @@ def get_NTC_genescreen_coverage_file(referral, path,coverage_value):
 
 
 
-def add_columns_genescreen_coverage(Coverage, NTC_check, num_rows_coverage):
+def add_columns_genescreen_coverage(Coverage, NTC_check, num_rows_coverage, path, sampleid, referral):
 
     '''
     Add NTC and subpanel columns to the Coverage table
@@ -1076,7 +1076,7 @@ def add_excel_formulae():
     ws6['H5'].number_format='mm-dd-yy'
 
     ws6['E8']="='Patient demographics'!P2"
-    ws6['F8']="='Patient demographics'!W2"
+    ws6['F8']="='Patient demographics'!U2"
     ws6['G8']= "='Subpanel NTC check'!K4"
     ws6['H8']= "='Subpanel NTC check'!K5"
         
