@@ -2,7 +2,7 @@ import unittest
 
 from panCancer_report import *
 
-path="<path_to_tests_folder>"
+path="./"
 
 coverage_value="250x"
 
