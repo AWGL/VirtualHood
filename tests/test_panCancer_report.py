@@ -1,7 +1,9 @@
 import unittest
+
 from panCancer_report import *
 
-path="/<path_to_VirtualHood_folder>/VirtualHood/tests/"
+path="<path_to_tests_folder>"
+
 coverage_value="250x"
 
 class test_virtualhood(unittest.TestCase):

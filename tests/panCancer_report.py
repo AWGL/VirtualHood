@@ -342,26 +342,6 @@ def get_gaps_file(referral, path, sampleid, coverage_value):
         if coverage_value=="135x" and bedfile_size>75:
        	    ws6["F73"]= "WARNING: not all gaps shown in report"
 
-    return (bedfile)
-
-
-
-def get_CNV_file(referral, path, sampleid):
- 
-    '''
-    Open the relevant CNV file to append to the end of the mutations and snps tab. If the CNV file is empty, write 'No CNVs'.
-    '''
-
-    if(os.stat(path+ sampleid+"/hotspot_cnvs/"+ sampleid+"_"+referral).st_size==0):
-        ws8['A1']= 'No CNVs'
-    if (os.stat(path+ sampleid+"/hotspot_cnvs/"+sampleid+"_"+referral).st_size!=0):
-        gaps=pandas.read_csv(path+sampleid+"/hotspot_cnvs/"+sampleid+"_"+referral, sep="\t")
-       
-    for row in dataframe_to_rows(gaps, header=True, index=False):
-        ws8.append(row)
-
-
-
     ws6['A48']="=hotspots.gaps!D2"
     ws6['A49']="=hotspots.gaps!D3"
     ws6['A50']="=hotspots.gaps!D4"
@@ -414,7 +394,6 @@ def get_CNV_file(referral, path, sampleid):
     ws6['B71']="=hotspots.gaps!D50"
     ws6['B72']="=hotspots.gaps!D51"
 
-
     ws6['C48']="=hotspots.gaps!D52"
     ws6['C49']="=hotspots.gaps!D53"
     ws6['C50']="=hotspots.gaps!D54"
@@ -439,8 +418,7 @@ def get_CNV_file(referral, path, sampleid):
     ws6['C69']="=hotspots.gaps!D73"
     ws6['C70']="=hotspots.gaps!D74"
     ws6['C71']="=hotspots.gaps!D75"
-    ws6['C72']="=hotspots.gaps!D76"
-
+    ws6['C72']="=hotspots.gaps!D76"    
 
     ws6['D48']="=hotspots.gaps!L2"
     ws6['D49']="=hotspots.gaps!L3"
@@ -520,10 +498,6 @@ def get_CNV_file(referral, path, sampleid):
     ws6['F71']="=hotspots.gaps!L75"
     ws6['F72']="=hotspots.gaps!L76"
 
-
-
-
-
     ws6['A47']="Gaps in hotspots ROI 250x"
     ws6['D47']="Gaps in hotspots ROI 135x"
 
@@ -534,6 +508,27 @@ def get_CNV_file(referral, path, sampleid):
     ws6['A75']="Gene"
     ws6['B75']="Chromosome"
     ws6['C75']="log2"
+
+
+
+    return (bedfile)
+
+
+
+def get_CNV_file(referral, path, sampleid):
+ 
+    '''
+    Open the relevant CNV file to append to the end of the mutations and snps tab. If the CNV file is empty, write 'No CNVs'.
+    '''
+
+    if(os.stat(path+ sampleid+"/hotspot_cnvs/"+ sampleid+"_"+referral).st_size==0):
+        ws8['A1']= 'No CNVs'
+    if (os.stat(path+ sampleid+"/hotspot_cnvs/"+sampleid+"_"+referral).st_size!=0):
+        gaps=pandas.read_csv(path+sampleid+"/hotspot_cnvs/"+sampleid+"_"+referral, sep="\t")
+       
+    for row in dataframe_to_rows(gaps, header=True, index=False):
+        ws8.append(row)
+
 
     return (gaps)
 
@@ -1368,7 +1363,7 @@ def add_excel_formulae():
         ws7[cell].font=font_bold
 
 
-    wb.save(path+sampleid+'_'+referral+'_panCancer_both.xlsx')
+    wb.save(path+sampleid+'_'+referral+'_panCancer_both_TEST.xlsx')
 
 
 
@@ -1442,8 +1437,6 @@ if __name__ == "__main__":
         if (referral!="GIST" and referral!="DPYD"):
             CNV_file=get_CNV_file(referral, path, sampleid)
 
-        
-
         coverage_value="250x"
 
         gaps_file=get_gaps_file(referral, path, sampleid, coverage_value)
@@ -1452,7 +1445,7 @@ if __name__ == "__main__":
 
         hotspots_coverage_NTC=get_NTC_hotspots_coverage_file(referral, path, coverage_value)
 
-        hotspots_coverage_2, num_rows_coverage=add_columns_hotspots_coverage(hotspots_coverage, hotspots_coverage_NTC)
+        hotspots_coverage_2, num_rows_coverage=add_columns_hotspots_coverage(hotspots_coverage, hotspots_coverage_NTC, path, sampleid, referral)
    
 
         if (referral!="GIST" and referral != "DPYD"):
