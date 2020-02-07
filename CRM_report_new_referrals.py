@@ -331,21 +331,89 @@ def get_gaps_file(referral, path, sampleid):
     ws6['C40']="=hotspots.gaps!D11"
     ws6['C41']="=hotspots.gaps!D12"
     ws6['C42']="=hotspots.gaps!D13"
+    ws6['C43']="=hotspots.gaps!D14"
+    ws6['C44']="=hotspots.gaps!D15"
 
-    ws6['D30']="=hotspots.gaps!D14"
-    ws6['D31']="=hotspots.gaps!D15"
-    ws6['D32']="=hotspots.gaps!D16"
-    ws6['D33']="=hotspots.gaps!D17"
-    ws6['D34']="=hotspots.gaps!D18"
-    ws6['D35']="=hotspots.gaps!D19"
-    ws6['D36']="=hotspots.gaps!D20"
-    ws6['D37']="=hotspots.gaps!D21"
-    ws6['D38']="=hotspots.gaps!D22"
-    ws6['D39']="=hotspots.gaps!D23"
-    ws6['D40']="=hotspots.gaps!D24"
-    ws6['D41']="=hotspots.gaps!D25"
-    ws6['D42']="=hotspots.gaps!D26"
 
+    ws6['D30']="=hotspots.gaps!D16"
+    ws6['D31']="=hotspots.gaps!D17"
+    ws6['D32']="=hotspots.gaps!D18"
+    ws6['D33']="=hotspots.gaps!D19"
+    ws6['D34']="=hotspots.gaps!D20"
+    ws6['D35']="=hotspots.gaps!D21"
+    ws6['D36']="=hotspots.gaps!D22"
+    ws6['D37']="=hotspots.gaps!D23"
+    ws6['D38']="=hotspots.gaps!D24"
+    ws6['D39']="=hotspots.gaps!D25"
+    ws6['D40']="=hotspots.gaps!D26"
+    ws6['D41']="=hotspots.gaps!D27"
+    ws6['D42']="=hotspots.gaps!D28"
+    ws6['D43']="=hotspots.gaps!D29"
+    ws6['D44']="=hotspots.gaps!D30"
+
+    ws6['E30']="=hotspots.gaps!D31"
+    ws6['E31']="=hotspots.gaps!D32"
+    ws6['E32']="=hotspots.gaps!D33"
+    ws6['E33']="=hotspots.gaps!D34"
+    ws6['E34']="=hotspots.gaps!D35"
+    ws6['E35']="=hotspots.gaps!D36"
+    ws6['E36']="=hotspots.gaps!D37"
+    ws6['E37']="=hotspots.gaps!D38"
+    ws6['E38']="=hotspots.gaps!D39"
+    ws6['E39']="=hotspots.gaps!D40"
+    ws6['E40']="=hotspots.gaps!D41"
+    ws6['E41']="=hotspots.gaps!D42"
+    ws6['E42']="=hotspots.gaps!D43"
+    ws6['E43']="=hotspots.gaps!D44"
+    ws6['E44']="=hotspots.gaps!D45"
+
+    ws6['F30']="=hotspots.gaps!D46"
+    ws6['F31']="=hotspots.gaps!D47"
+    ws6['F32']="=hotspots.gaps!D48"
+    ws6['F33']="=hotspots.gaps!D49"
+    ws6['F34']="=hotspots.gaps!D50"
+    ws6['F35']="=hotspots.gaps!D51"
+    ws6['F36']="=hotspots.gaps!D52"
+    ws6['F37']="=hotspots.gaps!D53"
+    ws6['F38']="=hotspots.gaps!D54"
+    ws6['F39']="=hotspots.gaps!D55"
+    ws6['F40']="=hotspots.gaps!D56"
+    ws6['F41']="=hotspots.gaps!D57"
+    ws6['F42']="=hotspots.gaps!D58"
+    ws6['F43']="=hotspots.gaps!D59"
+    ws6['F44']="=hotspots.gaps!D60"
+
+    ws6['G30']="=hotspots.gaps!D61"
+    ws6['G31']="=hotspots.gaps!D62"
+    ws6['G32']="=hotspots.gaps!D63"
+    ws6['G33']="=hotspots.gaps!D64"
+    ws6['G34']="=hotspots.gaps!D65"
+    ws6['G35']="=hotspots.gaps!D66"
+    ws6['G36']="=hotspots.gaps!D67"
+    ws6['G37']="=hotspots.gaps!D68"
+    ws6['G38']="=hotspots.gaps!D69"
+    ws6['G39']="=hotspots.gaps!D70"
+    ws6['G40']="=hotspots.gaps!D71"
+    ws6['G41']="=hotspots.gaps!D72"
+    ws6['G42']="=hotspots.gaps!D73"
+    ws6['G43']="=hotspots.gaps!D74"
+    ws6['G44']="=hotspots.gaps!D75"
+
+    ws6['H30']="=hotspots.gaps!D76"
+    ws6['H31']="=hotspots.gaps!D77"
+    ws6['H32']="=hotspots.gaps!D78"
+    ws6['H33']="=hotspots.gaps!D79"
+    ws6['H34']="=hotspots.gaps!D80"
+    ws6['H35']="=hotspots.gaps!D81"
+    ws6['H36']="=hotspots.gaps!D82"
+    ws6['H37']="=hotspots.gaps!D83"
+    ws6['H38']="=hotspots.gaps!D84"
+    ws6['H39']="=hotspots.gaps!D85"
+    ws6['H40']="=hotspots.gaps!D86"
+    ws6['H41']="=hotspots.gaps!D87"
+    ws6['H42']="=hotspots.gaps!D88"
+    ws6['H43']="=hotspots.gaps!D89"
+    ws6['H44']="=hotspots.gaps!D90"
 
     ws6['H46']="Analysed by:"
     ws6['H47']="Checked by:"
@@ -435,12 +503,12 @@ def add_columns_hotspots_coverage(Coverage, NTC_check):
 def get_subpanel_coverage(referral, path, sampleid):
 
     #Add coverage table
-    if(os.stat(path+sampleid+"/hotspot_coverage/"+sampleid+"_coverage.txt").st_size==0):
+    if(os.stat(path+sampleid+"/hotspot_coverage/"+runid+"_"+sampleid+"_coverage.txt").st_size==0):
         ws10['A1']= 'No coverage'
         Coverage=""
         Coverage_2=""
-    if (os.stat(path+ sampleid+"/hotspot_coverage/"+sampleid+"_coverage.txt").st_size!=0):
-        Coverage=pandas.read_csv(path+ sampleid+"/hotspot_coverage/"+sampleid+"_coverage.txt", sep="\t")
+    if (os.stat(path+ sampleid+"/hotspot_coverage/"+runid+"_"+sampleid+"_coverage.txt").st_size!=0):
+        Coverage=pandas.read_csv(path+ sampleid+"/hotspot_coverage/"+runid+"_"+sampleid+"_coverage.txt", sep="\t")
 
         s=Coverage['FEATURE'].apply(lambda x: x.split('_'))
         Coverage['Referral']=s.apply(lambda x:x[5])
@@ -462,7 +530,7 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
     '''
 
     poly_artefact_dict={}
-    poly_and_Artefact_list=pandas.read_excel("/data/temp/artefacts_lists/Pan_Poly_and_Artefact_list.xlsx")
+    poly_and_Artefact_list=pandas.read_excel("/data/temp/artefacts_lists/CRM_poly_artefact_list.xlsx")
     poly_and_Artefact_list_2=pandas.DataFrame(poly_and_Artefact_list)
 
 
@@ -475,10 +543,9 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
     while (row1<num_rows_variant_report):
         row2=0
         while(row2<num_rows_poly_artefact):
-            if (poly_and_Artefact_list_2.iloc[row2,9]==variant_report_4.iloc[row1,9]):
-                poly_artefact_dict[variant_report_4.iloc[row1,9]]= poly_and_Artefact_list_2.iloc[row2,13]
-                variant_report_4.iloc[row1,11]= poly_and_Artefact_list_2.iloc[row2,13]
-                variant_report_4.iloc[row1,13]= poly_and_Artefact_list_2.iloc[row2,13]
+            if (poly_and_Artefact_list_2.iloc[row2,0]==variant_report_4.iloc[row1,9]):
+                variant_report_4.iloc[row1,11]= poly_and_Artefact_list_2.iloc[row2,9]
+                variant_report_4.iloc[row1,13]= poly_and_Artefact_list_2.iloc[row2,9]
             row2=row2+1
         row1=row1+1
 
@@ -486,31 +553,22 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
     #fill second table of variant-calls tab using the conclusion column of the first table
     row3=0
     while (row3<num_rows_variant_report):
-        for x in poly_artefact_dict:
-            if (variant_report_4.iloc[row3,9]==x):
-                variant_report_4.iloc[row3,11]=poly_artefact_dict[x]
-                variant_report_4.iloc[row3,13]=poly_artefact_dict[x]
-            if (variant_report_4.iloc[row3,11]=='Known artefact'):
-                variant_report_4.iloc[row3,12]=3
-                variant_report_4.iloc[row3,14]=3
-            if (variant_report_4.iloc[row3,11]=='Known Poly'):
-                variant_report_4.iloc[row3,12]=1
-                variant_report_4.iloc[row3,14]=1
-            if (variant_report_4.iloc[row3,11]=='WT'):
-                variant_report_4.iloc[row3,12]=3
-                variant_report_4.iloc[row3,14]=3
-            if (variant_report_4.iloc[row3,11]=='Genuine'):
-                variant_report_4.iloc[row3,12]=1
-                variant_report_4.iloc_[row3,14]=1
-            if (variant_report_4.iloc[row3,11]=='SNP'):
-                variant_report_4.iloc[row3,12]=1
-                variant_report_4.iloc_[row3,14]=1
-            if ((variant_report_4.iloc[row3,11]!='Known artefact')and (variant_report_4.iloc[row3,10]!="Known Poly") and (variant_report_4.iloc[row3,10]!='WT') and (variant_report_4.iloc[row3,10]!='Genuine') and (variant_report_4.iloc[row3,10]!="SNP")):
-                variant_report_4.iloc[row3,11]=""
-                variant_report_4.iloc[row3,12]=""
-                variant_report_4.iloc[row3,13]=""
-                variant_report_4.iloc[row3,14]=""
-														
+        if (variant_report_4.iloc[row3,11]=='Known artefact'):
+            variant_report_4.iloc[row3,12]=3
+            variant_report_4.iloc[row3,14]=3
+        if (variant_report_4.iloc[row3,11]=='Known Poly'):
+            variant_report_4.iloc[row3,12]=1
+            variant_report_4.iloc[row3,14]=1
+        if (variant_report_4.iloc[row3,11]=='WT'):
+            variant_report_4.iloc[row3,12]=3
+            variant_report_4.iloc[row3,14]=3
+        if (variant_report_4.iloc[row3,11]=='Genuine'):
+            variant_report_4.iloc[row3,12]=1
+            variant_report_4.iloc_[row3,14]=1
+        if (variant_report_4.iloc[row3,11]=='SNP'):
+            variant_report_4.iloc[row3,12]=1
+            variant_report_4.iloc_[row3,14]=1
+
         row3=row3+1
 
  
@@ -772,7 +830,10 @@ def add_excel_formulae():
     ws6['B29'].fill= PatternFill("solid", fgColor="FFBB00")
     ws6['C29'].fill= PatternFill("solid", fgColor="FFBB00")
     ws6['D29'].fill= PatternFill("solid", fgColor="FFBB00")
-
+    ws6['E29'].fill= PatternFill("solid", fgColor="FFBB00")
+    ws6['F29'].fill= PatternFill("solid", fgColor="FFBB00")
+    ws6['G29'].fill= PatternFill("solid", fgColor="FFBB00")
+    ws6['H29'].fill= PatternFill("solid", fgColor="FFBB00")
 
     ws6['A1']=sampleid
     ws6['C1']='Patient Analysis Summary Sheet-CRM'
@@ -918,7 +979,10 @@ def add_excel_formulae():
     ws6['B29'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['C29'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['D29'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-
+    ws6['E29'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['F29'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['G29'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['H29'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
 
     ws6['A13'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B13'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
@@ -1050,77 +1114,137 @@ def add_excel_formulae():
     ws6['A30'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B30'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C30'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D30'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-
+    ws6['D30'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['E30'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['F30'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G30'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H30'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+   
     ws6['A31'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B31'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C31'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D31'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D31'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['E31'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['F31'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G31'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H31'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
 
     ws6['A32'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B32'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C32'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D32'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D32'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['E32'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['F32'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G32'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H31'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
 
     ws6['A33'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B33'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C33'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D33'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D33'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['E33'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['F33'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G33'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H33'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
 
     ws6['A34'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B34'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C34'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D34'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D34'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['E34'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['F34'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G34'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H34'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
 
     ws6['A35'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B35'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C35'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D35'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D35'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['E35'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['F35'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G35'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H35'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
 
     ws6['A36'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B36'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C36'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D36'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D36'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['E36'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['F36'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G36'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H36'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
 
     ws6['A37'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B37'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C37'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D37'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D37'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['E37'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['F37'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G37'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H37'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
 
     ws6['A38'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B38'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C38'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D38'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D38'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['E38'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['F38'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G38'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H38'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
 
     ws6['A39'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B39'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C39'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D39'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D39'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['E39'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['F39'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G39'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H39'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN)) 
 
     ws6['A40'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B40'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C40'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D40'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D40'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['E40'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['F40'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G40'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H40'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
 
     ws6['A41'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B41'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C41'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D41'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D41'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['E41'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['F41'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G41'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H41'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
 
     ws6['A42'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B42'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C42'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D42'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D42'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['E42'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['F42'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G42'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H42'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
 
     ws6['A43'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['B43'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['C43'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
-    ws6['D43'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['D43'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['E43'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['F43'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['G43'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
+    ws6['H43'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
 
     ws6['A44'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['B44'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['C44'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['D44'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['E44'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['F44'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['G44'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_MEDIUM))
+    ws6['H44'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_MEDIUM))
 
     ws6['H46'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['H47'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))

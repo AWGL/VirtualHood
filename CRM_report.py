@@ -1,4 +1,3 @@
-
 from openpyxl import Workbook
 import pandas
 from openpyxl.utils.dataframe import dataframe_to_rows
@@ -36,12 +35,12 @@ ws6.page_setup.paperSize=ws6.PAPERSIZE_A4
 
 #Patient demographics tab table headers
 ws1['A1']='Date Received'
-ws1['B1']='LAB No'
-ws1['C1']='Name'
-ws1['D1']='Tumour %'
-ws1['E1']='Analysis'
-ws1['F1']='Panel run'
-ws1['G1']='Qubit [DNA] ng/ul'
+ws1['B1']='Leeds/Cardiff'
+ws1['C1']='Lab No'
+ws1['D1']='Notes'
+ws1['E1']='Patient Name'
+ws1['F1']='Tumour %'
+ws1['G1']='Qubit [DNA] ng/u'
 ws1['H1']='Dilution (ng/ul)'
 ws1['I1']='NGS wks'
 ws1['J1']='Date Set up'
@@ -118,9 +117,6 @@ ws6['I7'].fill= PatternFill("solid", fgColor="00CCFFFF")
 ws6['J7'].fill= PatternFill("solid", fgColor="00CCFFFF")
 ws6['K7'].fill= PatternFill("solid", fgColor="00CCFFFF")
 
-
-ws6['H46'].fill= PatternFill("solid", fgColor="00CCFFFF")
-ws6['H47'].fill= PatternFill("solid", fgColor="00CCFFFF")
 
 ws6['A11']='Confirmed variant calls'
 ws6['A12']='Gene'
@@ -386,11 +382,6 @@ def get_gaps_file(referral, path, sampleid):
     ws6['F43']="=hotspots.gaps!D30"
     ws6['F44']="=hotspots.gaps!D31"
 
-    ws6['H46']="Analysed by:"
-    ws6['H47']="Checked by:"
-
-
-
 
 
 
@@ -492,9 +483,9 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
     poly_artefact_dict={}
     poly_and_Artefact_list_2=pandas.read_excel("/data/temp/artefacts_lists/CRM_poly_artefact_list.xlsx")
     variant_spreadsheet=pandas.read_excel("/data/temp/artefacts_lists/FOCUS_4_Variants.xlsx",sheet_name="Variants")
-
     num_rows_variant_report=variant_report_4.shape[0]
     num_rows_poly_artefact=poly_and_Artefact_list_2.shape[0]
+
 
 
     #Fill the conclusion columns using the relevant column in the Poly and Artefact spreadsheet
@@ -502,42 +493,33 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
     while (row1<num_rows_variant_report):
         row2=0
         while(row2<num_rows_poly_artefact):
-            if (poly_and_Artefact_list_2.iloc[row2,2]==variant_report_4.iloc[row1,2]):
-                poly_artefact_dict[variant_report_4.iloc[row1,2]]= poly_and_Artefact_list_2.iloc[row2,2]
-                variant_report_4.iloc[row1,11]= poly_and_Artefact_list_2.iloc[row2,6]
-                variant_report_4.iloc[row1,13]= poly_and_Artefact_list_2.iloc[row2,6]
+            if (poly_and_Artefact_list_2.iloc[row2,0]==variant_report_4.iloc[row1,9]):
+                variant_report_4.iloc[row1,11]= poly_and_Artefact_list_2.iloc[row2,9]
+                variant_report_4.iloc[row1,13]= poly_and_Artefact_list_2.iloc[row2,9]
             row2=row2+1
         row1=row1+1
 
+    print(variant_report_4)
 
     #fill second table of variant-calls tab using the conclusion column of the first table
     row3=0
     while (row3<num_rows_variant_report):
-        for x in poly_artefact_dict:
-            if (variant_report_4.iloc[row3,9]==x):
-                variant_report_4.iloc[row3,11]=poly_artefact_dict[x]
-                variant_report_4.iloc[row3,13]=poly_artefact_dict[x]
-            if (variant_report_4.iloc[row3,11]=='Known artefact'):
-                variant_report_4.iloc[row3,12]=3
-                variant_report_4.iloc[row3,14]=3
-            if (variant_report_4.iloc[row3,11]=='Known Poly'):
-                variant_report_4.iloc[row3,12]=1
-                variant_report_4.iloc[row3,14]=1
-            if (variant_report_4.iloc[row3,11]=='WT'):
-                variant_report_4.iloc[row3,12]=3
-                variant_report_4.iloc[row3,14]=3
-            if (variant_report_4.iloc[row3,11]=='Genuine'):
-                variant_report_4.iloc[row3,12]=1
-                variant_report_4.iloc_[row3,14]=1
-            if (variant_report_4.iloc[row3,11]=='SNP'):
-                variant_report_4.iloc[row3,12]=1
-                variant_report_4.iloc_[row3,14]=1
-            if ((variant_report_4.iloc[row3,11]!='Known artefact')and (variant_report_4.iloc[row3,10]!="Known Poly") and (variant_report_4.iloc[row3,10]!='WT') and (variant_report_4.iloc[row3,10]!='Genuine') and (variant_report_4.iloc[row3,10]!="SNP")):
-                variant_report_4.iloc[row3,11]=""
-                variant_report_4.iloc[row3,12]=""
-                variant_report_4.iloc[row3,13]=""
-                variant_report_4.iloc[row3,14]=""
-														
+        if (variant_report_4.iloc[row3,11]=='Known Artefact'):
+            variant_report_4.iloc[row3,12]=3
+            variant_report_4.iloc[row3,14]=3
+        if (variant_report_4.iloc[row3,11]=='Known Poly'):
+            variant_report_4.iloc[row3,12]=1
+            variant_report_4.iloc[row3,14]=1
+        if (variant_report_4.iloc[row3,11]=='WT'):
+            variant_report_4.iloc[row3,12]=3
+            variant_report_4.iloc[row3,14]=3
+        if (variant_report_4.iloc[row3,11]=='Genuine'):
+            variant_report_4.iloc[row3,12]=1
+            variant_report_4.iloc_[row3,14]=1
+        if (variant_report_4.iloc[row3,11]=='SNP'):
+            variant_report_4.iloc[row3,12]=1
+            variant_report_4.iloc_[row3,14]=1
+
         row3=row3+1
 
     
@@ -584,31 +566,27 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
         row=row+1
 
 
-    #Add upper-limit and lower-limit variant report dataframes to the excel workbook
-
-    
-    variant_report_4_upper_limit=variant_report_4[variant_report_4.Frequency>0.045]
-
-    for row in dataframe_to_rows(variant_report_4_upper_limit, header=True, index=False):
+   
+    for row in dataframe_to_rows(variant_report_4, header=True, index=False):
         ws2.append(row)
 
 
-    variant_report_5_upper_limit= variant_report_4_upper_limit.iloc[:,[0,1,2]]
-    variant_report_5_upper_limit['Comments/Notes/evidence:how conclusion was reached']=""
+    variant_report_5= variant_report_4.iloc[:,[0,1,2]]
+    variant_report_5['Comments/Notes/evidence:how conclusion was reached']=""
 
 
 
     row=0
 
-    num_rows_variant_report_upper_limit=variant_report_4_upper_limit.shape[0]
+    num_rows_variant_report=variant_report_4.shape[0]
 
-    while (row<num_rows_variant_report_upper_limit):
-        if (variant_report_4_upper_limit.iloc[row,11]=='Known artefact'):
-            variant_report_5_upper_limit.iloc[row,3]='On artefact list'
-        if (variant_report_4_upper_limit.iloc[row,11]=='Known Poly'):
-            variant_report_5_upper_limit.iloc[row,3]='On Poly list'
-        if (variant_report_4_upper_limit.iloc[row,11]=='WT'):
-            variant_report_5_upper_limit.iloc[row,3]='SNP in Ref.Seq'
+    while (row<num_rows_variant_report):
+        if (variant_report_4.iloc[row,11]=='Known artefact'):
+            variant_report_5.iloc[row,3]='On artefact list'
+        if (variant_report_4.iloc[row,11]=='Known Poly'):
+            variant_report_5.iloc[row,3]='On Poly list'
+        if (variant_report_4.iloc[row,11]=='WT'):
+            variant_report_5.iloc[row,3]='SNP in Ref.Seq'
         row=row+1
 
     ws2['A60']=" "
@@ -618,8 +596,9 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
 
     #add dataframe to variant calls tab
 
-    for row in dataframe_to_rows(variant_report_5_upper_limit, header=True, index=False):
+    for row in dataframe_to_rows(variant_report_5,  header=True, index=False):
         ws2.append(row)
+
 
     return(variant_report_4)
 
@@ -629,7 +608,7 @@ def add_excel_formulae():
 
     #add excel formulae to the spreadsheets to enable automation after program has finished
 
-    ws2['I4']= "='Patient demographics'!D2"
+    ws2['I4']= "='Patient demographics'!F2"
      
     ws6['A13']= "='Mutations and SNPS'!B3"
     ws6['B13']= "='Mutations and SNPS'!C3"
@@ -822,16 +801,11 @@ def add_excel_formulae():
     ws6['D34']= "='SUBPANEL NTC CHECK'!C21"
     ws6['D35']= "='SUBPANEL NTC CHECK'!C22"
     ws6['D36']= "='SUBPANEL NTC CHECK'!C23"
-    ws6['D37']= "='SUBPANEL NTC CHECK'!C24"
-    ws6['D38']= "='SUBPANEL NTC CHECK'!C25"
-    ws6['D39']= "='SUBPANEL NTC CHECK'!C26"
-    ws6['D40']= "='SUBPANEL NTC CHECK'!C27"
-    ws6['D41']= "='SUBPANEL NTC CHECK'!C28"
-    ws6['D42']= "='SUBPANEL NTC CHECK'!C29"
-    ws6['D43']= "='SUBPANEL NTC CHECK'!C30"
-    ws6['D44']= "='SUBPANEL NTC CHECK'!C31"
 
+    ws6['D37']= "=('SUBPANEL NTC CHECK'!C13 + 'SUBPANEL NTC CHECK'!C14 + 'SUBPANEL NTC CHECK'!C15 + 'SUBPANEL NTC CHECK'!C16 + 'SUBPANEL NTC CHECK'!C17 + 'SUBPANEL NTC CHECK'!C18 + 'SUBPANEL NTC CHECK'!C19 + 'SUBPANEL NTC CHECK'!C20 + 'SUBPANEL NTC CHECK'!C21 + 'SUBPANEL NTC CHECK'!C22 + 'SUBPANEL NTC CHECK'!C23)/11"    
 
+    ws6['C37']= "TP53_OVERALL"
+        
 
 
     ws6['A27']=sampleid
@@ -850,8 +824,8 @@ def add_excel_formulae():
     ws6['C1']='Patient Analysis Summary Sheet-CRM'
 
     ws6['A5'] = sampleid
-    ws6['B5']="='Patient demographics'!C2"
-    ws6['C5']="='Patient demographics'!D2"
+    ws6['B5']="='Patient demographics'!E2"
+    ws6['C5']="='Patient demographics'!F2"
     ws6['D5']= referral
     ws6['E5']= "='Patient demographics'!G2"
     ws6['F5']= "='Patient demographics'!H2"
@@ -870,7 +844,7 @@ def add_excel_formulae():
     ws9['J5']="NTC check 2"
 
     ws2['B4']= sampleid
-    ws2['B7']="='Patient demographics'!C2"
+    ws2['B7']="='Patient demographics'!E2"
     ws2['E4']="='Subpanel NTC check'!K4"
     ws2['E7']="='Subpanel NTC check'!K5"
     ws2['K4']=worksheet
@@ -1217,12 +1191,6 @@ def add_excel_formulae():
     ws6['D44'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_MEDIUM))
 
 
-    ws6['H46'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws6['H47'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws6['I46'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws6['I47'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-
-
     ws6['E30'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['E31'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
     ws6['E32'].border=Border(left=Side(border_style=BORDER_THIN), right=Side(border_style=BORDER_THIN), top=Side(border_style=BORDER_THIN), bottom=Side(border_style=BORDER_THIN))
@@ -1495,21 +1463,17 @@ if __name__ == "__main__":
     print(worksheet)
     print(referral)
 
-    path="/data/results/"+runid +"/NGHS-101X/"
+    path="/data/results/"+runid+"/NGHS-101X/"
 
 
     referral=referral.upper()
     if referral=="FOCUS4":
         referral="FOCUS4"
-    elif referral=="GIST":
-        referral="GIST"
-    elif referral=="iNATT":
-        referral="iNATT"
     else:
         print ("referral not recognised")    
     
 
-    referrals_list=['FOCUS4', 'GIST', 'iNATT']
+    referrals_list=['FOCUS4']
 
     referral_present=False
     
