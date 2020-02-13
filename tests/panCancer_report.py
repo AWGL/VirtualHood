@@ -1454,7 +1454,7 @@ if __name__ == "__main__":
      
             genescreen_coverage_NTC= get_NTC_genescreen_coverage_file(referral, path, coverage_value)
 
-            genescreen_coverage_2=add_columns_genescreen_coverage(genescreen_coverage, genescreen_coverage_NTC, num_rows_coverage)
+            genescreen_coverage_2=add_columns_genescreen_coverage(genescreen_coverage, genescreen_coverage_NTC, num_rows_coverage, path, sampleid, referral)
 
         subpanel_coverage=get_subpanel_coverage(referral, path, sampleid, coverage_value)
 
