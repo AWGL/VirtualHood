@@ -524,8 +524,10 @@ def get_CNV_file(referral, path, sampleid):
     if(os.stat(path+ sampleid+"/hotspot_cnvs/"+ sampleid+"_"+referral).st_size==0):
         ws8['A1']= 'No CNVs'
     if (os.stat(path+ sampleid+"/hotspot_cnvs/"+sampleid+"_"+referral).st_size!=0):
-        gaps=pandas.read_csv(path+sampleid+"/hotspot_cnvs/"+sampleid+"_"+referral, sep="\t")
-       
+        if (referral!= "Glioma"):
+            gaps=pandas.read_csv(path+sampleid+"/hotspot_cnvs/"+sampleid+"_"+referral, sep="\t")
+        else:
+            gaps=pandas.read_csv(path+sampleid+"/hotspot_cnvs/"+sampleid+"_Glioma_1p19q_adapted.txt", sep="\t")
     for row in dataframe_to_rows(gaps, header=True, index=False):
         ws8.append(row)
 
