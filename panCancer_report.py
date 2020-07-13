@@ -1,6 +1,6 @@
 '''
 Author: Laura McCluskey
-Version: 1.0
+Version: 1.1
 '''
 
 
@@ -1388,6 +1388,8 @@ if __name__ == "__main__":
     referral=referral.upper()
     if referral=="BREAST":
         referral="Breast"
+    elif referral=="BRAF":
+        referral="BRAF"
     elif referral=="COLORECTAL":
         referral="Colorectal"
     elif referral== "DPYD":
@@ -1414,7 +1416,7 @@ if __name__ == "__main__":
         print ("referral not recognised")    
     
 
-    referrals_list=['Breast','Colorectal','DPYD','GIST','Glioma','HeadAndNeck','Lung','Melanoma','Ovarian','Prostate','Thyroid', 'Tumour']
+    referrals_list=['Breast','Colorectal','DPYD','GIST','Glioma','HeadAndNeck','Lung','Melanoma','Ovarian','Prostate','Thyroid', 'Tumour', 'BRAF']
 
     referral_present=False
     
@@ -1434,7 +1436,8 @@ if __name__ == "__main__":
 
         variant_report_referral_2=expand_variant_report(variant_report_referral, variant_report_NTC_2)
         
-        if (referral!="GIST" and referral!="DPYD"):
+        # CNV analysis not run for these panels
+        if referral not in ["GIST", "DPYD", "BRAF"]:
             CNV_file=get_CNV_file(referral, path, sampleid)
 
         coverage_value="250x"
@@ -1447,8 +1450,8 @@ if __name__ == "__main__":
 
         hotspots_coverage_2, num_rows_coverage=add_columns_hotspots_coverage(hotspots_coverage, hotspots_coverage_NTC, path, sampleid, referral)
    
-
-        if (referral!="GIST" and referral != "DPYD"):
+        # genescreen coverage not run for these panels (hotspots only)
+        if referral not in ["GIST", "DPYD", "BRAF"]:
 
             genescreen_coverage=get_genescreen_coverage_file(referral, path, sampleid, coverage_value)
      
