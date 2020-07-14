@@ -2,7 +2,7 @@ import unittest
 
 from panCancer_report import *
 
-path="./"
+path="./tests/"
 
 coverage_value="250x"
 
@@ -195,6 +195,7 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(match_polys_and_artefacts((expand_variant_report(get_variant_report("Thyroid", path, "tester"), get_variantReport_NTC("Thyroid", path))), (add_extra_columns_NTC_report(get_variantReport_NTC("Thyroid", path) ,get_variant_report("Thyroid", path, "tester")))).iloc[6,16], "YES" )
         self.assertEqual(match_polys_and_artefacts((expand_variant_report(get_variant_report("Thyroid", path, "tester"), get_variantReport_NTC("Thyroid", path))), (add_extra_columns_NTC_report(get_variantReport_NTC("Thyroid", path) ,get_variant_report("Thyroid", path, "tester")))).iloc[6,18], 21.675 )
         self.assertEqual(match_polys_and_artefacts((expand_variant_report(get_variant_report("Thyroid", path, "tester"), get_variantReport_NTC("Thyroid", path))), (add_extra_columns_NTC_report(get_variantReport_NTC("Thyroid", path) ,get_variant_report("Thyroid", path, "tester")))).iloc[6,19],0.09980430528375735)
+
 
 if __name__ == '__main__':
     unittest.main()
