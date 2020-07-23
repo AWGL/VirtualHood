@@ -1369,7 +1369,7 @@ def add_excel_formulae():
         ws7[cell].font=font_bold
 
 
-    wb.save(path+sampleid+'_'+referral+'_panCancer_both-TESTER5.xlsx')
+    wb.save(path+sampleid+'_'+referral+'_panCancer_both.xlsx')
 
 
 
