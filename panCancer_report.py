@@ -520,17 +520,21 @@ def get_CNV_file(referral, path, sampleid):
     '''
     Open the relevant CNV file to append to the end of the mutations and snps tab. If the CNV file is empty, write 'No CNVs'.
     '''
-
-    if(os.stat(path+ sampleid+"/hotspot_cnvs/"+ sampleid+"_"+referral).st_size==0):
-        ws8['A1']= 'No CNVs'
-    if (os.stat(path+ sampleid+"/hotspot_cnvs/"+sampleid+"_"+referral).st_size!=0):
-        if (referral!= "Glioma"):
+    if (referral!= "Glioma" and referral!= "Tumour"):
+        if (os.stat(path+ sampleid+"/hotspot_cnvs/"+sampleid+"_"+referral).st_size!=0):
             gaps=pandas.read_csv(path+sampleid+"/hotspot_cnvs/"+sampleid+"_"+referral, sep="\t")
         else:
-            gaps=pandas.read_csv(path+sampleid+"/hotspot_cnvs/"+sampleid+"_Glioma_1p19q_adapted.txt", sep="\t")
+            ws8['A1']= 'ERROR-cannot find cnv file'
+
+    else:
+        if (os.stat(path+sampleid+"/hotspot_cnvs/"+sampleid+"_"+referral+"_1p19q.txt").st_size!=0):
+            gaps=pandas.read_csv(path+sampleid+"/hotspot_cnvs/"+sampleid+"_"+referral+"_1p19q.txt", sep="\t")
+        else:
+            ws8['A1']= 'ERROR- cannot find cnv file'
+   
+ 
     for row in dataframe_to_rows(gaps, header=True, index=False):
         ws8.append(row)
-
 
     return (gaps)
 
@@ -1365,7 +1369,7 @@ def add_excel_formulae():
         ws7[cell].font=font_bold
 
 
-    wb.save(path+sampleid+'_'+referral+'_panCancer_both.xlsx')
+    wb.save(path+sampleid+'_'+referral+'_panCancer_both-TESTER5.xlsx')
 
 
 
