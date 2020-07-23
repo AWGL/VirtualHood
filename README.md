@@ -58,3 +58,7 @@ python panCancer_report.py <seqId> <sampleid> <worksheet> <referral>
 source /home/transfer/miniconda3/bin/deactivate
 ```
 
+## Tests
+
+To run unit tests:
+`python -m unittest test_panCancer_report.py`
