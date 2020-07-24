@@ -1443,27 +1443,30 @@ if __name__ == "__main__":
         variant_report_referral_2=expand_variant_report(variant_report_referral, variant_report_NTC_2)
         
         # CNV analysis not run for these panels
-        if referral not in ["GIST", "DPYD", "BRAF"]:
+        no_cnvs = ['GIST', 'DPYD', 'BRAF', 'Breast']
+        if referral not in no_cnvs:
             CNV_file=get_CNV_file(referral, path, sampleid)
 
         coverage_value="250x"
 
         gaps_file=get_gaps_file(referral, path, sampleid, coverage_value)
 
-        hotspots_coverage=get_hotspots_coverage_file(referral, path, sampleid, coverage_value)
 
-        hotspots_coverage_NTC=get_NTC_hotspots_coverage_file(referral, path, coverage_value)
+        # hotspot coverage not run for these panels (genescreen only)
+        no_hotpots = ['Prostate']
+        if referral not in no_hotspots:
+            hotspots_coverage=get_hotspots_coverage_file(referral, path, sampleid, coverage_value)
+            hotspots_coverage_NTC=get_NTC_hotspots_coverage_file(referral, path, coverage_value)
+            hotspots_coverage_2, num_rows_coverage=add_columns_hotspots_coverage(hotspots_coverage, hotspots_coverage_NTC, path, sampleid, referral)
 
-        hotspots_coverage_2, num_rows_coverage=add_columns_hotspots_coverage(hotspots_coverage, hotspots_coverage_NTC, path, sampleid, referral)
    
         # genescreen coverage not run for these panels (hotspots only)
-        if referral not in ["GIST", "DPYD", "BRAF"]:
-
+        no_genescreen = ['GIST', 'DPYD', 'BRAF', 'Breast']
+        if referral not in no_genescreen:
             genescreen_coverage=get_genescreen_coverage_file(referral, path, sampleid, coverage_value)
-     
             genescreen_coverage_NTC= get_NTC_genescreen_coverage_file(referral, path, coverage_value)
-
             genescreen_coverage_2=add_columns_genescreen_coverage(genescreen_coverage, genescreen_coverage_NTC, num_rows_coverage, path, sampleid, referral)
+
 
         subpanel_coverage=get_subpanel_coverage(referral, path, sampleid, coverage_value)
 
