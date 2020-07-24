@@ -1469,11 +1469,13 @@ if __name__ == "__main__":
     referral=referral.upper()
     if referral=="FOCUS4":
         referral="FOCUS4"
+    elif referral == "TP53":
+        referral = "TP53"
     else:
         print ("referral not recognised")    
     
 
-    referrals_list=['FOCUS4']
+    referrals_list = ['FOCUS4', 'TP53']
 
     referral_present=False
     
