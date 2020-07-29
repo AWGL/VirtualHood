@@ -1445,7 +1445,7 @@ if __name__ == "__main__":
         variant_report_referral_2=expand_variant_report(variant_report_referral, variant_report_NTC_2)
         
         # CNV analysis not run for these panels
-        no_cnvs = ['GIST', 'DPYD', 'BRAF', 'Breast']
+        no_cnvs = ['GIST', 'DPYD', 'BRAF', 'Breast', 'Thyroid']
         if referral not in no_cnvs:
             CNV_file=get_CNV_file(referral, path, sampleid)
 
