@@ -1455,7 +1455,7 @@ if __name__ == "__main__":
 
 
         # hotspot coverage not run for these panels (genescreen only)
-        no_hotspots = ['Prostate']
+        no_hotspots = ['Prostate', 'Breast']
         if referral not in no_hotspots:
             hotspots_coverage=get_hotspots_coverage_file(referral, path, sampleid, coverage_value)
             hotspots_coverage_NTC=get_NTC_hotspots_coverage_file(referral, path, coverage_value)
@@ -1463,7 +1463,7 @@ if __name__ == "__main__":
 
    
         # genescreen coverage not run for these panels (hotspots only)
-        no_genescreen = ['GIST', 'DPYD', 'BRAF', 'Breast']
+        no_genescreen = ['GIST', 'DPYD', 'BRAF']
         if referral not in no_genescreen:
             genescreen_coverage=get_genescreen_coverage_file(referral, path, sampleid, coverage_value)
             genescreen_coverage_NTC= get_NTC_genescreen_coverage_file(referral, path, coverage_value)
