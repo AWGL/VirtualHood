@@ -295,15 +295,7 @@ def get_gaps_file(referral, path, sampleid, coverage_value):
     '''
     
     ws5["A1"]="Gaps 250x"
-    if(os.stat(path+sampleid+"/hotspot_coverage_"+coverage_value+"/" +sampleid+"_"+referral+"_hotspots.gaps").st_size==0):
-        if (coverage_value=="250x"):
-            ws5['A2']='No gaps'
-            bedfile=""
-        elif (coverage_value=="135x"):
-            ws5["I1"]="Gaps 135x"
-            ws5["I2"]="No gaps"
-            bedfile=""
-    if (os.stat(path+sampleid+"/hotspot_coverage_"+coverage_value+"/" +sampleid+"_"+referral+"_hotspots.gaps").st_size!=0):
+    try: 
         bedfile=pandas.read_csv(path+ sampleid+"/hotspot_coverage_"+coverage_value+"/" +sampleid+"_"+referral+"_hotspots.gaps", sep="\t", header=None)
         if (coverage_value=="135x"):
             ws5["I1"]="Gaps 135x"
@@ -341,6 +333,14 @@ def get_gaps_file(referral, path, sampleid, coverage_value):
             ws6["C73"]= "WARNING: not all gaps shown in report"
         if coverage_value=="135x" and bedfile_size>75:
        	    ws6["F73"]= "WARNING: not all gaps shown in report"
+    except:
+        if (coverage_value=="250x"):
+            ws5['A2']='No gaps'
+            bedfile=""
+        elif (coverage_value=="135x"):
+            ws5["I1"]="Gaps 135x"
+            ws5["I2"]="No gaps"
+            bedfile=""
 
     ws6['A48']="=hotspots.gaps!D2"
     ws6['A49']="=hotspots.gaps!D3"
