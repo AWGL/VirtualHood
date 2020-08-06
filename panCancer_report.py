@@ -295,15 +295,7 @@ def get_gaps_file(referral, path, sampleid, coverage_value):
     '''
     
     ws5["A1"]="Gaps 250x"
-    if(os.stat(path+sampleid+"/hotspot_coverage_"+coverage_value+"/" +sampleid+"_"+referral+"_hotspots.gaps").st_size==0):
-        if (coverage_value=="250x"):
-            ws5['A2']='No gaps'
-            bedfile=""
-        elif (coverage_value=="135x"):
-            ws5["I1"]="Gaps 135x"
-            ws5["I2"]="No gaps"
-            bedfile=""
-    if (os.stat(path+sampleid+"/hotspot_coverage_"+coverage_value+"/" +sampleid+"_"+referral+"_hotspots.gaps").st_size!=0):
+    try: 
         bedfile=pandas.read_csv(path+ sampleid+"/hotspot_coverage_"+coverage_value+"/" +sampleid+"_"+referral+"_hotspots.gaps", sep="\t", header=None)
         if (coverage_value=="135x"):
             ws5["I1"]="Gaps 135x"
@@ -341,6 +333,14 @@ def get_gaps_file(referral, path, sampleid, coverage_value):
             ws6["C73"]= "WARNING: not all gaps shown in report"
         if coverage_value=="135x" and bedfile_size>75:
        	    ws6["F73"]= "WARNING: not all gaps shown in report"
+    except:
+        if (coverage_value=="250x"):
+            ws5['A2']='No gaps'
+            bedfile=""
+        elif (coverage_value=="135x"):
+            ws5["I1"]="Gaps 135x"
+            ws5["I2"]="No gaps"
+            bedfile=""
 
     ws6['A48']="=hotspots.gaps!D2"
     ws6['A49']="=hotspots.gaps!D3"
@@ -1445,7 +1445,7 @@ if __name__ == "__main__":
         variant_report_referral_2=expand_variant_report(variant_report_referral, variant_report_NTC_2)
         
         # CNV analysis not run for these panels
-        no_cnvs = ['GIST', 'DPYD', 'BRAF', 'Breast']
+        no_cnvs = ['GIST', 'DPYD', 'BRAF', 'Breast', 'Thyroid']
         if referral not in no_cnvs:
             CNV_file=get_CNV_file(referral, path, sampleid)
 
@@ -1455,7 +1455,7 @@ if __name__ == "__main__":
 
 
         # hotspot coverage not run for these panels (genescreen only)
-        no_hotpots = ['Prostate']
+        no_hotspots = ['Prostate', 'Breast']
         if referral not in no_hotspots:
             hotspots_coverage=get_hotspots_coverage_file(referral, path, sampleid, coverage_value)
             hotspots_coverage_NTC=get_NTC_hotspots_coverage_file(referral, path, coverage_value)
@@ -1463,7 +1463,7 @@ if __name__ == "__main__":
 
    
         # genescreen coverage not run for these panels (hotspots only)
-        no_genescreen = ['GIST', 'DPYD', 'BRAF', 'Breast']
+        no_genescreen = ['GIST', 'DPYD', 'BRAF']
         if referral not in no_genescreen:
             genescreen_coverage=get_genescreen_coverage_file(referral, path, sampleid, coverage_value)
             genescreen_coverage_NTC= get_NTC_genescreen_coverage_file(referral, path, coverage_value)

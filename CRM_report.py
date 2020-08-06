@@ -291,7 +291,7 @@ def expand_variant_report(variant_report_4, variant_report_NTC_4):
     variant_report_4["QC "]=""
     variant_report_4[""]=""
     
-    if (referral=="FOCUS4"):
+    if referral in ["FOCUS4", "TP53"]:
         variant_report_4["Variant classification if seen before"]=""
     else:
         variant_report_4[""]=""
@@ -310,9 +310,8 @@ def get_gaps_file(referral, path, sampleid):
     ''' 
     Open the relevant gap file to append to the end of the mutations and snps tab. If the gap file is empty, write 'no gaps'.
     '''
-    hotspot_variants=referral
     #open the relevant bed files (ready for screening gaps tab)
-    if (hotspot_variants=='GIST'):
+    if referral == 'GIST':
         if((os.path.getsize(path+ sampleid+ "/hotspot_coverage/"+runid+"_"+sampleid+"_KIT.gaps")==0) and (os.path.getsize(path+ sampleid+ "/hotspot_coverage/"+runid+"_"+sampleid+"_PDGFRA.gaps")==0)):
             ws5['A1']= 'No gaps'
         if (os.path.getsize(path+ sampleid+ "/hotspot_coverage/"+runid+"_"+sampleid+"_KIT.gaps")>0):
@@ -323,7 +322,7 @@ def get_gaps_file(referral, path, sampleid):
             bedfile_PDGFRA=pandas.read_csv(path+ sampleid+ "/hotspot_coverage/"+runid+"_"+sampleid+"_PDGFRA.gaps", sep="\t")
             for row in dataframe_to_rows(bedfile_PDGFRA, header=True, index=False):
                 ws5.append(row)
-    elif (hotspot_variants=='FOCUS4'):
+    elif referral ==' FOCUS4':
         if((os.path.getsize(path+ sampleid+ "/hotspot_coverage/"+runid+"_"+sampleid+"_BRAF.gaps")==0) and (os.path.getsize(path+ sampleid+ "/hotspot_coverage/"+runid+"_"+sampleid+"_KRAS.gaps")==0) and (os.path.getsize(path+ sampleid+ "/hotspot_coverage/"+runid+"_"+sampleid+"_NRAS.gaps")==0) and (os.path.getsize(path+ sampleid+ "/hotspot_coverage/"+runid+"_"+sampleid+"_PIK3CA.gaps")==0)and (os.path.getsize(path+ sampleid+ "/hotspot_coverage/"+runid+"_"+sampleid+"_TP53.gaps")==0)):
             ws5['A1']= 'No gaps'
         if((os.path.getsize(path+ sampleid+ "/hotspot_coverage/"+runid+"_"+sampleid+"_BRAF.gaps")>0)):
@@ -345,6 +344,14 @@ def get_gaps_file(referral, path, sampleid):
         if((os.path.getsize(path+ sampleid+ "/hotspot_coverage/"+runid+"_"+sampleid+"_TP53.gaps")>0)):
             bedfile_TP53=pandas.read_csv(path+ sampleid+ "/hotspot_coverage/"+runid+"_"+sampleid+"_TP53.gaps", sep="\t")
             for row in dataframe_to_rows(bedfile_TP53, header=True, index=False):
+                ws5.append(row)
+    elif referral == 'TP53':
+        gaps_file = path + sampleid + "/hotspot_coverage/" + runid + "_" + sampleid + "_TP53.gaps"
+        if os.path.getsize(gaps_file) == 0:
+            ws5['A1'] = 'No gaps'
+        else:
+            bedfile = pandas.read_csv(gaps_file, sep="\t")
+            for row in dataframe_to_rows(bedfile, header=True, index=False):
                 ws5.append(row)
 
 
@@ -390,24 +397,22 @@ def get_hotspots_coverage_file(referral, path, sampleid):
     '''
     Open the relevant coverage file to append to the end of the mutations and snps tab. If the coverage file is empty, write 'No hotspots'.
     '''
-    hotspot_variants=referral
-    if (hotspot_variants=='GIST'):
+    if referral == 'GIST':
         bedfile_KIT=pandas.read_csv(path+ sampleid+ "/hotspot_coverage/"+runid+"_"+sampleid+"_KIT.coverage", sep="\t")
         bedfile_PDGFRA=pandas.read_csv(path+ sampleid+ "/hotspot_coverage/"+runid+"_"+sampleid+"_PDGFRA.coverage", sep="\t")
         Coverage=pandas.concat([bedfile_KIT, bedfile_PDGFRA])
-    elif (hotspot_variants=='FOCUS4'):
+    elif referral == 'FOCUS4':
         bedfile_BRAF=pandas.read_csv(path+ sampleid+ "/hotspot_coverage/"+runid+"_"+sampleid+"_BRAF.coverage", sep="\t")
         bedfile_KRAS=pandas.read_csv(path+ sampleid+ "/hotspot_coverage/"+runid+"_"+sampleid+"_KRAS.coverage", sep="\t")
         bedfile_NRAS=pandas.read_csv(path+ sampleid+ "/hotspot_coverage/"+runid+"_"+sampleid+"_NRAS.coverage", sep="\t")
         bedfile_PIK3CA=pandas.read_csv(path+ sampleid+ "/hotspot_coverage/"+runid+"_"+sampleid+"_PIK3CA.coverage", sep="\t")
         bedfile_TP53=pandas.read_csv(path+ sampleid+ "/hotspot_coverage/"+runid+"_"+sampleid+"_TP53.coverage", sep="\t")
         Coverage=pandas.concat([bedfile_BRAF, bedfile_KRAS, bedfile_NRAS, bedfile_PIK3CA, bedfile_TP53])
-
+    elif referral == 'TP53':
+        Coverage = pandas.read_csv(path+ sampleid+ "/hotspot_coverage/"+runid+"_"+sampleid+"_TP53.coverage", sep="\t")
 
     Coverage= Coverage.iloc[:,[3,4,5]]
     
-
-
     return(Coverage)
 
 
@@ -418,18 +423,20 @@ def get_NTC_hotspots_coverage_file(referral, path):
     '''
     Open the relevant NTC hotspots coverage file.
     '''
-    hotspot_variants=referral       
-    if (hotspot_variants=='GIST'):
+    if referral == 'GIST':
         bedfile_NTC_KIT=pandas.read_csv(path+NTC_name+"/hotspot_coverage/"+runid+"_"+NTC_name+"_KIT.coverage", sep="\t")
         bedfile_NTC_PDGFRA=pandas.read_csv(path+NTC_name+"/hotspot_coverage/"+runid+"_"+NTC_name+"_PDGFRA.coverage", sep="\t")
         NTC_check= pandas.concat([bedfile_NTC_KIT, bedfile_NTC_PDGFRA]) 
-    elif (hotspot_variants=='FOCUS4'):
+    elif referral == 'FOCUS4':
         bedfile_NTC_BRAF=pandas.read_csv(path+ NTC_name+"/hotspot_coverage/"+runid+"_"+NTC_name+"_BRAF.coverage", sep="\t")
         bedfile_NTC_KRAS=pandas.read_csv(path+ NTC_name+"/hotspot_coverage/"+runid+"_"+NTC_name+"_KRAS.coverage", sep="\t")
         bedfile_NTC_NRAS=pandas.read_csv(path+ NTC_name+"/hotspot_coverage/"+runid+"_"+NTC_name+"_NRAS.coverage", sep="\t")
         bedfile_NTC_PIK3CA=pandas.read_csv(path+ NTC_name+"/hotspot_coverage/"+runid+"_"+NTC_name+"_PIK3CA.coverage", sep="\t")
         bedfile_NTC_TP53=pandas.read_csv(path+NTC_name+"/hotspot_coverage/"+runid+"_"+NTC_name+"_TP53.coverage", sep="\t")
         NTC_check=pandas.concat([bedfile_NTC_BRAF, bedfile_NTC_KRAS, bedfile_NTC_NRAS, bedfile_NTC_PIK3CA, bedfile_NTC_TP53])
+    elif referral == 'TP53':
+        NTC_check = pandas.read_csv(path + NTC_name + "/hotspot_coverage/" + runid + "_" + NTC_name + "_TP53.coverage", sep="\t")
+
     return(NTC_check)
 
 
@@ -479,8 +486,6 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
     '''
     Extract the relevant information from "PanCancer_Poly and Artefact list.xlsx" by matching the variant name with the ones in the variant report table
     '''
-
-    poly_artefact_dict={}
     poly_and_Artefact_list_2=pandas.read_excel("/data/temp/artefacts_lists/CRM_poly_artefact_list.xlsx")
     variant_spreadsheet=pandas.read_excel("/data/temp/artefacts_lists/FOCUS_4_Variants.xlsx",sheet_name="Variants")
     num_rows_variant_report=variant_report_4.shape[0]
@@ -524,7 +529,7 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
 
     
     #Match variants to the variants list to determine what its classification was before
-    if (referral=="FOCUS4"):
+    if referral in ['FOCUS4', 'TP53']:
         num_rows_variant_spreadsheet=variant_spreadsheet.shape[0]
         row1=0
         while (row1<num_rows_variant_report):
@@ -802,9 +807,12 @@ def add_excel_formulae():
     ws6['D35']= "='SUBPANEL NTC CHECK'!C22"
     ws6['D36']= "='SUBPANEL NTC CHECK'!C23"
 
-    ws6['D37']= "=('SUBPANEL NTC CHECK'!C13 + 'SUBPANEL NTC CHECK'!C14 + 'SUBPANEL NTC CHECK'!C15 + 'SUBPANEL NTC CHECK'!C16 + 'SUBPANEL NTC CHECK'!C17 + 'SUBPANEL NTC CHECK'!C18 + 'SUBPANEL NTC CHECK'!C19 + 'SUBPANEL NTC CHECK'!C20 + 'SUBPANEL NTC CHECK'!C21 + 'SUBPANEL NTC CHECK'!C22 + 'SUBPANEL NTC CHECK'!C23)/11"    
-
-    ws6['C37']= "TP53_OVERALL"
+    if referral == 'FOCUS4':
+        ws6['D37']= "=('SUBPANEL NTC CHECK'!C13 + 'SUBPANEL NTC CHECK'!C14 + 'SUBPANEL NTC CHECK'!C15 + 'SUBPANEL NTC CHECK'!C16 + 'SUBPANEL NTC CHECK'!C17 + 'SUBPANEL NTC CHECK'!C18 + 'SUBPANEL NTC CHECK'!C19 + 'SUBPANEL NTC CHECK'!C20 + 'SUBPANEL NTC CHECK'!C21 + 'SUBPANEL NTC CHECK'!C22 + 'SUBPANEL NTC CHECK'!C23)/11"
+        ws6['C37']= "TP53_OVERALL"
+    elif referral == 'TP53':
+        ws6['B41']= "=('SUBPANEL NTC CHECK'!C2 + 'SUBPANEL NTC CHECK'!C3 + 'SUBPANEL NTC CHECK'!C4 + 'SUBPANEL NTC CHECK'!C5 + 'SUBPANEL NTC CHECK'!C6 + 'SUBPANEL NTC CHECK'!C7 + 'SUBPANEL NTC CHECK'!C8 + 'SUBPANEL NTC CHECK'!C9 + 'SUBPANEL NTC CHECK'!C10 + 'SUBPANEL NTC CHECK'!C11 + 'SUBPANEL NTC CHECK'!C12)/11"
+        ws6['A41']= "TP53_OVERALL"
         
 
 
