@@ -1479,13 +1479,15 @@ if __name__ == "__main__":
         referral="Lung"
     elif referral=="MELANOMA":
         referral="Melanoma"
+    elif referral == "THYROID":
+        referral = "Thyroid"
     elif referral=="TUMOUR":
         referral="Tumour"
     else:
         print ("referral not recognised")    
     
 
-    referrals_list=['Colorectal','Glioma','Lung','Melanoma','Tumour']
+    referrals_list=['Colorectal', 'Glioma', 'Lung', 'Melanoma', 'Thyroid', 'Tumour']
 
     referral_present=False
     
