@@ -7,7 +7,7 @@ Clone the VirtualHood repository using:
 ```
 git clone https://github.com/AWGL/VirtualHood.git
 ```
-## For the CRM pipeline:
+## For both CRM pipelines:
 
 ### Requirements:
 
