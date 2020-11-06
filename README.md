@@ -45,7 +45,7 @@ source /home/transfer/miniconda3/bin/deactivate
 ```
 
 
-# For the panCancer pipeline:
+## For the panCancer pipeline:
 
 ### Requirements:
 
