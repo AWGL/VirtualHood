@@ -1,3 +1,4 @@
+
 '''
 Author: Laura McCluskey
 Version: 1.2
@@ -13,6 +14,7 @@ import sys
 from openpyxl.styles import PatternFill
 from openpyxl.styles.borders import Border, Side, BORDER_MEDIUM, BORDER_THIN, BORDER_THICK
 from openpyxl.styles import Font
+import argparse
 
 wb=Workbook()
 ws1= wb.create_sheet("Sheet_1")
@@ -1375,21 +1377,22 @@ def add_excel_formulae():
 
 if __name__ == "__main__":
 
-    
+    parser=argparse.ArgumentParser()
     #Insert information
     runid=sys.argv[1]
     sampleid=sys.argv[2]
     worksheet=sys.argv[3]
     referral=sys.argv[4]
+    if (len(sys.argv)>5):
+        path=sys.argv[5]
+    else:   
+        path="/data/results/"+runid + "/RochePanCancer/"
 
     print(runid)
     print(sampleid)
     print(worksheet)
     print(referral)
     
-
-    path="/data/results/"+runid + "/RochePanCancer/"
-
 
     referral=referral.upper()
     if referral=="BREAST":
