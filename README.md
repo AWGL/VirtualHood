@@ -61,7 +61,7 @@ Required parameters:
 * Worksheet number
 * Referral- must be in variables file in the the form "referral=<referral>"
 
-Optional:
+Optional parameter:
 
 * path - this must end with "/". If a path is not provided, the default ("/data/results/runid/RochePanCancer/") will be used.
   
