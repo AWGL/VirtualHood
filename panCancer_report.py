@@ -1386,9 +1386,10 @@ if __name__ == "__main__":
     print(sampleid)
     print(worksheet)
     print(referral)
-    
-
-    path="/data/results/"+runid + "/RochePanCancer/"
+    if (len(sys.argv)>5):
+        path=sys.argv[5]
+    else:   
+        path="/data/results/"+runid + "/RochePanCancer/"
 
 
     referral=referral.upper()
