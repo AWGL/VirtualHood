@@ -1,6 +1,6 @@
 '''
 Author: Laura McCluskey
-Version: 1.2
+Version: 1.3.0
 '''
 
 
@@ -13,6 +13,7 @@ import sys
 from openpyxl.styles import PatternFill
 from openpyxl.styles.borders import Border, Side, BORDER_MEDIUM, BORDER_THIN, BORDER_THICK
 from openpyxl.styles import Font
+import argparse
 
 wb=Workbook()
 ws1= wb.create_sheet("Sheet_1")
@@ -793,14 +794,14 @@ def get_subpanel_coverage(referral, path, sampleid, coverage_value):
 
 
 
-def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
+def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4, artefacts_list):
 
     '''
     Extract the relevant information from "PanCancer_Poly and Artefact list.xlsx" by matching the variant name with the ones in the variant report table
     '''
 
     poly_artefact_dict={}
-    poly_and_Artefact_list=pandas.read_excel("/data/temp/artefacts_lists/Pan_Poly_and_Artefact_list.xlsx")
+    poly_and_Artefact_list=pandas.read_excel(artefacts_list+"Pan_Poly_and_Artefact_list.xlsx")
     poly_and_Artefact_list_2=pandas.DataFrame(poly_and_Artefact_list)
 
 
@@ -1377,18 +1378,26 @@ if __name__ == "__main__":
 
     
     #Insert information
-    runid=sys.argv[1]
-    sampleid=sys.argv[2]
-    worksheet=sys.argv[3]
-    referral=sys.argv[4]
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--runid', required=True)
+    parser.add_argument('--sampleid', required=True)
+    parser.add_argument('--worksheet', required=True)
+    parser.add_argument('--referral', required=True)
+    parser.add_argument('--path', required=False)
+    parser.add_argument('--artefacts', required=False)
+    args=parser.parse_args()
 
-    print(runid)
-    print(sampleid)
-    print(worksheet)
-    print(referral)
-    
+    runid=args.runid
+    sampleid=args.sampleid
+    worksheet=args.worksheet
+    referral=args.referral
+    path=args.path
+    artefacts_list=args.artefacts
 
-    path="/data/results/"+runid + "/RochePanCancer/"
+    if (path==None):
+        path="/data/results/"+runid + "/RochePanCancer/"
+    if (artefacts_list==None):
+        artefacts_list="/data/temp/artefacts_lists/"
 
 
     referral=referral.upper()
@@ -1478,7 +1487,7 @@ if __name__ == "__main__":
         gaps_file=get_gaps_file(referral, path, sampleid, coverage_value)
 
 
-        variant_report_referral_3=match_polys_and_artefacts(variant_report_referral_2, variant_report_NTC_2)
+        variant_report_referral_3=match_polys_and_artefacts(variant_report_referral_2, variant_report_NTC_2, artefacts_list)
 
         add_excel_formulae()
 
