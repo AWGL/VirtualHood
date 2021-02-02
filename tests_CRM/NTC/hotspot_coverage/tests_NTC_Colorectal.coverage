@@ -1,3 +1,4 @@
 CHR	START	END	META	AVG_DEPTH	PERC_COVERAGE@250
 1	start1	end1	Colorectal1	77.0	54.0
 2	start2	end2	Colorectal2	270.0	89.0
+3	start3	end3	Colorectal3	27.0	31.0
