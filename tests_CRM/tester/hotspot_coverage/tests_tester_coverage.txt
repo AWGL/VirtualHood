@@ -8,3 +8,4 @@ tests____tester_Lung_Gene1	554	90
 tests____tester_Melanoma_Gene1	196	23
 tests____tester_Melanoma_Gene2	370	76
 tests____tester_Thyroid_Gene1	14	2
+tests____tester_Tumour_Gene1	44	5
