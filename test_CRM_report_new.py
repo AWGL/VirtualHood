@@ -16,6 +16,8 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(len(get_variantReport_NTC("Lung", path, "NTC", "test")),5)
         self.assertEqual(len(get_variantReport_NTC("Melanoma", path, "NTC", "test")),0)
         self.assertEqual(len(get_variantReport_NTC("Thyroid", path, "NTC", "test")),3)
+        self.assertEqual(len(get_variantReport_NTC("Tumour", path, "NTC", "test")),1)
+
 
     def test_get_variant_report(self):
         self.assertEqual(len(get_variant_report("Colorectal", path, "tester", "test")),0)
@@ -23,6 +25,7 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(len(get_variant_report("Lung", path, "tester", "test")),5)
         self.assertEqual(len(get_variant_report("Melanoma", path, "tester", "test")),2)
         self.assertEqual(len(get_variant_report("Thyroid", path, "tester", "test")),4)
+        self.assertEqual(len(get_variant_report("Tumour", path, "tester", "test")),2)
 
 
     def test_add_extra_columns_NTC_report(self):
@@ -49,13 +52,15 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws7["C2"].value, "HGVSv1")
         self.assertEqual(ws7["D2"].value, "HGVSp1")
         self.assertEqual(ws7["E2"].value, 1.0)
-        self.assertEqual(ws7["F2"].value, "Genotype1")
+        self.assertEqual(ws7["F2"].value, "Quality1")
         self.assertEqual(ws7["G2"].value, 5)
-        self.assertEqual(ws7["H2"].value, "Quality1")
+        self.assertEqual(ws7["H2"].value, "classification")
         self.assertEqual(ws7["I2"].value, "Transcript1")
         self.assertEqual(ws7["J2"].value, "variant1")
         self.assertEqual(ws7["K2"].value, "NO")
         self.assertEqual(ws7["L2"].value, 5.0)
+        self.assertEqual(ws7["M2"].value, None)
+
 
         self.assertEqual(ws7["A3"].value, None)
         self.assertEqual(ws7["B3"].value, None)
@@ -100,9 +105,9 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws7["C2"].value, "HGVSv1")
         self.assertEqual(ws7["D2"].value, "HGVSp1")
         self.assertEqual(ws7["E2"].value, 1.0)
-        self.assertEqual(ws7["F2"].value, "Genotype1")
+        self.assertEqual(ws7["F2"].value, "Quality1")
         self.assertEqual(ws7["G2"].value, 5)
-        self.assertEqual(ws7["H2"].value, "Quality1")
+        self.assertEqual(ws7["H2"].value, "classification1")
         self.assertEqual(ws7["I2"].value, "Transcript1")
         self.assertEqual(ws7["J2"].value, "variant1")
         self.assertEqual(ws7["K2"].value, "YES")
@@ -113,12 +118,12 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws7["C3"].value, "HGVSv2")
         self.assertEqual(ws7["D3"].value, "HGVSp2")
         self.assertEqual(ws7["E3"].value, 2.0)
-        self.assertEqual(ws7["F3"].value, "Genotype2")
+        self.assertEqual(ws7["F3"].value, "Quality2")
         self.assertEqual(ws7["G3"].value, 6)
-        self.assertEqual(ws7["H3"].value, "Quality2")
+        self.assertEqual(ws7["H3"].value, "classification2")
         self.assertEqual(ws7["I3"].value, "Transcript2")
         self.assertEqual(ws7["J3"].value, "variant2")
-        self.assertEqual(ws7["K3"].value, "YES")
+        self.assertEqual(ws7["K3"].value, "NO")
         self.assertEqual(ws7["L3"].value, 12.0)
 
         self.assertEqual(ws7["A4"].value, "Gene3")
@@ -126,9 +131,9 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws7["C4"].value, "HGVSv3")
         self.assertEqual(ws7["D4"].value, "HGVSp3")
         self.assertEqual(ws7["E4"].value, 3.0)
-        self.assertEqual(ws7["F4"].value, "Genotype3")
+        self.assertEqual(ws7["F4"].value, "Quality3")
         self.assertEqual(ws7["G4"].value, 7)
-        self.assertEqual(ws7["H4"].value, "Quality3")
+        self.assertEqual(ws7["H4"].value, "classification3")
         self.assertEqual(ws7["I4"].value, "Transcript3")
         self.assertEqual(ws7["J4"].value, "variant3")
         self.assertEqual(ws7["K4"].value, "YES")
@@ -139,9 +144,9 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws7["C5"].value, "HGVSv4")
         self.assertEqual(ws7["D5"].value, "HGVSp4")
         self.assertEqual(ws7["E5"].value, 4.0)
-        self.assertEqual(ws7["F5"].value, "Genotype4")
+        self.assertEqual(ws7["F5"].value, "Quality4")
         self.assertEqual(ws7["G5"].value, 8)
-        self.assertEqual(ws7["H5"].value, "Quality4")
+        self.assertEqual(ws7["H5"].value, "classification4")
         self.assertEqual(ws7["I5"].value, "Transcript4")
         self.assertEqual(ws7["J5"].value, "variant4")
         self.assertEqual(ws7["K5"].value, "NO")
@@ -152,9 +157,9 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws7["C6"].value, "HGVSv5")
         self.assertEqual(ws7["D6"].value, "HGVSp5")
         self.assertEqual(ws7["E6"].value, 5.0)
-        self.assertEqual(ws7["F6"].value, "Genotype5")
+        self.assertEqual(ws7["F6"].value, "Quality5")
         self.assertEqual(ws7["G6"].value, 9)
-        self.assertEqual(ws7["H6"].value, "Quality5")
+        self.assertEqual(ws7["H6"].value, "classification5")
         self.assertEqual(ws7["I6"].value, "Transcript5")
         self.assertEqual(ws7["J6"].value, "variant5")
         self.assertEqual(ws7["K6"].value, "NO")
@@ -165,9 +170,9 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws7["C7"].value, "HGVSv6")
         self.assertEqual(ws7["D7"].value, "HGVSp6")
         self.assertEqual(ws7["E7"].value, 6.0)
-        self.assertEqual(ws7["F7"].value, "Genotype6")
+        self.assertEqual(ws7["F7"].value, "Quality6")
         self.assertEqual(ws7["G7"].value, 10)
-        self.assertEqual(ws7["H7"].value, "Quality6")
+        self.assertEqual(ws7["H7"].value, "classification6")
         self.assertEqual(ws7["I7"].value, "Transcript6")
         self.assertEqual(ws7["J7"].value, "variant6")
         self.assertEqual(ws7["K7"].value, "NO")
@@ -178,9 +183,9 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws7["C8"].value, "HGVSv7")
         self.assertEqual(ws7["D8"].value, "HGVSp7")
         self.assertEqual(ws7["E8"].value, 7.0)
-        self.assertEqual(ws7["F8"].value, "Genotype7")
+        self.assertEqual(ws7["F8"].value, "Quality7")
         self.assertEqual(ws7["G8"].value, 11)
-        self.assertEqual(ws7["H8"].value, "Quality7")
+        self.assertEqual(ws7["H8"].value, "classification7")
         self.assertEqual(ws7["I8"].value, "Transcript7")
         self.assertEqual(ws7["J8"].value, "variant7")
         self.assertEqual(ws7["K8"].value, "NO")
@@ -230,9 +235,9 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws7["C2"].value, "HGVSv1")
         self.assertEqual(ws7["D2"].value, "HGVSp1")
         self.assertEqual(ws7["E2"].value, 1.0)
-        self.assertEqual(ws7["F2"].value, "Genotype1")
+        self.assertEqual(ws7["F2"].value, "Quality1")
         self.assertEqual(ws7["G2"].value, 5)
-        self.assertEqual(ws7["H2"].value, "Quality1")
+        self.assertEqual(ws7["H2"].value, "classification1")
         self.assertEqual(ws7["I2"].value, "Transcript1")
         self.assertEqual(ws7["J2"].value, "variant1")
         self.assertEqual(ws7["K2"].value, "YES")
@@ -243,9 +248,9 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws7["C3"].value, "HGVSv2")
         self.assertEqual(ws7["D3"].value, "HGVSp2")
         self.assertEqual(ws7["E3"].value, 2.0)
-        self.assertEqual(ws7["F3"].value, "Genotype2")
+        self.assertEqual(ws7["F3"].value, "Quality2")
         self.assertEqual(ws7["G3"].value, 6)
-        self.assertEqual(ws7["H3"].value, "Quality2")
+        self.assertEqual(ws7["H3"].value, "classification2")
         self.assertEqual(ws7["I3"].value, "Transcript2")
         self.assertEqual(ws7["J3"].value, "variant2")
         self.assertEqual(ws7["K3"].value, "YES")
@@ -256,9 +261,9 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws7["C4"].value, "HGVSv3")
         self.assertEqual(ws7["D4"].value, "HGVSp3")
         self.assertEqual(ws7["E4"].value, 3.0)
-        self.assertEqual(ws7["F4"].value, "Genotype3")
+        self.assertEqual(ws7["F4"].value, "Quality3")
         self.assertEqual(ws7["G4"].value, 7)
-        self.assertEqual(ws7["H4"].value, "Quality3")
+        self.assertEqual(ws7["H4"].value, "classification3")
         self.assertEqual(ws7["I4"].value, "Transcript3")
         self.assertEqual(ws7["J4"].value, "variant3")
         self.assertEqual(ws7["K4"].value, "YES")
@@ -269,9 +274,9 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws7["C5"].value, "HGVSv4")
         self.assertEqual(ws7["D5"].value, "HGVSp4")
         self.assertEqual(ws7["E5"].value, 4.0)
-        self.assertEqual(ws7["F5"].value, "Genotype4")
+        self.assertEqual(ws7["F5"].value, "Quality4")
         self.assertEqual(ws7["G5"].value, 8)
-        self.assertEqual(ws7["H5"].value, "Quality4")
+        self.assertEqual(ws7["H5"].value, "classification4")
         self.assertEqual(ws7["I5"].value, "Transcript4")
         self.assertEqual(ws7["J5"].value, "variant4")
         self.assertEqual(ws7["K5"].value, "YES")
@@ -282,9 +287,9 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws7["C6"].value, "HGVSv5")
         self.assertEqual(ws7["D6"].value, "HGVSp5")
         self.assertEqual(ws7["E6"].value, 5.0)
-        self.assertEqual(ws7["F6"].value, "Genotype5")
+        self.assertEqual(ws7["F6"].value, "Quality5")
         self.assertEqual(ws7["G6"].value, 9)
-        self.assertEqual(ws7["H6"].value, "Quality5")
+        self.assertEqual(ws7["H6"].value, "classification5")
         self.assertEqual(ws7["I6"].value, "Transcript5")
         self.assertEqual(ws7["J6"].value, "variant5")
         self.assertEqual(ws7["K6"].value, "YES")
@@ -373,9 +378,9 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws7["C2"].value, "HGVSv1")
         self.assertEqual(ws7["D2"].value, "HGVSp1")
         self.assertEqual(ws7["E2"].value, 1.0)
-        self.assertEqual(ws7["F2"].value, "Genotype1")
+        self.assertEqual(ws7["F2"].value, "Quality1")
         self.assertEqual(ws7["G2"].value, 5)
-        self.assertEqual(ws7["H2"].value, "Quality1")
+        self.assertEqual(ws7["H2"].value, "classification1")
         self.assertEqual(ws7["I2"].value, "Transcript1")
         self.assertEqual(ws7["J2"].value, "variant1")
         self.assertEqual(ws7["K2"].value, "YES")
@@ -386,9 +391,9 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws7["C3"].value, "HGVSv2")
         self.assertEqual(ws7["D3"].value, "HGVSp2")
         self.assertEqual(ws7["E3"].value, 2.0)
-        self.assertEqual(ws7["F3"].value, "Genotype2")
+        self.assertEqual(ws7["F3"].value, "Quality2")
         self.assertEqual(ws7["G3"].value, 6)
-        self.assertEqual(ws7["H3"].value, "Quality2")
+        self.assertEqual(ws7["H3"].value, "classification2")
         self.assertEqual(ws7["I3"].value, "Transcript2")
         self.assertEqual(ws7["J3"].value, "variant2")
         self.assertEqual(ws7["K3"].value, "YES")
@@ -399,9 +404,9 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws7["C4"].value, "HGVSv3")
         self.assertEqual(ws7["D4"].value, "HGVSp3")
         self.assertEqual(ws7["E4"].value, 3.0)
-        self.assertEqual(ws7["F4"].value, "Genotype3")
+        self.assertEqual(ws7["F4"].value, "Quality3")
         self.assertEqual(ws7["G4"].value, 7)
-        self.assertEqual(ws7["H4"].value, "Quality3")
+        self.assertEqual(ws7["H4"].value, "classification3")
         self.assertEqual(ws7["I4"].value, "Transcript3")
         self.assertEqual(ws7["J4"].value, "variant3")
         self.assertEqual(ws7["K4"].value, "YES")
@@ -419,6 +424,60 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws7["J5"].value, None)
         self.assertEqual(ws7["K5"].value, None)
         self.assertEqual(ws7["L5"].value, None)
+
+
+	#Tumour
+        wb_Tumour=Workbook()
+        ws1_Tumour= wb_Tumour.create_sheet("Sheet_1")
+        ws9_Tumour= wb_Tumour.create_sheet("Sheet_9")
+        ws2_Tumour= wb_Tumour.create_sheet("Sheet_2")
+        ws4_Tumour= wb_Tumour.create_sheet("Sheet_4")
+        ws5_Tumour= wb_Tumour.create_sheet("Sheet_5")
+        ws6_Tumour= wb_Tumour.create_sheet("Sheet_6")
+        ws7_Tumour= wb_Tumour.create_sheet("Sheet_7")
+        ws10_Tumour= wb_Tumour.create_sheet("Sheet_10")
+
+        #name the tabs
+        ws1_Tumour.title="Patient demographics"
+        ws2_Tumour.title="Variant_calls"
+        ws4_Tumour.title="Mutations and SNPs"
+        ws5_Tumour.title="hotspots.gaps"
+        ws6_Tumour.title="Report"
+        ws7_Tumour.title="NTC variant"
+        ws9_Tumour.title="Subpanel NTC check"
+        ws10_Tumour.title="Subpanel coverage"
+
+        variant_report_NTC_Tumour=get_variantReport_NTC("Tumour", path, "NTC", "test")
+        variant_report_Tumour=get_variant_report("Tumour", path, "tester", "test")
+
+        variant_report_NTC, ws7=add_extra_columns_NTC_report(variant_report_NTC_Tumour, variant_report_Tumour, ws7_Tumour, wb_Tumour, path)
+
+        self.assertEqual(ws7["A2"].value, "Gene3")
+        self.assertEqual(ws7["B2"].value, "exon3")
+        self.assertEqual(ws7["C2"].value, "HGVSv3")
+        self.assertEqual(ws7["D2"].value, "HGVSp3")
+        self.assertEqual(ws7["E2"].value, 3.0)
+        self.assertEqual(ws7["F2"].value, "Quality3")
+        self.assertEqual(ws7["G2"].value, 7)
+        self.assertEqual(ws7["H2"].value, "classification3")
+        self.assertEqual(ws7["I2"].value, "Transcript3")
+        self.assertEqual(ws7["J2"].value, "variant3")
+        self.assertEqual(ws7["K2"].value, "YES")
+        self.assertEqual(ws7["L2"].value, 21.0)
+
+        self.assertEqual(ws7["A3"].value, None)
+        self.assertEqual(ws7["B3"].value, None)
+        self.assertEqual(ws7["C3"].value, None)
+        self.assertEqual(ws7["D3"].value, None)
+        self.assertEqual(ws7["E3"].value, None)
+        self.assertEqual(ws7["F3"].value, None)
+        self.assertEqual(ws7["G3"].value, None)
+        self.assertEqual(ws7["H3"].value, None)
+        self.assertEqual(ws7["I3"].value, None)
+        self.assertEqual(ws7["J3"].value, None)
+        self.assertEqual(ws7["K3"].value, None)
+        self.assertEqual(ws7["L3"].value, None)
+
 
 
     def test_expand_variant_report(self):
@@ -443,42 +502,57 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(variant_report_Glioma.iloc[0,2], "HGVSv1")
         self.assertEqual(variant_report_Glioma.iloc[0,3], "HGVSp1" )
         self.assertEqual(variant_report_Glioma.iloc[0,4], 1.0)
-        self.assertEqual(variant_report_Glioma.iloc[0,5], "Genotype1")
+        self.assertEqual(variant_report_Glioma.iloc[0,5], "Quality1")
         self.assertEqual(variant_report_Glioma.iloc[0,6], 5)
-        self.assertEqual(variant_report_Glioma.iloc[0,7], "Quality1")
+        self.assertEqual(variant_report_Glioma.iloc[0,7], "classification1")
         self.assertEqual(variant_report_Glioma.iloc[0,8], "Transcript1")
         self.assertEqual(variant_report_Glioma.iloc[0,9], "variant1")
         self.assertEqual(variant_report_Glioma.iloc[0,10], "")
         self.assertEqual(variant_report_Glioma.iloc[0,11], "")
         self.assertEqual(variant_report_Glioma.iloc[0,12], "")
+        self.assertEqual(variant_report_Glioma.iloc[0,13], "")
+        self.assertEqual(variant_report_Glioma.iloc[0,14], "")
+        self.assertEqual(variant_report_Glioma.iloc[0,15], '5.0')
+        self.assertEqual(variant_report_Glioma.iloc[0,16], "YES")
+
 
         self.assertEqual(variant_report_Glioma.iloc[1,0], "Gene2")
         self.assertEqual(variant_report_Glioma.iloc[1,1], "exon2")
         self.assertEqual(variant_report_Glioma.iloc[1,2], "HGVSv2")
         self.assertEqual(variant_report_Glioma.iloc[1,3], "HGVSp2" )
         self.assertEqual(variant_report_Glioma.iloc[1,4], 2.0)
-        self.assertEqual(variant_report_Glioma.iloc[1,5], "Genotype2")
+        self.assertEqual(variant_report_Glioma.iloc[1,5], "Quality2")
         self.assertEqual(variant_report_Glioma.iloc[1,6], 6)
-        self.assertEqual(variant_report_Glioma.iloc[1,7], "Quality2")
+        self.assertEqual(variant_report_Glioma.iloc[1,7], "classification2")
         self.assertEqual(variant_report_Glioma.iloc[1,8], "Transcript2")
-        self.assertEqual(variant_report_Glioma.iloc[1,9], "variant2")
-        self.assertEqual(variant_report_Glioma.iloc[1,10], "")
+        self.assertEqual(variant_report_Glioma.iloc[1,9], "1:1234G>A")
+        self.assertEqual(variant_report_Glioma.iloc[1,10], "1:1234")
         self.assertEqual(variant_report_Glioma.iloc[1,11], "")
         self.assertEqual(variant_report_Glioma.iloc[1,12], "")
+        self.assertEqual(variant_report_Glioma.iloc[1,13], "")
+        self.assertEqual(variant_report_Glioma.iloc[1,14], "")
+        self.assertEqual(variant_report_Glioma.iloc[1,15], '12.0')
+        self.assertEqual(variant_report_Glioma.iloc[1,16], "NO")
+
 
         self.assertEqual(variant_report_Glioma.iloc[2,0], "Gene3")
         self.assertEqual(variant_report_Glioma.iloc[2,1], "exon3")
         self.assertEqual(variant_report_Glioma.iloc[2,2], "HGVSv3")
         self.assertEqual(variant_report_Glioma.iloc[2,3], "HGVSp3" )
         self.assertEqual(variant_report_Glioma.iloc[2,4], 3.0)
-        self.assertEqual(variant_report_Glioma.iloc[2,5], "Genotype3")
+        self.assertEqual(variant_report_Glioma.iloc[2,5], "Quality3")
         self.assertEqual(variant_report_Glioma.iloc[2,6], 7)
-        self.assertEqual(variant_report_Glioma.iloc[2,7], "Quality3")
+        self.assertEqual(variant_report_Glioma.iloc[2,7], "classification3")
         self.assertEqual(variant_report_Glioma.iloc[2,8], "Transcript3")
         self.assertEqual(variant_report_Glioma.iloc[2,9], "variant3")
         self.assertEqual(variant_report_Glioma.iloc[2,10], "")
         self.assertEqual(variant_report_Glioma.iloc[2,11], "")
         self.assertEqual(variant_report_Glioma.iloc[2,12], "")
+        self.assertEqual(variant_report_Glioma.iloc[2,13], "")
+        self.assertEqual(variant_report_Glioma.iloc[2,14], "")
+        self.assertEqual(variant_report_Glioma.iloc[2,15], '21.0')
+        self.assertEqual(variant_report_Glioma.iloc[2,16], "YES")
+
 
 
 	#Lung
@@ -492,70 +566,95 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(variant_report_Lung.iloc[0,2], "HGVSv1")
         self.assertEqual(variant_report_Lung.iloc[0,3], "HGVSp1" )
         self.assertEqual(variant_report_Lung.iloc[0,4], 1.0)
-        self.assertEqual(variant_report_Lung.iloc[0,5], "Genotype1")
+        self.assertEqual(variant_report_Lung.iloc[0,5], "Quality1")
         self.assertEqual(variant_report_Lung.iloc[0,6], 5)
-        self.assertEqual(variant_report_Lung.iloc[0,7], "Quality1")
+        self.assertEqual(variant_report_Lung.iloc[0,7], "classification1")
         self.assertEqual(variant_report_Lung.iloc[0,8], "Transcript1")
         self.assertEqual(variant_report_Lung.iloc[0,9], "variant1")
         self.assertEqual(variant_report_Lung.iloc[0,10], "")
         self.assertEqual(variant_report_Lung.iloc[0,11], "")
         self.assertEqual(variant_report_Lung.iloc[0,12], "")
+        self.assertEqual(variant_report_Lung.iloc[0,13], "")
+        self.assertEqual(variant_report_Lung.iloc[0,14], "")
+        self.assertEqual(variant_report_Lung.iloc[0,15], '5.0')
+        self.assertEqual(variant_report_Lung.iloc[0,16], "YES")
+
 
         self.assertEqual(variant_report_Lung.iloc[1,0], "Gene2")
         self.assertEqual(variant_report_Lung.iloc[1,1], "exon2")
         self.assertEqual(variant_report_Lung.iloc[1,2], "HGVSv2")
         self.assertEqual(variant_report_Lung.iloc[1,3], "HGVSp2" )
         self.assertEqual(variant_report_Lung.iloc[1,4], 2.0)
-        self.assertEqual(variant_report_Lung.iloc[1,5], "Genotype2")
+        self.assertEqual(variant_report_Lung.iloc[1,5], "Quality2")
         self.assertEqual(variant_report_Lung.iloc[1,6], 6)
-        self.assertEqual(variant_report_Lung.iloc[1,7], "Quality2")
+        self.assertEqual(variant_report_Lung.iloc[1,7], "classification2")
         self.assertEqual(variant_report_Lung.iloc[1,8], "Transcript2")
         self.assertEqual(variant_report_Lung.iloc[1,9], "variant2")
         self.assertEqual(variant_report_Lung.iloc[1,10], "")
         self.assertEqual(variant_report_Lung.iloc[1,11], "")
         self.assertEqual(variant_report_Lung.iloc[1,12], "")
+        self.assertEqual(variant_report_Lung.iloc[1,13], "")
+        self.assertEqual(variant_report_Lung.iloc[1,14], "")
+        self.assertEqual(variant_report_Lung.iloc[1,15], '12.0')
+        self.assertEqual(variant_report_Lung.iloc[1,16], "YES")
+
 
         self.assertEqual(variant_report_Lung.iloc[2,0], "Gene3")
         self.assertEqual(variant_report_Lung.iloc[2,1], "exon3")
         self.assertEqual(variant_report_Lung.iloc[2,2], "HGVSv3")
         self.assertEqual(variant_report_Lung.iloc[2,3], "HGVSp3" )
         self.assertEqual(variant_report_Lung.iloc[2,4], 3.0)
-        self.assertEqual(variant_report_Lung.iloc[2,5], "Genotype3")
+        self.assertEqual(variant_report_Lung.iloc[2,5], "Quality3")
         self.assertEqual(variant_report_Lung.iloc[2,6], 7)
-        self.assertEqual(variant_report_Lung.iloc[2,7], "Quality3")
+        self.assertEqual(variant_report_Lung.iloc[2,7], "classification3")
         self.assertEqual(variant_report_Lung.iloc[2,8], "Transcript3")
         self.assertEqual(variant_report_Lung.iloc[2,9], "variant3")
         self.assertEqual(variant_report_Lung.iloc[2,10], "")
         self.assertEqual(variant_report_Lung.iloc[2,11], "")
         self.assertEqual(variant_report_Lung.iloc[2,12], "")
+        self.assertEqual(variant_report_Lung.iloc[2,13], "")
+        self.assertEqual(variant_report_Lung.iloc[2,14], "")
+        self.assertEqual(variant_report_Lung.iloc[2,15], '21.0')
+        self.assertEqual(variant_report_Lung.iloc[2,16], "YES")
+
 
         self.assertEqual(variant_report_Lung.iloc[3,0], "Gene4")
         self.assertEqual(variant_report_Lung.iloc[3,1], "exon4")
         self.assertEqual(variant_report_Lung.iloc[3,2], "HGVSv4")
         self.assertEqual(variant_report_Lung.iloc[3,3], "HGVSp4" )
         self.assertEqual(variant_report_Lung.iloc[3,4], 4.0)
-        self.assertEqual(variant_report_Lung.iloc[3,5], "Genotype4")
+        self.assertEqual(variant_report_Lung.iloc[3,5], "Quality4")
         self.assertEqual(variant_report_Lung.iloc[3,6], 8)
-        self.assertEqual(variant_report_Lung.iloc[3,7], "Quality4")
+        self.assertEqual(variant_report_Lung.iloc[3,7], "classification4")
         self.assertEqual(variant_report_Lung.iloc[3,8], "Transcript4")
         self.assertEqual(variant_report_Lung.iloc[3,9], "variant4")
         self.assertEqual(variant_report_Lung.iloc[3,10], "")
         self.assertEqual(variant_report_Lung.iloc[3,11], "")
         self.assertEqual(variant_report_Lung.iloc[3,12], "")
+        self.assertEqual(variant_report_Lung.iloc[3,13], "")
+        self.assertEqual(variant_report_Lung.iloc[3,14], "")
+        self.assertEqual(variant_report_Lung.iloc[3,15], '32.0')
+        self.assertEqual(variant_report_Lung.iloc[3,16], "YES")
+
+
 
         self.assertEqual(variant_report_Lung.iloc[4,0], "Gene5")
         self.assertEqual(variant_report_Lung.iloc[4,1], "exon5")
         self.assertEqual(variant_report_Lung.iloc[4,2], "HGVSv5")
         self.assertEqual(variant_report_Lung.iloc[4,3], "HGVSp5" )
         self.assertEqual(variant_report_Lung.iloc[4,4], 5.0)
-        self.assertEqual(variant_report_Lung.iloc[4,5], "Genotype5")
+        self.assertEqual(variant_report_Lung.iloc[4,5], "Quality5")
         self.assertEqual(variant_report_Lung.iloc[4,6], 9)
-        self.assertEqual(variant_report_Lung.iloc[4,7], "Quality5")
+        self.assertEqual(variant_report_Lung.iloc[4,7], "classification5")
         self.assertEqual(variant_report_Lung.iloc[4,8], "Transcript5")
         self.assertEqual(variant_report_Lung.iloc[4,9], "variant5")
         self.assertEqual(variant_report_Lung.iloc[4,10], "")
         self.assertEqual(variant_report_Lung.iloc[4,11], "")
         self.assertEqual(variant_report_Lung.iloc[4,12], "")
+        self.assertEqual(variant_report_Lung.iloc[4,13], "")
+        self.assertEqual(variant_report_Lung.iloc[4,14], "")
+        self.assertEqual(variant_report_Lung.iloc[4,15], '45.0')
+        self.assertEqual(variant_report_Lung.iloc[4,16], "YES")
 
 
 
@@ -570,28 +669,36 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(variant_report_Melanoma.iloc[0,2], "HGVSv1")
         self.assertEqual(variant_report_Melanoma.iloc[0,3], "HGVSp1" )
         self.assertEqual(variant_report_Melanoma.iloc[0,4], 1.0)
-        self.assertEqual(variant_report_Melanoma.iloc[0,5], "Genotype1")
+        self.assertEqual(variant_report_Melanoma.iloc[0,5], "Quality1")
         self.assertEqual(variant_report_Melanoma.iloc[0,6], 5)
-        self.assertEqual(variant_report_Melanoma.iloc[0,7], "Quality1")
+        self.assertEqual(variant_report_Melanoma.iloc[0,7], "classification1")
         self.assertEqual(variant_report_Melanoma.iloc[0,8], "Transcript1")
         self.assertEqual(variant_report_Melanoma.iloc[0,9], "variant1")
         self.assertEqual(variant_report_Melanoma.iloc[0,10], "")
         self.assertEqual(variant_report_Melanoma.iloc[0,11], "")
         self.assertEqual(variant_report_Melanoma.iloc[0,12], "")
+        self.assertEqual(variant_report_Melanoma.iloc[0,13], "")
+        self.assertEqual(variant_report_Melanoma.iloc[0,14], "")
+        self.assertEqual(variant_report_Melanoma.iloc[0,15], '5.0')
+        self.assertEqual(variant_report_Melanoma.iloc[0,16], "NO")
 
         self.assertEqual(variant_report_Melanoma.iloc[1,0], "Gene2")
         self.assertEqual(variant_report_Melanoma.iloc[1,1], "exon2")
         self.assertEqual(variant_report_Melanoma.iloc[1,2], "HGVSv2")
         self.assertEqual(variant_report_Melanoma.iloc[1,3], "HGVSp2" )
         self.assertEqual(variant_report_Melanoma.iloc[1,4], 2.0)
-        self.assertEqual(variant_report_Melanoma.iloc[1,5], "Genotype2")
+        self.assertEqual(variant_report_Melanoma.iloc[1,5], "Quality2")
         self.assertEqual(variant_report_Melanoma.iloc[1,6], 6)
-        self.assertEqual(variant_report_Melanoma.iloc[1,7], "Quality2")
+        self.assertEqual(variant_report_Melanoma.iloc[1,7], "classification2")
         self.assertEqual(variant_report_Melanoma.iloc[1,8], "Transcript2")
         self.assertEqual(variant_report_Melanoma.iloc[1,9], "variant2")
         self.assertEqual(variant_report_Melanoma.iloc[1,10], "")
         self.assertEqual(variant_report_Melanoma.iloc[1,11], "")
         self.assertEqual(variant_report_Melanoma.iloc[1,12], "")
+        self.assertEqual(variant_report_Melanoma.iloc[1,13], "")
+        self.assertEqual(variant_report_Melanoma.iloc[1,14], "")
+        self.assertEqual(variant_report_Melanoma.iloc[1,15], '12.0')
+        self.assertEqual(variant_report_Melanoma.iloc[1,16], "NO")
 
 
 
@@ -606,56 +713,120 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(variant_report_Thyroid.iloc[0,2], "HGVSv3")
         self.assertEqual(variant_report_Thyroid.iloc[0,3], "HGVSp3" )
         self.assertEqual(variant_report_Thyroid.iloc[0,4], 3.0)
-        self.assertEqual(variant_report_Thyroid.iloc[0,5], "Genotype3")
+        self.assertEqual(variant_report_Thyroid.iloc[0,5], "Quality3")
         self.assertEqual(variant_report_Thyroid.iloc[0,6], 5)
-        self.assertEqual(variant_report_Thyroid.iloc[0,7], "Quality3")
+        self.assertEqual(variant_report_Thyroid.iloc[0,7], "classification3")
         self.assertEqual(variant_report_Thyroid.iloc[0,8], "Transcript3")
         self.assertEqual(variant_report_Thyroid.iloc[0,9], "variant3")
         self.assertEqual(variant_report_Thyroid.iloc[0,10], "")
         self.assertEqual(variant_report_Thyroid.iloc[0,11], "")
         self.assertEqual(variant_report_Thyroid.iloc[0,12], "")
+        self.assertEqual(variant_report_Thyroid.iloc[0,13], "")
+        self.assertEqual(variant_report_Thyroid.iloc[0,14], "")
+        self.assertEqual(variant_report_Thyroid.iloc[0,15], '15.0')
+        self.assertEqual(variant_report_Thyroid.iloc[0,16], "YES")
 
         self.assertEqual(variant_report_Thyroid.iloc[1,0], "Gene2")
         self.assertEqual(variant_report_Thyroid.iloc[1,1], "exon2")
         self.assertEqual(variant_report_Thyroid.iloc[1,2], "HGVSv2")
         self.assertEqual(variant_report_Thyroid.iloc[1,3], "HGVSp2" )
         self.assertEqual(variant_report_Thyroid.iloc[1,4], 2.0)
-        self.assertEqual(variant_report_Thyroid.iloc[1,5], "Genotype2")
+        self.assertEqual(variant_report_Thyroid.iloc[1,5], "Quality2")
         self.assertEqual(variant_report_Thyroid.iloc[1,6], 6)
-        self.assertEqual(variant_report_Thyroid.iloc[1,7], "Quality2")
+        self.assertEqual(variant_report_Thyroid.iloc[1,7], "classification2")
         self.assertEqual(variant_report_Thyroid.iloc[1,8], "Transcript2")
         self.assertEqual(variant_report_Thyroid.iloc[1,9], "variant2")
         self.assertEqual(variant_report_Thyroid.iloc[1,10], "")
         self.assertEqual(variant_report_Thyroid.iloc[1,11], "")
         self.assertEqual(variant_report_Thyroid.iloc[1,12], "")
+        self.assertEqual(variant_report_Thyroid.iloc[1,13], "")
+        self.assertEqual(variant_report_Thyroid.iloc[1,14], "")
+        self.assertEqual(variant_report_Thyroid.iloc[1,15], '12.0')
+        self.assertEqual(variant_report_Thyroid.iloc[1,16], "YES")
 
         self.assertEqual(variant_report_Thyroid.iloc[2,0], "Gene1")
         self.assertEqual(variant_report_Thyroid.iloc[2,1], "exon1")
         self.assertEqual(variant_report_Thyroid.iloc[2,2], "HGVSv1")
         self.assertEqual(variant_report_Thyroid.iloc[2,3], "HGVSp1" )
         self.assertEqual(variant_report_Thyroid.iloc[2,4], 1.0)
-        self.assertEqual(variant_report_Thyroid.iloc[2,5], "Genotype1")
+        self.assertEqual(variant_report_Thyroid.iloc[2,5], "Quality1")
         self.assertEqual(variant_report_Thyroid.iloc[2,6], 7)
-        self.assertEqual(variant_report_Thyroid.iloc[2,7], "Quality1")
+        self.assertEqual(variant_report_Thyroid.iloc[2,7], "classification1")
         self.assertEqual(variant_report_Thyroid.iloc[2,8], "Transcript1")
         self.assertEqual(variant_report_Thyroid.iloc[2,9], "variant1")
         self.assertEqual(variant_report_Thyroid.iloc[2,10], "")
         self.assertEqual(variant_report_Thyroid.iloc[2,11], "")
         self.assertEqual(variant_report_Thyroid.iloc[2,12], "")
+        self.assertEqual(variant_report_Thyroid.iloc[2,13], "")
+        self.assertEqual(variant_report_Thyroid.iloc[2,14], "")
+        self.assertEqual(variant_report_Thyroid.iloc[2,15], '7.0')
+        self.assertEqual(variant_report_Thyroid.iloc[2,16], "YES")
 
         self.assertEqual(variant_report_Thyroid.iloc[3,0], "Gene7")
         self.assertEqual(variant_report_Thyroid.iloc[3,1], "exon7")
         self.assertEqual(variant_report_Thyroid.iloc[3,2], "HGVSv7")
         self.assertEqual(variant_report_Thyroid.iloc[3,3], "HGVSp7" )
         self.assertEqual(variant_report_Thyroid.iloc[3,4], 7.0)
-        self.assertEqual(variant_report_Thyroid.iloc[3,5], "Genotype7")
+        self.assertEqual(variant_report_Thyroid.iloc[3,5], "Quality7")
         self.assertEqual(variant_report_Thyroid.iloc[3,6], 11)
-        self.assertEqual(variant_report_Thyroid.iloc[3,7], "Quality7")
+        self.assertEqual(variant_report_Thyroid.iloc[3,7], "classification7")
         self.assertEqual(variant_report_Thyroid.iloc[3,8], "Transcript7")
         self.assertEqual(variant_report_Thyroid.iloc[3,9], "variant7")
         self.assertEqual(variant_report_Thyroid.iloc[3,10], "")
         self.assertEqual(variant_report_Thyroid.iloc[3,11], "")
         self.assertEqual(variant_report_Thyroid.iloc[3,12], "")
+        self.assertEqual(variant_report_Thyroid.iloc[3,13], "")
+        self.assertEqual(variant_report_Thyroid.iloc[3,14], "")
+        self.assertEqual(variant_report_Thyroid.iloc[3,15], '77.0')
+        self.assertEqual(variant_report_Thyroid.iloc[3,16], "NO")
+
+
+
+	#Tumour
+        variant_report_NTC_Tumour=get_variantReport_NTC("Tumour", path, "NTC", "test")
+        variant_report_Tumour=get_variant_report("Tumour", path, "tester", "test")
+
+        variant_report_Tumour=expand_variant_report(variant_report_Tumour, variant_report_NTC_Tumour)
+
+        self.assertEqual(variant_report_Tumour.iloc[0,0], "Gene3")
+        self.assertEqual(variant_report_Tumour.iloc[0,1], "exon3")
+        self.assertEqual(variant_report_Tumour.iloc[0,2], "HGVSv3")
+        self.assertEqual(variant_report_Tumour.iloc[0,3], "HGVSp3" )
+        self.assertEqual(variant_report_Tumour.iloc[0,4], 3.0)
+        self.assertEqual(variant_report_Tumour.iloc[0,5], "Quality3")
+        self.assertEqual(variant_report_Tumour.iloc[0,6], 5)
+        self.assertEqual(variant_report_Tumour.iloc[0,7], "classification3")
+        self.assertEqual(variant_report_Tumour.iloc[0,8], "Transcript3")
+        self.assertEqual(variant_report_Tumour.iloc[0,9], "variant3")
+        self.assertEqual(variant_report_Tumour.iloc[0,10], "")
+        self.assertEqual(variant_report_Tumour.iloc[0,11], "")
+        self.assertEqual(variant_report_Tumour.iloc[0,12], "")
+        self.assertEqual(variant_report_Tumour.iloc[0,13], "")
+        self.assertEqual(variant_report_Tumour.iloc[0,14], "")
+        self.assertEqual(variant_report_Tumour.iloc[0,15], '15.0')
+        self.assertEqual(variant_report_Tumour.iloc[0,16], "YES")
+
+        self.assertEqual(variant_report_Tumour.iloc[1,0], "Gene1")
+        self.assertEqual(variant_report_Tumour.iloc[1,1], "exon1")
+        self.assertEqual(variant_report_Tumour.iloc[1,2], "HGVSv1")
+        self.assertEqual(variant_report_Tumour.iloc[1,3], "HGVSp1" )
+        self.assertEqual(variant_report_Tumour.iloc[1,4], 0.0003)
+        self.assertEqual(variant_report_Tumour.iloc[1,5], "Quality1")
+        self.assertEqual(variant_report_Tumour.iloc[1,6], 7)
+        self.assertEqual(variant_report_Tumour.iloc[1,7], "classification1")
+        self.assertEqual(variant_report_Tumour.iloc[1,8], "Transcript1")
+        self.assertEqual(variant_report_Tumour.iloc[1,9], "variant1")
+        self.assertEqual(variant_report_Tumour.iloc[1,10], "")
+        self.assertEqual(variant_report_Tumour.iloc[1,11], "")
+        self.assertEqual(variant_report_Tumour.iloc[1,12], "")
+        self.assertEqual(variant_report_Tumour.iloc[1,13], "")
+        self.assertEqual(variant_report_Tumour.iloc[1,14], "")
+        self.assertEqual(variant_report_Tumour.iloc[1,15], '0.0021')
+        self.assertEqual(variant_report_Tumour.iloc[1,16], "NO")
+
+
+
+
 
     def test_get_gaps_file(self):
 
@@ -835,8 +1006,40 @@ class test_virtualhood(unittest.TestCase):
 
         gaps, ws5_output=get_gaps_file("Thyroid", path, "tester", ws5_Thyroid, wb_Thyroid, "tests")
 
+        self.assertEqual(ws5_output["A1"].value, 'No gaps')
+
+
+
+	#Tumour
+
+        wb_Tumour=Workbook()
+        ws1_Tumour= wb_Tumour.create_sheet("Sheet_1")
+        ws9_Tumour= wb_Tumour.create_sheet("Sheet_9")
+        ws2_Tumour= wb_Tumour.create_sheet("Sheet_2")
+        ws4_Tumour= wb_Tumour.create_sheet("Sheet_4")
+        ws5_Tumour= wb_Tumour.create_sheet("Sheet_5")
+        ws6_Tumour= wb_Tumour.create_sheet("Sheet_6")
+        ws7_Tumour= wb_Tumour.create_sheet("Sheet_7")
+        ws10_Tumour=wb_Tumour.create_sheet("Sheet_10")
+
+        #name the tabs
+        ws1_Tumour.title="Patient demographics"
+        ws2_Tumour.title="Variant_calls"
+        ws4_Tumour.title="Mutations and SNPs"
+        ws5_Tumour.title="hotspots.gaps"
+        ws6_Tumour.title="Report"
+        ws7_Tumour.title="NTC variant"
+        ws9_Tumour.title="Subpanel NTC check"
+        ws10_Tumour.title="Subpanel coverage"
+
+        gaps, ws5_output=get_gaps_file("Tumour", path, "tester", ws5_Tumour, wb_Tumour, "tests")
+
 
         self.assertEqual(ws5_output["A1"].value, 'No gaps')
+
+
+
+
 
 
     def test_get_hotspots_coverage_file(self):
@@ -914,6 +1117,15 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(Coverage.iloc[1,0], "Thyroid9")
         self.assertEqual(Coverage.iloc[1,1], 22.0)
         self.assertEqual(Coverage.iloc[1,2], 1.0)
+
+
+	#Tumour
+        Coverage= get_hotspots_coverage_file("Tumour", path, "tester", "tests")
+
+        self.assertEqual(Coverage.iloc[0,0], "Tumour9")
+        self.assertEqual(Coverage.iloc[0,1], 22.0)
+        self.assertEqual(Coverage.iloc[0,2], 1.0)
+
 
    
     def test_get_NTC_hotspots_coverage_file(self):
@@ -1038,6 +1250,18 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(NTC_Coverage.iloc[1,3], "Thyroid9")
         self.assertEqual(NTC_Coverage.iloc[1,4], 27.0)
         self.assertEqual(NTC_Coverage.iloc[1,5], 15.0)
+
+
+	#Tumour
+	
+        NTC_Coverage=get_NTC_hotspots_coverage_file("Tumour", path, "NTC", "tests")
+
+        self.assertEqual(NTC_Coverage.iloc[0,0], 9)
+        self.assertEqual(NTC_Coverage.iloc[0,1], "start9")
+        self.assertEqual(NTC_Coverage.iloc[0,2], "end9")
+        self.assertEqual(NTC_Coverage.iloc[0,3], "Tumour9")
+        self.assertEqual(NTC_Coverage.iloc[0,4], 27.0)
+        self.assertEqual(NTC_Coverage.iloc[0,5], 15.0)
 
 
     def test_add_columns_hotspots_coverage(self):
@@ -1292,6 +1516,43 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws9["E4"].value, None)
 
 
+	#Tumour
+        wb_Tumour=Workbook()
+        ws1_Tumour= wb_Thyroid.create_sheet("Sheet_1")
+        ws9_Tumour= wb_Thyroid.create_sheet("Sheet_9")
+        ws2_Tumour= wb_Thyroid.create_sheet("Sheet_2")
+        ws4_Tumour= wb_Thyroid.create_sheet("Sheet_4")
+        ws5_Tumour= wb_Thyroid.create_sheet("Sheet_5")
+        ws6_Tumour= wb_Thyroid.create_sheet("Sheet_6")
+        ws7_Tumour= wb_Thyroid.create_sheet("Sheet_7")
+        ws10_Tumour= wb_Thyroid.create_sheet("Sheet_10")
+
+        ws1_Tumour.title="Patient demographics"
+        ws2_Tumour.title="Variant_calls"
+        ws4_Tumour.title="Mutations and SNPs"
+        ws5_Tumour.title="hotspots.gaps"
+        ws6_Tumour.title="Report"
+        ws7_Tumour.title="NTC variant"
+        ws9_Tumour.title="Subpanel NTC check"
+        ws10_Tumour.title="Subpanel coverage"
+
+        Coverage_Tumour= get_hotspots_coverage_file("Tumour", path, "tester", "tests")
+
+        NTC_check=get_NTC_hotspots_coverage_file("Tumour", path, "NTC", "tests")
+
+        Coverage, num_rows_coverage, ws9=add_columns_hotspots_coverage(Coverage_Tumour, NTC_check, ws9_Tumour)
+
+
+        self.assertEqual(ws9["A2"].value, "Tumour9")
+        self.assertEqual(ws9["B2"].value, 22.0)
+        self.assertEqual(ws9["C2"].value, 1.0)
+        self.assertEqual(ws9["D2"].value, 27)
+        self.assertEqual(ws9["E2"].value, 122.72727272727273 )
+
+
+
+
+
     def test_get_subpanel_coverage(self):
 
         wb_Colorectal=Workbook()
@@ -1474,6 +1735,40 @@ class test_virtualhood(unittest.TestCase):
 
 
 
+	#Tumour
+
+        wb_Tumour=Workbook()
+        ws1_Tumour= wb_Tumour.create_sheet("Sheet_1")
+        ws9_Tumour= wb_Tumour.create_sheet("Sheet_9")
+        ws2_Tumour= wb_Tumour.create_sheet("Sheet_2")
+        ws4_Tumour= wb_Tumour.create_sheet("Sheet_4")
+        ws5_Tumour= wb_Tumour.create_sheet("Sheet_5")
+        ws6_Tumour= wb_Tumour.create_sheet("Sheet_6")
+        ws7_Tumour= wb_Tumour.create_sheet("Sheet_7")
+        ws10_Tumour=wb_Tumour.create_sheet("Sheet_10")
+
+        #name the tabs
+        ws1_Tumour.title="Patient demographics"
+        ws2_Tumour.title="Variant_calls"
+        ws4_Tumour.title="Mutations and SNPs"
+        ws5_Tumour.title="hotspots.gaps"
+        ws6_Tumour.title="Report"
+        ws7_Tumour.title="NTC variant"
+        ws9_Tumour.title="Subpanel NTC check"
+        ws10_Tumour.title="Subpanel coverage"
+
+        coverage2, ws10=get_subpanel_coverage("Tumour", path, "tester", "tests", ws10_Tumour)
+
+        self.assertEqual(ws10["A2"].value, "tests____tester_Tumour_Gene1")
+        self.assertEqual(ws10["B2"].value, 44)
+        self.assertEqual(ws10["C2"].value, 5)
+
+        self.assertEqual(ws10["A3"].value, None)
+        self.assertEqual(ws10["B3"].value, None)
+        self.assertEqual(ws10["C3"].value, None)
+
+
+
     def test_match_polys_and_artefacts(self):
 
 
@@ -1560,39 +1855,69 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws2["C10"].value, "HGVSv1")
         self.assertEqual(ws2["D10"].value, "HGVSp1")
         self.assertEqual(ws2["E10"].value, 1.0)
-        self.assertEqual(ws2["F10"].value, "Genotype1")
+        self.assertEqual(ws2["F10"].value, "Quality1")
         self.assertEqual(ws2["G10"].value, 5.0)
-        self.assertEqual(ws2["H10"].value, "Quality1")
+        self.assertEqual(ws2["H10"].value, "classification1")
         self.assertEqual(ws2["I10"].value, "Transcript1")
         self.assertEqual(ws2["J10"].value, "variant1")
         self.assertEqual(ws2["K10"].value, "")
         self.assertEqual(ws2["L10"].value, "Known Poly")
+        self.assertEqual(ws2["M10"].value, 1)
+        self.assertEqual(ws2["N10"].value, "Known Poly")
+        self.assertEqual(ws2["O10"].value, 1)
+        self.assertEqual(ws2["P10"].value, '5.0')
+        self.assertEqual(ws2["Q10"].value, "YES")
+        self.assertEqual(ws2["R10"].value, 5)
+        self.assertEqual(ws2["S10"].value, 5)
+        self.assertEqual(ws2["T10"].value, 1)
+        self.assertEqual(ws2["U10"].value, "")
+        self.assertEqual(ws2["V10"].value, "On Poly list")
 
         self.assertEqual(ws2["A11"].value, "Gene2")
         self.assertEqual(ws2["B11"].value, "exon2")
         self.assertEqual(ws2["C11"].value, "HGVSv2")
         self.assertEqual(ws2["D11"].value, "HGVSp2")
         self.assertEqual(ws2["E11"].value, 2.0)
-        self.assertEqual(ws2["F11"].value, "Genotype2")
+        self.assertEqual(ws2["F11"].value, "Quality2")
         self.assertEqual(ws2["G11"].value, 6.0)
-        self.assertEqual(ws2["H11"].value, "Quality2")
+        self.assertEqual(ws2["H11"].value, "classification2")
         self.assertEqual(ws2["I11"].value, "Transcript2")
-        self.assertEqual(ws2["J11"].value, "variant2")
-        self.assertEqual(ws2["K11"].value, "")
+        self.assertEqual(ws2["J11"].value, "1:1234G>A")
+        self.assertEqual(ws2["K11"].value, "1:1234")
         self.assertEqual(ws2["L11"].value, "")
+        self.assertEqual(ws2["M11"].value, "")
+        self.assertEqual(ws2["N11"].value, "")
+        self.assertEqual(ws2["O11"].value, "")
+        self.assertEqual(ws2["P11"].value, '12.0')
+        self.assertEqual(ws2["Q11"].value, "NO")
+        self.assertEqual(ws2["R11"].value, '')
+        self.assertEqual(ws2["S11"].value, '')
+        self.assertEqual(ws2["T11"].value, '')
+        self.assertEqual(ws2["U11"].value, "")
+        self.assertEqual(ws2["V11"].value, "")
 
         self.assertEqual(ws2["A12"].value, "Gene3")
         self.assertEqual(ws2["B12"].value, "exon3")
         self.assertEqual(ws2["C12"].value, "HGVSv3")
         self.assertEqual(ws2["D12"].value, "HGVSp3")
         self.assertEqual(ws2["E12"].value, 3.0)
-        self.assertEqual(ws2["F12"].value, "Genotype3")
+        self.assertEqual(ws2["F12"].value, "Quality3")
         self.assertEqual(ws2["G12"].value, 7.0)
-        self.assertEqual(ws2["H12"].value, "Quality3")
+        self.assertEqual(ws2["H12"].value, "classification3")
         self.assertEqual(ws2["I12"].value, "Transcript3")
         self.assertEqual(ws2["J12"].value, "variant3")
         self.assertEqual(ws2["K12"].value, "")
         self.assertEqual(ws2["L12"].value, "")
+        self.assertEqual(ws2["M12"].value, "")
+        self.assertEqual(ws2["N12"].value, "")
+        self.assertEqual(ws2["O12"].value, "")
+        self.assertEqual(ws2["P12"].value, '21.0')
+        self.assertEqual(ws2["Q12"].value, "YES")
+        self.assertEqual(ws2["R12"].value, 21)
+        self.assertEqual(ws2["S12"].value, 21)
+        self.assertEqual(ws2["T12"].value, 1)
+        self.assertEqual(ws2["U12"].value, "")
+        self.assertEqual(ws2["V12"].value, "")
 
         self.assertEqual(ws2["A13"].value, None)
         self.assertEqual(ws2["B13"].value, None)
@@ -1645,65 +1970,116 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws2["C10"].value, "HGVSv1")
         self.assertEqual(ws2["D10"].value, "HGVSp1")
         self.assertEqual(ws2["E10"].value, 1.0)
-        self.assertEqual(ws2["F10"].value, "Genotype1")
+        self.assertEqual(ws2["F10"].value, "Quality1")
         self.assertEqual(ws2["G10"].value, 5.0)
-        self.assertEqual(ws2["H10"].value, "Quality1")
+        self.assertEqual(ws2["H10"].value, "classification1")
         self.assertEqual(ws2["I10"].value, "Transcript1")
         self.assertEqual(ws2["J10"].value, "variant1")
         self.assertEqual(ws2["K10"].value, "")
         self.assertEqual(ws2["L10"].value, "Known Poly")
+        self.assertEqual(ws2["M10"].value, 1)
+        self.assertEqual(ws2["N10"].value, "Known Poly")
+        self.assertEqual(ws2["O10"].value, 1)
+        self.assertEqual(ws2["P10"].value, '5.0')
+        self.assertEqual(ws2["Q10"].value, "YES")
+        self.assertEqual(ws2["R10"].value, 5)
+        self.assertEqual(ws2["S10"].value, 5)
+        self.assertEqual(ws2["T10"].value, 1)
+        self.assertEqual(ws2["U10"].value, "")
+        self.assertEqual(ws2["V10"].value, "On Poly list")
 
         self.assertEqual(ws2["A11"].value, "Gene2")
         self.assertEqual(ws2["B11"].value, "exon2")
         self.assertEqual(ws2["C11"].value, "HGVSv2")
         self.assertEqual(ws2["D11"].value, "HGVSp2")
         self.assertEqual(ws2["E11"].value, 2.0)
-        self.assertEqual(ws2["F11"].value, "Genotype2")
+        self.assertEqual(ws2["F11"].value, "Quality2")
         self.assertEqual(ws2["G11"].value, 6.0)
-        self.assertEqual(ws2["H11"].value, "Quality2")
+        self.assertEqual(ws2["H11"].value, "classification2")
         self.assertEqual(ws2["I11"].value, "Transcript2")
         self.assertEqual(ws2["J11"].value, "variant2")
         self.assertEqual(ws2["K11"].value, "")
         self.assertEqual(ws2["L11"].value, "")
+        self.assertEqual(ws2["M11"].value, "")
+        self.assertEqual(ws2["N11"].value, "")
+        self.assertEqual(ws2["O11"].value, "")
+        self.assertEqual(ws2["P11"].value, '12.0')
+        self.assertEqual(ws2["Q11"].value, "YES")
+        self.assertEqual(ws2["R11"].value, 12)
+        self.assertEqual(ws2["S11"].value, 12)
+        self.assertEqual(ws2["T11"].value, 1)
+        self.assertEqual(ws2["U11"].value, "")
+        self.assertEqual(ws2["U12"].value, "")
 
         self.assertEqual(ws2["A12"].value, "Gene3")
         self.assertEqual(ws2["B12"].value, "exon3")
         self.assertEqual(ws2["C12"].value, "HGVSv3")
         self.assertEqual(ws2["D12"].value, "HGVSp3")
         self.assertEqual(ws2["E12"].value, 3.0)
-        self.assertEqual(ws2["F12"].value, "Genotype3")
+        self.assertEqual(ws2["F12"].value, "Quality3")
         self.assertEqual(ws2["G12"].value, 7.0)
-        self.assertEqual(ws2["H12"].value, "Quality3")
+        self.assertEqual(ws2["H12"].value, "classification3")
         self.assertEqual(ws2["I12"].value, "Transcript3")
         self.assertEqual(ws2["J12"].value, "variant3")
         self.assertEqual(ws2["K12"].value, "")
         self.assertEqual(ws2["L12"].value, "")
+        self.assertEqual(ws2["M12"].value, "")
+        self.assertEqual(ws2["N12"].value, "")
+        self.assertEqual(ws2["O12"].value, "")
+        self.assertEqual(ws2["P12"].value, '21.0')
+        self.assertEqual(ws2["Q12"].value, "YES")
+        self.assertEqual(ws2["R12"].value, 21)
+        self.assertEqual(ws2["S12"].value, 21)
+        self.assertEqual(ws2["T12"].value, 1)
+        self.assertEqual(ws2["U12"].value, "")
+        self.assertEqual(ws2["V12"].value, "")
 
         self.assertEqual(ws2["A13"].value, "Gene4")
         self.assertEqual(ws2["B13"].value, "exon4")
         self.assertEqual(ws2["C13"].value, "HGVSv4")
         self.assertEqual(ws2["D13"].value, "HGVSp4")
         self.assertEqual(ws2["E13"].value, 4.0)
-        self.assertEqual(ws2["F13"].value, "Genotype4")
+        self.assertEqual(ws2["F13"].value, "Quality4")
         self.assertEqual(ws2["G13"].value, 8.0)
-        self.assertEqual(ws2["H13"].value, "Quality4")
+        self.assertEqual(ws2["H13"].value, "classification4")
         self.assertEqual(ws2["I13"].value, "Transcript4")
         self.assertEqual(ws2["J13"].value, "variant4")
         self.assertEqual(ws2["K13"].value, "")
         self.assertEqual(ws2["L13"].value, "")
+        self.assertEqual(ws2["M13"].value, "")
+        self.assertEqual(ws2["N13"].value, "")
+        self.assertEqual(ws2["O13"].value, "")
+        self.assertEqual(ws2["P13"].value, '32.0')
+        self.assertEqual(ws2["Q13"].value, "YES")
+        self.assertEqual(ws2["R13"].value, 32)
+        self.assertEqual(ws2["S13"].value, 32)
+        self.assertEqual(ws2["T13"].value, 1)
+        self.assertEqual(ws2["U13"].value, "")
+        self.assertEqual(ws2["V13"].value, "")
+
 
         self.assertEqual(ws2["A14"].value, "Gene5")
         self.assertEqual(ws2["B14"].value, "exon5")
         self.assertEqual(ws2["C14"].value, "HGVSv5")
         self.assertEqual(ws2["D14"].value, "HGVSp5")
         self.assertEqual(ws2["E14"].value, 5.0)
-        self.assertEqual(ws2["F14"].value, "Genotype5")
+        self.assertEqual(ws2["F14"].value, "Quality5")
         self.assertEqual(ws2["G14"].value, 9.0)
-        self.assertEqual(ws2["H14"].value, "Quality5")
+        self.assertEqual(ws2["H14"].value, "classification5")
         self.assertEqual(ws2["I14"].value, "Transcript5")
         self.assertEqual(ws2["J14"].value, "variant5")
         self.assertEqual(ws2["K14"].value, "")
         self.assertEqual(ws2["L14"].value, "")
+        self.assertEqual(ws2["M14"].value, "")
+        self.assertEqual(ws2["N14"].value, "")
+        self.assertEqual(ws2["O14"].value, "")
+        self.assertEqual(ws2["P14"].value, '45.0')
+        self.assertEqual(ws2["Q14"].value, "YES")
+        self.assertEqual(ws2["R14"].value, 45.0)
+        self.assertEqual(ws2["S14"].value, 45)
+        self.assertEqual(ws2["T14"].value, 1)
+        self.assertEqual(ws2["U14"].value, "")
+        self.assertEqual(ws2["V14"].value, "")
 
         self.assertEqual(ws2["A15"].value, None)
         self.assertEqual(ws2["B15"].value, None)
@@ -1717,6 +2093,105 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws2["J15"].value, None)
         self.assertEqual(ws2["K15"].value, None)
         self.assertEqual(ws2["L15"].value, None)
+
+
+
+
+	#Melanoma
+
+        wb_Melanoma=Workbook()
+        ws1_Melanoma= wb_Melanoma.create_sheet("Sheet_1")
+        ws9_Melanoma= wb_Melanoma.create_sheet("Sheet_9")
+        ws2_Melanoma= wb_Melanoma.create_sheet("Sheet_2")
+        ws4_Melanoma= wb_Melanoma.create_sheet("Sheet_4")
+        ws5_Melanoma= wb_Melanoma.create_sheet("Sheet_5")
+        ws6_Melanoma= wb_Melanoma.create_sheet("Sheet_6")
+        ws7_Melanoma= wb_Melanoma.create_sheet("Sheet_7")
+        ws10_Melanoma=wb_Melanoma.create_sheet("Sheet_10")
+
+        #name the tabs
+        ws1_Melanoma.title="Patient demographics"
+        ws2_Melanoma.title="Variant_calls"
+        ws4_Melanoma.title="Mutations and SNPs"
+        ws5_Melanoma.title="hotspots.gaps"
+        ws6_Melanoma.title="Report"
+        ws7_Melanoma.title="NTC variant"
+        ws9_Melanoma.title="Subpanel NTC check"
+        ws10_Melanoma.title="Subpanel coverage"
+
+        ws2_Melanoma['A8']=" "
+        variant_report_NTC_Melanoma=get_variantReport_NTC("Melanoma", path, "NTC", "test")
+        variant_report_Melanoma=get_variant_report("Melanoma", path, "tester", "test")
+
+        variant_report_NTC_Melanoma, ws7=add_extra_columns_NTC_report(variant_report_NTC_Melanoma, variant_report_Melanoma, ws7_Melanoma, wb_Melanoma, path)
+
+        variant_report_Melanoma=expand_variant_report(variant_report_Melanoma, variant_report_NTC_Melanoma)
+
+        variant_report_4, ws2=match_polys_and_artefacts(variant_report_Melanoma, variant_report_NTC_Melanoma, artefacts_path, ws2_Melanoma)
+ 
+        self.assertEqual(ws2["A10"].value, "Gene1")
+        self.assertEqual(ws2["B10"].value, "exon1")
+        self.assertEqual(ws2["C10"].value, "HGVSv1")
+        self.assertEqual(ws2["D10"].value, "HGVSp1")
+        self.assertEqual(ws2["E10"].value, 1.0)
+        self.assertEqual(ws2["F10"].value, "Quality1")
+        self.assertEqual(ws2["G10"].value, 5.0)
+        self.assertEqual(ws2["H10"].value, "classification1")
+        self.assertEqual(ws2["I10"].value, "Transcript1")
+        self.assertEqual(ws2["J10"].value, "variant1")
+        self.assertEqual(ws2["K10"].value, "")
+        self.assertEqual(ws2["L10"].value, "Known Poly")
+        self.assertEqual(ws2["M10"].value, 1)
+        self.assertEqual(ws2["N10"].value, "Known Poly")
+        self.assertEqual(ws2["O10"].value, 1)
+        self.assertEqual(ws2["P10"].value, '5.0')
+        self.assertEqual(ws2["Q10"].value, "NO")
+        self.assertEqual(ws2["R10"].value, "")
+        self.assertEqual(ws2["S10"].value, "")
+        self.assertEqual(ws2["T10"].value, "")
+        self.assertEqual(ws2["U10"].value, "")
+        self.assertEqual(ws2["V10"].value, "On Poly list")
+
+
+        self.assertEqual(ws2["A11"].value, "Gene2")
+        self.assertEqual(ws2["B11"].value, "exon2")
+        self.assertEqual(ws2["C11"].value, "HGVSv2")
+        self.assertEqual(ws2["D11"].value, "HGVSp2")
+        self.assertEqual(ws2["E11"].value, 2.0)
+        self.assertEqual(ws2["F11"].value, "Quality2")
+        self.assertEqual(ws2["G11"].value, 6.0)
+        self.assertEqual(ws2["H11"].value, "classification2")
+        self.assertEqual(ws2["I11"].value, "Transcript2")
+        self.assertEqual(ws2["J11"].value, "variant2")
+        self.assertEqual(ws2["K11"].value, "")
+        self.assertEqual(ws2["L11"].value, "")
+        self.assertEqual(ws2["M11"].value, "")
+        self.assertEqual(ws2["N11"].value, "")
+        self.assertEqual(ws2["O11"].value, "")
+        self.assertEqual(ws2["P11"].value, '12.0')
+        self.assertEqual(ws2["Q11"].value, "NO")
+        self.assertEqual(ws2["R11"].value, "")
+        self.assertEqual(ws2["S11"].value, "")
+        self.assertEqual(ws2["T11"].value, "")
+        self.assertEqual(ws2["U11"].value, "")
+        self.assertEqual(ws2["V11"].value, "")
+
+
+        self.assertEqual(ws2["A12"].value, None)
+        self.assertEqual(ws2["B12"].value, None)
+        self.assertEqual(ws2["C12"].value, None)
+        self.assertEqual(ws2["D12"].value, None)
+        self.assertEqual(ws2["E12"].value, None)
+        self.assertEqual(ws2["F12"].value, None)
+        self.assertEqual(ws2["G12"].value, None)
+        self.assertEqual(ws2["H12"].value, None)
+        self.assertEqual(ws2["I12"].value, None)
+        self.assertEqual(ws2["J12"].value, None)
+        self.assertEqual(ws2["K12"].value, None)
+        self.assertEqual(ws2["L12"].value, None)
+
+
+
 
 
 	#Thyroid
@@ -1756,52 +2231,93 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws2["C10"].value, "HGVSv3")
         self.assertEqual(ws2["D10"].value, "HGVSp3")
         self.assertEqual(ws2["E10"].value, 3.0)
-        self.assertEqual(ws2["F10"].value, "Genotype3")
+        self.assertEqual(ws2["F10"].value, "Quality3")
         self.assertEqual(ws2["G10"].value, 5.0)
-        self.assertEqual(ws2["H10"].value, "Quality3")
+        self.assertEqual(ws2["H10"].value, "classification3")
         self.assertEqual(ws2["I10"].value, "Transcript3")
         self.assertEqual(ws2["J10"].value, "variant3")
         self.assertEqual(ws2["K10"].value, "")
         self.assertEqual(ws2["L10"].value, "")
+        self.assertEqual(ws2["M10"].value, "")
+        self.assertEqual(ws2["N10"].value, "")
+        self.assertEqual(ws2["O10"].value, "")
+        self.assertEqual(ws2["P10"].value, '15.0')
+        self.assertEqual(ws2["Q10"].value, "YES")
+        self.assertEqual(ws2["R10"].value, 15.0)
+        self.assertEqual(ws2["S10"].value, 21.0)
+        self.assertEqual(ws2["T10"].value, 1.4)
+        self.assertEqual(ws2["U10"].value, "")
+        self.assertEqual(ws2["V10"].value, "")
 
         self.assertEqual(ws2["A11"].value, "Gene2")
         self.assertEqual(ws2["B11"].value, "exon2")
         self.assertEqual(ws2["C11"].value, "HGVSv2")
         self.assertEqual(ws2["D11"].value, "HGVSp2")
         self.assertEqual(ws2["E11"].value, 2.0)
-        self.assertEqual(ws2["F11"].value, "Genotype2")
+        self.assertEqual(ws2["F11"].value, "Quality2")
         self.assertEqual(ws2["G11"].value, 6.0)
-        self.assertEqual(ws2["H11"].value, "Quality2")
+        self.assertEqual(ws2["H11"].value, "classification2")
         self.assertEqual(ws2["I11"].value, "Transcript2")
         self.assertEqual(ws2["J11"].value, "variant2")
         self.assertEqual(ws2["K11"].value, "")
         self.assertEqual(ws2["L11"].value, "")
+        self.assertEqual(ws2["M11"].value, "")
+        self.assertEqual(ws2["N11"].value, "")
+        self.assertEqual(ws2["O11"].value, "")
+        self.assertEqual(ws2["P11"].value, '12.0')
+        self.assertEqual(ws2["Q11"].value, "YES")
+        self.assertEqual(ws2["R11"].value, 12.0)
+        self.assertEqual(ws2["S11"].value, 12.0)
+        self.assertEqual(ws2["T11"].value, 1.0)
+        self.assertEqual(ws2["U11"].value, "")
+        self.assertEqual(ws2["V11"].value, "")
 
         self.assertEqual(ws2["A12"].value, "Gene1")
         self.assertEqual(ws2["B12"].value, "exon1")
         self.assertEqual(ws2["C12"].value, "HGVSv1")
         self.assertEqual(ws2["D12"].value, "HGVSp1")
         self.assertEqual(ws2["E12"].value, 1.0)
-        self.assertEqual(ws2["F12"].value, "Genotype1")
+        self.assertEqual(ws2["F12"].value, "Quality1")
         self.assertEqual(ws2["G12"].value, 7.0)
-        self.assertEqual(ws2["H12"].value, "Quality1")
+        self.assertEqual(ws2["H12"].value, "classification1")
         self.assertEqual(ws2["I12"].value, "Transcript1")
         self.assertEqual(ws2["J12"].value, "variant1")
         self.assertEqual(ws2["K12"].value, "")
         self.assertEqual(ws2["L12"].value, "Known Poly")
+        self.assertEqual(ws2["M12"].value, 1)
+        self.assertEqual(ws2["N12"].value, "Known Poly")
+        self.assertEqual(ws2["O12"].value, 1)
+        self.assertEqual(ws2["P12"].value, '7.0')
+        self.assertEqual(ws2["Q12"].value, "YES")
+        self.assertEqual(ws2["R12"].value, 7.0)
+        self.assertEqual(ws2["S12"].value, 5.0)
+        self.assertEqual(ws2["T12"].value, 0.7142857142857143)
+        self.assertEqual(ws2["U12"].value, "")
+        self.assertEqual(ws2["V12"].value, "On Poly list")
 
         self.assertEqual(ws2["A13"].value, "Gene7")
         self.assertEqual(ws2["B13"].value, "exon7")
         self.assertEqual(ws2["C13"].value, "HGVSv7")
         self.assertEqual(ws2["D13"].value, "HGVSp7")
         self.assertEqual(ws2["E13"].value, 7.0)
-        self.assertEqual(ws2["F13"].value, "Genotype7")
+        self.assertEqual(ws2["F13"].value, "Quality7")
         self.assertEqual(ws2["G13"].value, 11.0)
-        self.assertEqual(ws2["H13"].value, "Quality7")
+        self.assertEqual(ws2["H13"].value, "classification7")
         self.assertEqual(ws2["I13"].value, "Transcript7")
         self.assertEqual(ws2["J13"].value, "variant7")
         self.assertEqual(ws2["K13"].value, "")
         self.assertEqual(ws2["L13"].value, "Known artefact")
+        self.assertEqual(ws2["M13"].value, 3)
+        self.assertEqual(ws2["N13"].value, "Known artefact")
+        self.assertEqual(ws2["O13"].value, 3)
+        self.assertEqual(ws2["P13"].value, '77.0')
+        self.assertEqual(ws2["Q13"].value, "NO")
+        self.assertEqual(ws2["R13"].value, "")
+        self.assertEqual(ws2["S13"].value, "")
+        self.assertEqual(ws2["T13"].value, "")
+        self.assertEqual(ws2["U13"].value, "")
+        self.assertEqual(ws2["V13"].value, "On artefact list")
+
 
         self.assertEqual(ws2["A14"].value, None)
         self.assertEqual(ws2["B14"].value, None)
@@ -1816,5 +2332,75 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws2["K14"].value, None)
         self.assertEqual(ws2["L14"].value, None)
 
+
+	#Tumour
+
+        wb_Tumour=Workbook()
+        ws1_Tumour= wb_Tumour.create_sheet("Sheet_1")
+        ws9_Tumour= wb_Tumour.create_sheet("Sheet_9")
+        ws2_Tumour= wb_Tumour.create_sheet("Sheet_2")
+        ws4_Tumour= wb_Tumour.create_sheet("Sheet_4")
+        ws5_Tumour= wb_Tumour.create_sheet("Sheet_5")
+        ws6_Tumour= wb_Tumour.create_sheet("Sheet_6")
+        ws7_Tumour= wb_Tumour.create_sheet("Sheet_7")
+        ws10_Tumour=wb_Tumour.create_sheet("Sheet_10")
+
+        #name the tabs
+        ws1_Tumour.title="Patient demographics"
+        ws2_Tumour.title="Variant_calls"
+        ws4_Tumour.title="Mutations and SNPs"
+        ws5_Tumour.title="hotspots.gaps"
+        ws6_Tumour.title="Report"
+        ws7_Tumour.title="NTC variant"
+        ws9_Tumour.title="Subpanel NTC check"
+        ws10_Tumour.title="Subpanel coverage"
+
+        ws2_Tumour['A8']=" "
+        variant_report_NTC_Tumour=get_variantReport_NTC("Tumour", path, "NTC", "test")
+        variant_report_Tumour=get_variant_report("Tumour", path, "tester", "test")
+
+        variant_report_NTC, ws7=add_extra_columns_NTC_report(variant_report_NTC_Tumour, variant_report_Tumour, ws7_Tumour, wb_Tumour, path)
+
+        variant_report_Tumour=expand_variant_report(variant_report_Tumour, variant_report_NTC_Tumour)
+
+        variant_report_4, ws2=match_polys_and_artefacts(variant_report_Tumour, variant_report_NTC_Tumour, artefacts_path, ws2_Tumour)
+ 
+        self.assertEqual(ws2["A10"].value, "Gene3")
+        self.assertEqual(ws2["B10"].value, "exon3")
+        self.assertEqual(ws2["C10"].value, "HGVSv3")
+        self.assertEqual(ws2["D10"].value, "HGVSp3")
+        self.assertEqual(ws2["E10"].value, 3.0)
+        self.assertEqual(ws2["F10"].value, "Quality3")
+        self.assertEqual(ws2["G10"].value, 5.0)
+        self.assertEqual(ws2["H10"].value, "classification3")
+        self.assertEqual(ws2["I10"].value, "Transcript3")
+        self.assertEqual(ws2["J10"].value, "variant3")
+        self.assertEqual(ws2["K10"].value, "")
+        self.assertEqual(ws2["L10"].value, "")
+        self.assertEqual(ws2["M10"].value, "")
+        self.assertEqual(ws2["N10"].value, "")
+        self.assertEqual(ws2["O10"].value, "")
+        self.assertEqual(ws2["P10"].value, '15.0')
+        self.assertEqual(ws2["Q10"].value, "YES")
+        self.assertEqual(ws2["R10"].value, 15.0)
+        self.assertEqual(ws2["S10"].value, 21.0)
+        self.assertEqual(ws2["T10"].value, 1.4)
+        self.assertEqual(ws2["U10"].value, "")
+        self.assertEqual(ws2["V10"].value, "")
+
+
+
+        self.assertEqual(ws2["A11"].value, None)
+        self.assertEqual(ws2["B11"].value, None)
+        self.assertEqual(ws2["C11"].value, None)
+        self.assertEqual(ws2["D11"].value, None)
+        self.assertEqual(ws2["E11"].value, None)
+        self.assertEqual(ws2["F11"].value, None)
+        self.assertEqual(ws2["G11"].value, None)
+        self.assertEqual(ws2["H11"].value, None)
+        self.assertEqual(ws2["I11"].value, None)
+        self.assertEqual(ws2["J11"].value, None)
+        self.assertEqual(ws2["K11"].value, None)
+        self.assertEqual(ws2["L11"].value, None)
 
 
