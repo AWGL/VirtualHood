@@ -1464,6 +1464,8 @@ if __name__ == "__main__":
     referral=referral.upper()
     if referral=="COLORECTAL":
         referral="Colorectal"
+    elif referral=="GIST":
+        referral="GIST"
     elif referral=="GLIOMA":
         referral="Glioma"
     elif referral=="LUNG":
@@ -1478,7 +1480,7 @@ if __name__ == "__main__":
         print ("referral not recognised")    
     
 
-    referrals_list=['Colorectal', 'Glioma', 'Lung', 'Melanoma', 'Thyroid', 'Tumour']
+    referrals_list=['Colorectal', 'GIST', 'Glioma', 'Lung', 'Melanoma', 'Thyroid', 'Tumour']
 
     referral_present=False
     

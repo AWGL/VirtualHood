@@ -12,6 +12,7 @@ class test_virtualhood(unittest.TestCase):
 
     def test_get_variantReport_NTC(self):
         self.assertEqual(len(get_variantReport_NTC("Colorectal", path, "NTC","test")),1)
+        self.assertEqual(len(get_variantReport_NTC("GIST", path, "NTC", "test")),1)
         self.assertEqual(len(get_variantReport_NTC("Glioma", path, "NTC", "test")),7)
         self.assertEqual(len(get_variantReport_NTC("Lung", path, "NTC", "test")),5)
         self.assertEqual(len(get_variantReport_NTC("Melanoma", path, "NTC", "test")),0)
@@ -21,6 +22,7 @@ class test_virtualhood(unittest.TestCase):
 
     def test_get_variant_report(self):
         self.assertEqual(len(get_variant_report("Colorectal", path, "tester", "test")),0)
+        self.assertEqual(len(get_variant_report("GIST", path, "tester", "test")),2)
         self.assertEqual(len(get_variant_report("Glioma", path, "tester", "test")),3)
         self.assertEqual(len(get_variant_report("Lung", path, "tester", "test")),5)
         self.assertEqual(len(get_variant_report("Melanoma", path, "tester", "test")),2)
@@ -74,6 +76,60 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws7["J3"].value, None)
         self.assertEqual(ws7["K3"].value, None)
         self.assertEqual(ws7["L3"].value, None)
+
+
+	#GIST
+        wb_GIST=Workbook()
+        ws1_GIST= wb_GIST.create_sheet("Sheet_1")
+        ws9_GIST= wb_GIST.create_sheet("Sheet_9")
+        ws2_GIST= wb_GIST.create_sheet("Sheet_2")
+        ws4_GIST= wb_GIST.create_sheet("Sheet_4")
+        ws5_GIST= wb_GIST.create_sheet("Sheet_5")
+        ws6_GIST= wb_GIST.create_sheet("Sheet_6")
+        ws7_GIST= wb_GIST.create_sheet("Sheet_7")
+        ws10_GIST= wb_GIST.create_sheet("Sheet_10")
+
+        #name the tabs
+        ws1_GIST.title="Patient demographics"
+        ws2_GIST.title="Variant_calls"
+        ws4_GIST.title="Mutations and SNPs"
+        ws5_GIST.title="hotspots.gaps"
+        ws6_GIST.title="Report"
+        ws7_GIST.title="NTC variant"
+        ws9_GIST.title="Subpanel NTC check"
+        ws10_GIST.title="Subpanel coverage"
+
+        variant_report_NTC_GIST=get_variantReport_NTC("GIST", path, "NTC", "test")
+        variant_report_GIST=get_variant_report("GIST", path, "tester", "test")
+
+        variant_report_NTC, ws7=add_extra_columns_NTC_report(variant_report_NTC_GIST, variant_report_GIST, ws7_GIST, wb_GIST, path)
+        self.assertEqual(ws7["A2"].value, "Gene6")
+        self.assertEqual(ws7["B2"].value, "exon6")
+        self.assertEqual(ws7["C2"].value, "HGVSv6")
+        self.assertEqual(ws7["D2"].value, "HGVSp6")
+        self.assertEqual(ws7["E2"].value, 6.0)
+        self.assertEqual(ws7["F2"].value, "Quality6")
+        self.assertEqual(ws7["G2"].value, 10)
+        self.assertEqual(ws7["H2"].value, "classification6")
+        self.assertEqual(ws7["I2"].value, "Transcript6")
+        self.assertEqual(ws7["J2"].value, "variant6")
+        self.assertEqual(ws7["K2"].value, "NO")
+        self.assertEqual(ws7["L2"].value, 60.0)
+
+        self.assertEqual(ws7["A3"].value, None)
+        self.assertEqual(ws7["B3"].value, None)
+        self.assertEqual(ws7["C3"].value, None)
+        self.assertEqual(ws7["D3"].value, None)
+        self.assertEqual(ws7["E3"].value, None)
+        self.assertEqual(ws7["F3"].value, None)
+        self.assertEqual(ws7["G3"].value, None)
+        self.assertEqual(ws7["H3"].value, None)
+        self.assertEqual(ws7["I3"].value, None)
+        self.assertEqual(ws7["J3"].value, None)
+        self.assertEqual(ws7["K3"].value, None)
+        self.assertEqual(ws7["L3"].value, None)
+
+
 
 	#Glioma
         wb_Glioma=Workbook()
@@ -491,6 +547,51 @@ class test_virtualhood(unittest.TestCase):
 
         self.assertEqual(len(variant_report_Colorectal),0)
 
+
+	#GIST
+        variant_report_NTC_GIST=get_variantReport_NTC("GIST", path, "NTC", "test")
+        variant_report_GIST=get_variant_report("GIST", path, "tester", "test")
+
+        variant_report_GIST=expand_variant_report(variant_report_GIST, variant_report_NTC_GIST)
+
+        self.assertEqual(variant_report_GIST.iloc[0,0], "Gene1")
+        self.assertEqual(variant_report_GIST.iloc[0,1], "exon1")
+        self.assertEqual(variant_report_GIST.iloc[0,2], "HGVSv1")
+        self.assertEqual(variant_report_GIST.iloc[0,3], "HGVSp1" )
+        self.assertEqual(variant_report_GIST.iloc[0,4], 1.0)
+        self.assertEqual(variant_report_GIST.iloc[0,5], "Quality1")
+        self.assertEqual(variant_report_GIST.iloc[0,6], 5)
+        self.assertEqual(variant_report_GIST.iloc[0,7], "classification1")
+        self.assertEqual(variant_report_GIST.iloc[0,8], "Transcript1")
+        self.assertEqual(variant_report_GIST.iloc[0,9], "variant1")
+        self.assertEqual(variant_report_GIST.iloc[0,10], "")
+        self.assertEqual(variant_report_GIST.iloc[0,11], "")
+        self.assertEqual(variant_report_GIST.iloc[0,12], "")
+        self.assertEqual(variant_report_GIST.iloc[0,13], "")
+        self.assertEqual(variant_report_GIST.iloc[0,14], "")
+        self.assertEqual(variant_report_GIST.iloc[0,15], '5.0')
+        self.assertEqual(variant_report_GIST.iloc[0,16], "NO")
+
+
+        self.assertEqual(variant_report_GIST.iloc[1,0], "Gene2")
+        self.assertEqual(variant_report_GIST.iloc[1,1], "exon2")
+        self.assertEqual(variant_report_GIST.iloc[1,2], "HGVSv2")
+        self.assertEqual(variant_report_GIST.iloc[1,3], "HGVSp2" )
+        self.assertEqual(variant_report_GIST.iloc[1,4], 2.0)
+        self.assertEqual(variant_report_GIST.iloc[1,5], "Quality2")
+        self.assertEqual(variant_report_GIST.iloc[1,6], 6)
+        self.assertEqual(variant_report_GIST.iloc[1,7], "classification2")
+        self.assertEqual(variant_report_GIST.iloc[1,8], "Transcript2")
+        self.assertEqual(variant_report_GIST.iloc[1,9], "1:1234G>A")
+        self.assertEqual(variant_report_GIST.iloc[1,10], "1:1234")
+        self.assertEqual(variant_report_GIST.iloc[1,11], "")
+        self.assertEqual(variant_report_GIST.iloc[1,12], "")
+        self.assertEqual(variant_report_GIST.iloc[1,13], "")
+        self.assertEqual(variant_report_GIST.iloc[1,14], "")
+        self.assertEqual(variant_report_GIST.iloc[1,15], '12.0')
+        self.assertEqual(variant_report_GIST.iloc[1,16], "NO")
+
+
 	#Glioma
         variant_report_NTC_Glioma=get_variantReport_NTC("Glioma", path, "NTC", "test")
         variant_report_Glioma=get_variant_report("Glioma", path, "tester", "test")
@@ -882,6 +983,35 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws5_output["E4"].value, None)
         self.assertEqual(ws5_output["F4"].value, None)
 
+
+
+	#GIST
+        wb_GIST=Workbook()
+        ws1_GIST= wb_GIST.create_sheet("Sheet_1")
+        ws9_GIST= wb_GIST.create_sheet("Sheet_9")
+        ws2_GIST= wb_GIST.create_sheet("Sheet_2")
+        ws4_GIST= wb_GIST.create_sheet("Sheet_4")
+        ws5_GIST= wb_GIST.create_sheet("Sheet_5")
+        ws6_GIST= wb_GIST.create_sheet("Sheet_6")
+        ws7_GIST= wb_GIST.create_sheet("Sheet_7")
+        ws10_GIST= wb_GIST.create_sheet("Sheet_10")
+
+        #name the tabs
+        ws1_GIST.title="Patient demographics"
+        ws2_GIST.title="Variant_calls"
+        ws4_GIST.title="Mutations and SNPs"
+        ws5_GIST.title="hotspots.gaps"
+        ws6_GIST.title="Report"
+        ws7_GIST.title="NTC variant"
+        ws9_GIST.title="Subpanel NTC check"
+        ws10_GIST.title="Subpanel coverage"
+
+        gaps, ws5_output=get_gaps_file("GIST", path, "tester", ws5_GIST, wb_GIST, "tests")
+
+        self.assertEqual(ws5_output["A1"].value, 'No gaps')
+
+
+
 	#Glioma
         wb_Glioma=Workbook()
         ws1_Glioma= wb_Glioma.create_sheet("Sheet_1")
@@ -1060,6 +1190,23 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(Coverage.iloc[2,2], 93.0)
 
 
+	#GIST
+        Coverage= get_hotspots_coverage_file("GIST", path, "tester", "tests")
+
+        self.assertEqual(Coverage.iloc[0,0], "GIST3")
+        self.assertEqual(Coverage.iloc[0,1], 14.0)
+        self.assertEqual(Coverage.iloc[0,2], 5.0)
+
+        self.assertEqual(Coverage.iloc[1,0], "GIST4")
+        self.assertEqual(Coverage.iloc[1,1], 176.0)
+        self.assertEqual(Coverage.iloc[1,2], 78.0)
+
+        self.assertEqual(Coverage.iloc[2,0], "GIST6")
+        self.assertEqual(Coverage.iloc[2,1], 25.0)
+        self.assertEqual(Coverage.iloc[2,2], 3.0)
+
+
+
 	#Glioma
         Coverage= get_hotspots_coverage_file("Glioma", path, "tester", "tests")
 
@@ -1153,6 +1300,31 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(NTC_Coverage.iloc[2,2], "end3")
         self.assertEqual(NTC_Coverage.iloc[2,3], "Colorectal3")
         self.assertEqual(NTC_Coverage.iloc[2,4], 27.0)
+        self.assertEqual(NTC_Coverage.iloc[2,5], 31.0)
+
+	#GIST
+
+        NTC_Coverage=get_NTC_hotspots_coverage_file("GIST", path, "NTC", "tests")
+
+        self.assertEqual(NTC_Coverage.iloc[0,0], 3)
+        self.assertEqual(NTC_Coverage.iloc[0,1], "start3")
+        self.assertEqual(NTC_Coverage.iloc[0,2], "end3")
+        self.assertEqual(NTC_Coverage.iloc[0,3], "GIST3")
+        self.assertEqual(NTC_Coverage.iloc[0,4], 76.0)
+        self.assertEqual(NTC_Coverage.iloc[0,5], 34.0)
+
+        self.assertEqual(NTC_Coverage.iloc[1,0], 4)
+        self.assertEqual(NTC_Coverage.iloc[1,1], "start4")
+        self.assertEqual(NTC_Coverage.iloc[1,2], "end4")
+        self.assertEqual(NTC_Coverage.iloc[1,3], "GIST4")
+        self.assertEqual(NTC_Coverage.iloc[1,4], 20.0)
+        self.assertEqual(NTC_Coverage.iloc[1,5], 12.0)
+
+        self.assertEqual(NTC_Coverage.iloc[2,0], 6)
+        self.assertEqual(NTC_Coverage.iloc[2,1], "start6")
+        self.assertEqual(NTC_Coverage.iloc[2,2], "end6")
+        self.assertEqual(NTC_Coverage.iloc[2,3], "GIST6")
+        self.assertEqual(NTC_Coverage.iloc[2,4], 56.0)
         self.assertEqual(NTC_Coverage.iloc[2,5], 31.0)
 
 
@@ -1311,6 +1483,58 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws9["C4"].value, 93.0)
         self.assertEqual(ws9["D4"].value, 27)
         self.assertEqual(ws9["E4"].value, 10.67193675889328)
+
+        self.assertEqual(ws9["A5"].value, None)
+        self.assertEqual(ws9["B5"].value, None)
+        self.assertEqual(ws9["C5"].value, None)
+        self.assertEqual(ws9["D5"].value, None)
+        self.assertEqual(ws9["E5"].value, None)
+
+
+	#GIST
+        wb_GIST=Workbook()
+        ws1_GIST= wb_GIST.create_sheet("Sheet_1")
+        ws1_GIST= wb_GIST.create_sheet("Sheet_9")
+        ws2_GIST= wb_GIST.create_sheet("Sheet_2")
+        ws4_GIST= wb_GIST.create_sheet("Sheet_4")
+        ws5_GIST= wb_GIST.create_sheet("Sheet_5")
+        ws6_GIST= wb_GIST.create_sheet("Sheet_6")
+        ws7_GIST= wb_GIST.create_sheet("Sheet_7")
+        ws9_GIST= wb_GIST.create_sheet("Sheet_9")
+        ws10_GIST= wb_GIST.create_sheet("Sheet_10")
+
+        ws1_GIST.title="Patient demographics"
+        ws2_GIST.title="Variant_calls"
+        ws4_GIST.title="Mutations and SNPs"
+        ws5_GIST.title="hotspots.gaps"
+        ws6_GIST.title="Report"
+        ws7_GIST.title="NTC variant"
+        ws9_GIST.title="Subpanel NTC check"
+        ws10_GIST.title="Subpanel coverage"
+
+        Coverage_GIST= get_hotspots_coverage_file("GIST", path, "tester", "tests")
+
+        NTC_check=get_NTC_hotspots_coverage_file("GIST", path, "NTC", "tests")
+
+        Coverage, num_rows_coverage, ws9=add_columns_hotspots_coverage(Coverage_GIST, NTC_check, ws9_GIST)
+
+        self.assertEqual(ws9["A2"].value, "GIST3")
+        self.assertEqual(ws9["B2"].value, 14.0)
+        self.assertEqual(ws9["C2"].value, 5.0)
+        self.assertEqual(ws9["D2"].value, 76)
+        self.assertEqual(ws9["E2"].value, 542.8571428571429 )
+
+        self.assertEqual(ws9["A3"].value, "GIST4")
+        self.assertEqual(ws9["B3"].value, 176.0)
+        self.assertEqual(ws9["C3"].value, 78.0)
+        self.assertEqual(ws9["D3"].value, 20)
+        self.assertEqual(ws9["E3"].value, 11.363636363636363)
+
+        self.assertEqual(ws9["A4"].value, "GIST6")
+        self.assertEqual(ws9["B4"].value, 25.0)
+        self.assertEqual(ws9["C4"].value, 3.0)
+        self.assertEqual(ws9["D4"].value, 56)
+        self.assertEqual(ws9["E4"].value, 224.00000000000003 )
 
         self.assertEqual(ws9["A5"].value, None)
         self.assertEqual(ws9["B5"].value, None)
@@ -1594,6 +1818,49 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws10["C5"].value, None)
 
 
+
+	#GIST
+        wb_GIST=Workbook()
+        ws1_GIST= wb_GIST.create_sheet("Sheet_1")
+        ws9_GIST= wb_GIST.create_sheet("Sheet_9")
+        ws2_GIST= wb_GIST.create_sheet("Sheet_2")
+        ws4_GIST= wb_GIST.create_sheet("Sheet_4")
+        ws5_GIST= wb_GIST.create_sheet("Sheet_5")
+        ws6_GIST= wb_GIST.create_sheet("Sheet_6")
+        ws7_GIST= wb_GIST.create_sheet("Sheet_7")
+        ws10_GIST=wb_GIST.create_sheet("Sheet_10")
+
+        #name the tabs
+        ws1_GIST.title="Patient demographics"
+        ws2_GIST.title="Variant_calls"
+        ws4_GIST.title="Mutations and SNPs"
+        ws5_GIST.title="hotspots.gaps"
+        ws6_GIST.title="Report"
+        ws7_GIST.title="NTC variant"
+        ws9_GIST.title="Subpanel NTC check"
+        ws10_GIST.title="Subpanel coverage"
+
+
+        coverage2, ws10=get_subpanel_coverage("GIST", path, "tester", "tests", ws10_GIST)
+
+        self.assertEqual(ws10["A2"].value, "tests____tester_GIST_Gene1")
+        self.assertEqual(ws10["B2"].value, 70)
+        self.assertEqual(ws10["C2"].value, 32)
+
+        self.assertEqual(ws10["A3"].value, "tests____tester_GIST_Gene2")
+        self.assertEqual(ws10["B3"].value, 24)
+        self.assertEqual(ws10["C3"].value, 88)
+
+        self.assertEqual(ws10["A4"].value, "tests____tester_GIST_Gene3")
+        self.assertEqual(ws10["B4"].value, 160)
+        self.assertEqual(ws10["C4"].value, 90)
+
+        self.assertEqual(ws10["A5"].value, None)
+        self.assertEqual(ws10["B5"].value, None)
+        self.assertEqual(ws10["C5"].value, None)
+
+
+
 	#Glioma
 
         wb_Glioma=Workbook()
@@ -1816,6 +2083,116 @@ class test_virtualhood(unittest.TestCase):
         self.assertEqual(ws2["J10"].value, None)
         self.assertEqual(ws2["K10"].value, None)
         self.assertEqual(ws2["L10"].value, None)
+
+
+
+	#GIST
+
+        wb_GIST=Workbook()
+        ws1_GIST= wb_GIST.create_sheet("Sheet_1")
+        ws9_GIST= wb_GIST.create_sheet("Sheet_9")
+        ws2_GIST= wb_GIST.create_sheet("Sheet_2")
+        ws4_GIST= wb_GIST.create_sheet("Sheet_4")
+        ws5_GIST= wb_GIST.create_sheet("Sheet_5")
+        ws6_GIST= wb_GIST.create_sheet("Sheet_6")
+        ws7_GIST= wb_GIST.create_sheet("Sheet_7")
+        ws10_GIST=wb_GIST.create_sheet("Sheet_10")
+
+        #name the tabs
+        ws1_GIST.title="Patient demographics"
+        ws2_GIST.title="Variant_calls"
+        ws4_GIST.title="Mutations and SNPs"
+        ws5_GIST.title="hotspots.gaps"
+        ws6_GIST.title="Report"
+        ws7_GIST.title="NTC variant"
+        ws9_GIST.title="Subpanel NTC check"
+        ws10_GIST.title="Subpanel coverage"
+
+        ws2_GIST['A8']=" "
+        variant_report_NTC_GIST=get_variantReport_NTC("GIST", path, "NTC", "test")
+        variant_report_GIST=get_variant_report("GIST", path, "tester", "test")
+
+        variant_report_NTC, ws7=add_extra_columns_NTC_report(variant_report_NTC_GIST, variant_report_GIST, ws7_GIST, wb_GIST, path)
+
+        variant_report_GIST=expand_variant_report(variant_report_GIST, variant_report_NTC_GIST)
+
+        variant_report_4, ws2=match_polys_and_artefacts(variant_report_GIST, variant_report_NTC_GIST, artefacts_path, ws2_GIST)
+
+        self.assertEqual(ws2["A10"].value, "Gene1")
+        self.assertEqual(ws2["B10"].value, "exon1")
+        self.assertEqual(ws2["C10"].value, "HGVSv1")
+        self.assertEqual(ws2["D10"].value, "HGVSp1")
+        self.assertEqual(ws2["E10"].value, 1.0)
+        self.assertEqual(ws2["F10"].value, "Quality1")
+        self.assertEqual(ws2["G10"].value, 5.0)
+        self.assertEqual(ws2["H10"].value, "classification1")
+        self.assertEqual(ws2["I10"].value, "Transcript1")
+        self.assertEqual(ws2["J10"].value, "variant1")
+        self.assertEqual(ws2["K10"].value, "")
+        self.assertEqual(ws2["L10"].value, "Known Poly")
+        self.assertEqual(ws2["M10"].value, 1)
+        self.assertEqual(ws2["N10"].value, "Known Poly")
+        self.assertEqual(ws2["O10"].value, 1)
+        self.assertEqual(ws2["P10"].value, '5.0')
+        self.assertEqual(ws2["Q10"].value, "NO")
+        self.assertEqual(ws2["R10"].value, "")
+        self.assertEqual(ws2["S10"].value, "")
+        self.assertEqual(ws2["T10"].value, "")
+        self.assertEqual(ws2["U10"].value, "")
+        self.assertEqual(ws2["V10"].value, "On Poly list")
+
+
+
+        self.assertEqual(ws2["A11"].value, "Gene2")
+        self.assertEqual(ws2["B11"].value, "exon2")
+        self.assertEqual(ws2["C11"].value, "HGVSv2")
+        self.assertEqual(ws2["D11"].value, "HGVSp2")
+        self.assertEqual(ws2["E11"].value, 2.0)
+        self.assertEqual(ws2["F11"].value, "Quality2")
+        self.assertEqual(ws2["G11"].value, 6.0)
+        self.assertEqual(ws2["H11"].value, "classification2")
+        self.assertEqual(ws2["I11"].value, "Transcript2")
+        self.assertEqual(ws2["J11"].value, "1:1234G>A")
+        self.assertEqual(ws2["K11"].value, "1:1234")
+        self.assertEqual(ws2["L11"].value, "")
+        self.assertEqual(ws2["M11"].value, "")
+        self.assertEqual(ws2["N11"].value, "")
+        self.assertEqual(ws2["O11"].value, "")
+        self.assertEqual(ws2["P11"].value, '12.0')
+        self.assertEqual(ws2["Q11"].value, "NO")
+        self.assertEqual(ws2["R11"].value, "")
+        self.assertEqual(ws2["S11"].value, "")
+        self.assertEqual(ws2["T11"].value, "")
+        self.assertEqual(ws2["U11"].value, "")
+        self.assertEqual(ws2["V11"].value, "")
+
+
+        self.assertEqual(ws2["A12"].value, None)
+        self.assertEqual(ws2["B12"].value, None)
+        self.assertEqual(ws2["C12"].value, None)
+        self.assertEqual(ws2["D12"].value, None)
+        self.assertEqual(ws2["E12"].value, None)
+        self.assertEqual(ws2["F12"].value, None)
+        self.assertEqual(ws2["G12"].value, None)
+        self.assertEqual(ws2["H12"].value, None)
+        self.assertEqual(ws2["I12"].value, None)
+        self.assertEqual(ws2["J12"].value, None)
+        self.assertEqual(ws2["K12"].value, None)
+        self.assertEqual(ws2["L12"].value, None)
+        self.assertEqual(ws2["M12"].value, None)
+        self.assertEqual(ws2["N12"].value, None)
+        self.assertEqual(ws2["O12"].value, None)
+        self.assertEqual(ws2["P12"].value, None)
+        self.assertEqual(ws2["Q12"].value, None)
+        self.assertEqual(ws2["R12"].value, None)
+        self.assertEqual(ws2["S12"].value, None)
+        self.assertEqual(ws2["T12"].value, None)
+        self.assertEqual(ws2["U12"].value, None)
+        self.assertEqual(ws2["V12"].value, None)
+
+
+
+
 
 
 	#Glioma

@@ -2,6 +2,9 @@ FEATURE	AVG_DEPTH	PERC_COVERAGE@500
 tests____tester_Colorectal_Gene1	50	12
 tests____tester_Colorectal_Gene2	20	78
 tests____tester_Colorectal_Gene3	100	80
+tests____tester_GIST_Gene1	70	32
+tests____tester_GIST_Gene2	24	88
+tests____tester_GIST_Gene3	160	90
 tests____tester_Glioma_Gene1	11	2
 tests____tester_Glioma_Gene2	3	4
 tests____tester_Lung_Gene1	554	90
