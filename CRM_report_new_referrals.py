@@ -8,16 +8,17 @@ import sys
 from openpyxl.styles import PatternFill
 from openpyxl.styles.borders import Border, Side, BORDER_MEDIUM, BORDER_THIN, BORDER_THICK
 from openpyxl.styles import Font
+import argparse
 
 wb=Workbook()
 ws1= wb.create_sheet("Sheet_1")
 ws9= wb.create_sheet("Sheet_9")
+ws10= wb.create_sheet("Sheet_10")
 ws2= wb.create_sheet("Sheet_2")
 ws4= wb.create_sheet("Sheet_4")
 ws5= wb.create_sheet("Sheet_5")
 ws6= wb.create_sheet("Sheet_6")
 ws7= wb.create_sheet("Sheet_7")
-ws10= wb.create_sheet("Sheet_10")
 
 #name the tabs
 ws1.title="Patient demographics"
@@ -90,8 +91,6 @@ ws6['C4']='Tumour %'
 ws6['D4']='Analysis'
 ws6['E4']='Qubit[DNA] ng/ul'
 ws6['F4']='Dilution (ng/ul)'
-ws6['G4']='Analysed by:'
-ws6['H4']='Checked by:'
 
 
 ws6['E7']='NGS wks'
@@ -111,8 +110,6 @@ ws6['C4'].fill= PatternFill("solid", fgColor="00CCFFFF")
 ws6['D4'].fill= PatternFill("solid", fgColor="00CCFFFF")
 ws6['E4'].fill= PatternFill("solid", fgColor="00CCFFFF")
 ws6['F4'].fill= PatternFill("solid", fgColor="00CCFFFF")
-ws6['G4'].fill= PatternFill("solid", fgColor="00CCFFFF")
-ws6['H4'].fill= PatternFill("solid", fgColor="00CCFFFF")
 ws6['E7'].fill= PatternFill("solid", fgColor="00CCFFFF")
 ws6['F7'].fill= PatternFill("solid", fgColor="00CCFFFF")
 ws6['G7'].fill= PatternFill("solid", fgColor="00CCFFFF")
@@ -147,7 +144,7 @@ ws6['H12'].fill= PatternFill("solid", fgColor="009999FF")
     
 
 
-def get_variantReport_NTC(referral, path): 
+def get_variantReport_NTC(referral, path, NTC_name, runid): 
     '''
     Fill out the NTC variants tab using the relevant variant report
     '''
@@ -170,7 +167,7 @@ def get_variantReport_NTC(referral, path):
 
 
 
-def get_variant_report(referral, path, sampleid):
+def get_variant_report(referral, path, sampleid, runid):
 
     '''
     Open the relevant variant file to append to the variant calls tab.
@@ -205,14 +202,14 @@ def get_variant_report(referral, path, sampleid):
 
     variant_report_4['Position']=variant_list
 
-
+    
     return (variant_report_4)
 
 
 
 
 
-def add_extra_columns_NTC_report(variant_report_NTC_4, variant_report_4):
+def add_extra_columns_NTC_report(variant_report_NTC_4, variant_report_4, ws7,wb, path,):
     
     '''
     Add 'Present in sample' and 'variant allele calls' columns to NTC variant table
@@ -236,6 +233,7 @@ def add_extra_columns_NTC_report(variant_report_NTC_4, variant_report_4):
    
     variant_report_NTC_4['Present in sample']=variant_in_sample
 
+
     variant_allele_calls=[]
     row=0
     num_rows_NTC=variant_report_NTC_4.shape[0]
@@ -250,7 +248,8 @@ def add_extra_columns_NTC_report(variant_report_NTC_4, variant_report_4):
     for row in dataframe_to_rows(variant_report_NTC_4, header=True, index=False):
         ws7.append(row)
 
-    return (variant_report_NTC_4)
+
+    return (variant_report_NTC_4, ws7)
 
 
 
@@ -297,13 +296,12 @@ def expand_variant_report(variant_report_4, variant_report_NTC_4):
     variant_report_4["Detection threshold based on depth"]=detection_threshold
     variant_report_4["Is variant present in NTC "]=variant_in_NTC
 
-
     return (variant_report_4)
 
 
 
 
-def get_gaps_file(referral, path, sampleid):
+def get_gaps_file(referral, path, sampleid, ws5, wb, runid):
  
     '''
     Open the relevant gap file to append to the end of the mutations and snps tab. If the gap file is empty, write 'no gaps'.
@@ -419,12 +417,12 @@ def get_gaps_file(referral, path, sampleid):
     ws6['H47']="Checked by:"
 
 
-    return (gaps)
+    return (gaps, ws5)
 
 
 
 
-def get_hotspots_coverage_file(referral, path, sampleid):
+def get_hotspots_coverage_file(referral, path, sampleid, runid):
 
     '''
     Open the relevant coverage file to append to the end of the mutations and snps tab. If the coverage file is empty, write 'No hotspots'.
@@ -443,7 +441,7 @@ def get_hotspots_coverage_file(referral, path, sampleid):
 
 
 
-def get_NTC_hotspots_coverage_file(referral, path):
+def get_NTC_hotspots_coverage_file(referral, path, NTC_name, runid):
 
     '''
     Open the relevant NTC hotspots coverage file.
@@ -460,7 +458,7 @@ def get_NTC_hotspots_coverage_file(referral, path):
 
 
 
-def add_columns_hotspots_coverage(Coverage, NTC_check):
+def add_columns_hotspots_coverage(Coverage, NTC_check, ws9):
 
     #Add percentage NTC and subpanel columns to the Coverage table
     
@@ -480,6 +478,7 @@ def add_columns_hotspots_coverage(Coverage, NTC_check):
             row2=row2+1
         row1=row1+1
     
+
     Coverage['%NTC']=Coverage['NTC_AVG_Depth']/Coverage['AVG_DEPTH']
     Coverage['%NTC']= Coverage['%NTC']*100
 
@@ -495,12 +494,12 @@ def add_columns_hotspots_coverage(Coverage, NTC_check):
             ws9['E'+row_spreadsheet_2].fill= PatternFill("solid", fgColor="FFBB00")
         row=row+1
     
-    return (Coverage, num_rows_coverage)
+    return (Coverage, num_rows_coverage,ws9)
 
 
 
 
-def get_subpanel_coverage(referral, path, sampleid):
+def get_subpanel_coverage(referral, path, sampleid, runid, ws10):
 
     #Add coverage table
     if(os.stat(path+sampleid+"/hotspot_coverage/"+runid+"_"+sampleid+"_coverage.txt").st_size==0):
@@ -518,19 +517,19 @@ def get_subpanel_coverage(referral, path, sampleid):
             ws10.append(row)
     
 
-    return(Coverage_2)
+    return(Coverage_2, ws10)
 
 
 
 
-def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
+def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4, artefacts_path, ws2):
 
     '''
     Extract the relevant information from "PanCancer_Poly and Artefact list.xlsx" by matching the variant name with the ones in the variant report table
     '''
 
     poly_artefact_dict={}
-    poly_and_Artefact_list=pandas.read_excel("/data/temp/artefacts_lists/CRM_poly_artefact_list.xlsx")
+    poly_and_Artefact_list=pandas.read_excel(artefacts_path +"CRM_poly_artefact_list.xlsx")
     poly_and_Artefact_list_2=pandas.DataFrame(poly_and_Artefact_list)
 
 
@@ -579,6 +578,8 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
     variant_report_4["#of mutant reads in patient sample "]=""
     variant_report_4["#of mutant reads in NTC if present "]=""
     variant_report_4["Is the NTC contamination significant?"]=""
+    variant_report_4["Y/N"]=""
+
 
 
     num_rows_NTC= variant_report_NTC_4.shape[0]
@@ -600,18 +601,15 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
         row=row+1
 
 
+
     #Add upper-limit and lower-limit variant report dataframes to the excel workbook
     
     variant_report_4_upper_limit=variant_report_4[variant_report_4.Frequency>0.045]
 
-    for row in dataframe_to_rows(variant_report_4_upper_limit, header=True, index=False):
-        ws2.append(row)
 
+    #Add how conclusion was reached column
 
-    variant_report_5_upper_limit= variant_report_4_upper_limit.iloc[:,[0,1,2]]
-    variant_report_5_upper_limit['Comments/Notes/evidence:how conclusion was reached']=""
-
-
+    variant_report_4_upper_limit['Comments/Notes/evidence:how conclusion was reached']=""
 
     row=0
 
@@ -619,28 +617,25 @@ def match_polys_and_artefacts(variant_report_4, variant_report_NTC_4):
 
     while (row<num_rows_variant_report_upper_limit):
         if (variant_report_4_upper_limit.iloc[row,11]=='Known artefact'):
-            variant_report_5_upper_limit.iloc[row,3]='On artefact list'
+            variant_report_4_upper_limit.iloc[row,21]='On artefact list'
         if (variant_report_4_upper_limit.iloc[row,11]=='Known Poly'):
-            variant_report_5_upper_limit.iloc[row,3]='On Poly list'
+            variant_report_4_upper_limit.iloc[row,21]='On Poly list'
         if (variant_report_4_upper_limit.iloc[row,11]=='WT'):
-            variant_report_5_upper_limit.iloc[row,3]='SNP in Ref.Seq'
+            variant_report_4_upper_limit.iloc[row,21]='SNP in Ref.Seq'
         row=row+1
 
-    ws2['A60']=" "
 
 
-
-
-    #add dataframe to variant calls tab
-
-    for row in dataframe_to_rows(variant_report_5_upper_limit, header=True, index=False):
+    for row in dataframe_to_rows(variant_report_4_upper_limit, header=True, index=False):
         ws2.append(row)
 
-    return(variant_report_4)
+
+
+    return(variant_report_4, ws2)
 
 
 
-def add_excel_formulae():
+def add_excel_formulae(wb, ws1, ws2, ws4, ws5, ws6, ws7, ws9, ws10):
 
     #add excel formulae to the spreadsheets to enable automation after program has finished
 
@@ -884,6 +879,8 @@ def add_excel_formulae():
     ws2.column_dimensions['R'].width=33
     ws2.column_dimensions['S'].width=33
     ws2.column_dimensions['T'].width=40
+    ws2.column_dimensions['V'].width=50
+
 
     ws4.column_dimensions['B'].width=20
     ws4.column_dimensions['C'].width=20
@@ -927,7 +924,7 @@ def add_excel_formulae():
     ws7.column_dimensions['L'].width=20
 
 
-    ws10.column_dimensions['A'].width=50
+    ws10.column_dimensions['A'].width=80
     ws10.column_dimensions['B'].width=20
     ws10.column_dimensions['C'].width=25
     ws10.column_dimensions['D'].width=20
@@ -939,16 +936,13 @@ def add_excel_formulae():
     ws6['D4'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['E4'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['F4'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws6['G4'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws6['H4'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['A5'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['B5'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['C5'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['D5'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['E5'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['F5'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws6['G5'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws6['H5'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+
 
     ws6['E7'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws6['F7'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
@@ -1327,8 +1321,6 @@ def add_excel_formulae():
     ws1['K1'].font= Font(bold=True)
     ws1['L1'].font= Font(bold=True)
     ws1['M1'].font= Font(bold=True)
-
-    ws2['U9']= "Y/N"
  
     ws2['A9'].fill= PatternFill("solid", fgColor="DCDCDC")
     ws2['B9'].fill= PatternFill("solid", fgColor="DCDCDC")
@@ -1351,6 +1343,7 @@ def add_excel_formulae():
     ws2['S9'].fill= PatternFill("solid", fgColor="DCDCDC")
     ws2['T9'].fill= PatternFill("solid", fgColor="DCDCDC")
     ws2['U9'].fill= PatternFill("solid", fgColor="DCDCDC")
+    ws2['V9'].fill= PatternFill("solid", fgColor="DCDCDC")
 
     ws2['A9'].font= Font(bold=True)
     ws2['B9'].font= Font(bold=True)
@@ -1373,6 +1366,8 @@ def add_excel_formulae():
     ws2['S9'].font= Font(bold=True)
     ws2['T9'].font= Font(bold=True)
     ws2['U9'].font= Font(bold=True)
+    ws2['V9'].font= Font(bold=True)
+
 
     ws2['B3'].font= Font(bold=True)
     ws2['B6'].font= Font(bold=True)
@@ -1383,16 +1378,6 @@ def add_excel_formulae():
     ws2['K3'].font= Font(bold=True)
     ws2['K6'].font= Font(bold=True)
     ws2['I3'].font= Font(bold=True)
-
-    ws2['A61'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws2['B61'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws2['C61'].fill= PatternFill("solid", fgColor="DCDCDC")
-    ws2['D61'].fill= PatternFill("solid", fgColor="DCDCDC")
-
-    ws2['A61'].font= Font(bold=True)
-    ws2['B61'].font= Font(bold=True)
-    ws2['C61'].font= Font(bold=True)
-    ws2['D61'].font= Font(bold=True)
 
     ws2['A9'].border=Border(left=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws2['B9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
@@ -1414,12 +1399,8 @@ def add_excel_formulae():
     ws2['R9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws2['S9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
     ws2['T9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws2['U9'].border=Border(right=Side(border_style=BORDER_MEDIUM),top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-
-    ws2['A61'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws2['B61'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws2['C61'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
-    ws2['D61'].border=Border(left=Side(border_style=BORDER_MEDIUM), right=Side(border_style=BORDER_MEDIUM), top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['U9'].border=Border(top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
+    ws2['V9'].border=Border(right=Side(border_style=BORDER_MEDIUM),top=Side(border_style=BORDER_MEDIUM), bottom=Side(border_style=BORDER_MEDIUM))
 
     ws4['B2'].font= Font(bold=True)
     ws4['C2'].font= Font(bold=True)
@@ -1456,23 +1437,35 @@ if __name__ == "__main__":
 
     
     #Insert information
-    runid=sys.argv[1]
-    sampleid=sys.argv[2]
-    worksheet=sys.argv[3]
-    referral=sys.argv[4]
-    NTC_name=sys.argv[5]    
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--runid', required=True)
+    parser.add_argument('--sampleid', required=True)
+    parser.add_argument('--worksheet', required=True)
+    parser.add_argument('--referral', required=True)
+    parser.add_argument('--NTC_name', required=True)
+    parser.add_argument('--path', required=False)
+    parser.add_argument('--artefacts', required=False)
+    args=parser.parse_args()
 
-    print(runid)
-    print(sampleid)
-    print(worksheet)
-    print(referral)
+    runid=args.runid
+    sampleid=args.sampleid
+    worksheet=args.worksheet
+    referral=args.referral
+    NTC_name=args.NTC_name
+    path=args.path
+    artefacts_path=args.artefacts
 
-    path="/data/results/"+runid + "/NGHS-101X/"
+    if (path==None):
+        path="/data/results/"+runid + "/NGHS-101X/"
+    if (artefacts_path==None):
+        artefacts_path="/data/temp/artefacts_lists/"
 
 
     referral=referral.upper()
     if referral=="COLORECTAL":
         referral="Colorectal"
+    elif referral=="GIST":
+        referral="GIST"
     elif referral=="GLIOMA":
         referral="Glioma"
     elif referral=="LUNG":
@@ -1487,7 +1480,7 @@ if __name__ == "__main__":
         print ("referral not recognised")    
     
 
-    referrals_list=['Colorectal', 'Glioma', 'Lung', 'Melanoma', 'Thyroid', 'Tumour']
+    referrals_list=['Colorectal', 'GIST', 'Glioma', 'Lung', 'Melanoma', 'Thyroid', 'Tumour']
 
     referral_present=False
     
@@ -1499,27 +1492,27 @@ if __name__ == "__main__":
 
     if (referral_present==True):
     
-        variant_report_NTC=get_variantReport_NTC(referral, path)
+        variant_report_NTC=get_variantReport_NTC(referral, path, NTC_name, runid)
  
-        variant_report_referral=get_variant_report(referral, path, sampleid)
+        variant_report_referral=get_variant_report(referral, path, sampleid, runid)
 
-        variant_report_NTC_2=add_extra_columns_NTC_report(variant_report_NTC, variant_report_referral)
+        variant_report_NTC_2, ws7=add_extra_columns_NTC_report(variant_report_NTC, variant_report_referral, ws7, wb, path)
 
         variant_report_referral_2=expand_variant_report(variant_report_referral, variant_report_NTC_2)
 
-        gaps_file=get_gaps_file(referral, path, sampleid)
+        gaps_file, ws5=get_gaps_file(referral, path, sampleid, ws5, wb, runid)
 
-        hotspots_coverage=get_hotspots_coverage_file(referral, path, sampleid)
+        hotspots_coverage=get_hotspots_coverage_file(referral, path, sampleid, runid)
 
-        hotspots_coverage_NTC=get_NTC_hotspots_coverage_file(referral, path)
+        hotspots_coverage_NTC=get_NTC_hotspots_coverage_file(referral, path, NTC_name, runid)
 
-        hotspots_coverage_2, num_rows_coverage=add_columns_hotspots_coverage(hotspots_coverage, hotspots_coverage_NTC)
+        hotspots_coverage_2, num_rows_coverage, ws9=add_columns_hotspots_coverage(hotspots_coverage, hotspots_coverage_NTC, ws9)
    
-        subpanel_coverage=get_subpanel_coverage(referral, path, sampleid)
+        subpanel_coverage, ws10=get_subpanel_coverage(referral, path, sampleid, runid, ws10)
 
-        variant_report_referral_3=match_polys_and_artefacts(variant_report_referral_2, variant_report_NTC_2)
+        variant_report_referral_3, ws2=match_polys_and_artefacts(variant_report_referral_2, variant_report_NTC_2, artefacts_path, ws2)
 
-        add_excel_formulae()
+        add_excel_formulae(wb, ws1, ws2, ws4, ws5, ws6, ws7, ws9, ws10)
 
     else:
         print("referral not in referrals_list")

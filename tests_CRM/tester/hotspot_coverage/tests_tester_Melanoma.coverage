@@ -1,0 +1,4 @@
+CHR	START	END	META	AVG_DEPTH	PERC_COVERAGE@250
+9	start9	end9	Melanoma9	72.0	34.0
+6	start6	end6	Melanoma6	643.0	100.0
+4	start4	end4	Melanoma4	27.0	12.0
