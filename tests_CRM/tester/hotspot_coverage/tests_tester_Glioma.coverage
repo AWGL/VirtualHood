@@ -1,0 +1,5 @@
+CHR	START	END	META	AVG_DEPTH	PERC_COVERAGE@250
+3	start3	end3	Glioma3	14.0	5.0
+4	start4	end4	Glioma4	176.0	78.0
+5	start5	end5	Glioma5	437.0	99.0
+6	start6	end6	Glioma6	25.0	3.0
